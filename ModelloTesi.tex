@@ -1,0 +1,63 @@
+\documentclass[11pt, a4paper]{report}
+\input{impostazioni/pacchetti}
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+%______PREFAZIONE__________
+
+\begin{document}
+\input{contenuti/1.frontespizio}
+\input{contenuti/0.bianca}
+%\input{contenuti/dedica}
+\input{contenuti/0.bianca}
+\pagenumbering{roman}
+%\input{contenuti/sommario}
+
+%___________INDICE_CAPITOLI__________
+
+\tableofcontents %Indice capitoli
+\newpage
+
+%___________INDICE_FIGURE_______
+
+\listoffigures
+\begin{flushleft}
+  \blfootnote{
+    \textit{Nella didascalia di ogni immagine vi è il link della pagina web da cui è stata presa, inoltre, sono citate anche accanto ai link nella sitografia.}
+  }
+  \\
+
+\end{flushleft}
+\newpage
+
+%%___________INDICE_TABELLE__(Non serve)_____________________
+%\listoftables
+%\newpage
+%
+% ciao ale!
+
+%___________CONTENUTI_______________________________
+\pagenumbering{arabic}
+\setcounter{page}{1} %Set numero di pagina
+
+%\input{contenuti/introduzione}
+%\input{contenuti/capitolo_1}
+%\input{contenuti/capitolo_2}
+%\input{contenuti/capitolo_3}
+%\input{contenuti/capitolo_4}
+%\input{contenuti/capitolo_5}
+%\input{contenuti/conclusione}
+
+%___________BIBLIOGRAFIA____________________
+
+%\input{contenuti/bibliografia}
+
+%___________________________________________________________
+
+%\input{contenuti/ringraziamenti}
+
+\end{document}
