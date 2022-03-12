@@ -7,5 +7,7 @@
         "markdown",
         "latex",
         "plaintext"
-    ]
+    ],
+    "editor.wordWrap" : "on",
+    "editor.wrappingIndent": "indent",
 }
