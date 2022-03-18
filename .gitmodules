@@ -1,3 +1,4 @@
 [submodule "source/tirocinio"]
 	path = source/tirocinio
 	url = https://github.com/simone-viozzi/tirocinio.git
+	ignore = all
