@@ -10,4 +10,8 @@
     ],
     "editor.wordWrap" : "on",
     "editor.wrappingIndent": "indent",
+    "cSpell.language": "en,it",
+    "cSpell.words": [
+        "openwrt"
+    ],
 }

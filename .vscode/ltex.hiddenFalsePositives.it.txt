@@ -1,0 +1,3 @@
+{"rule":"ER_01_002","sentence":"^\\QNella didascalia di ogni immagine vi è il link della pagina web da cui è stata presa, inoltre, sono citate anche accanto ai link nella sitografia.\\E$"}
+{"rule":"ST_04_001","sentence":"^\\Q[1]\\E$"}
+{"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QOverview.\\E$"}
