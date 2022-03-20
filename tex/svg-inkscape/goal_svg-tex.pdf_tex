@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{235.875bp}%
+    \setlength{\unitlength}{205.875bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,15 +50,17 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.68448331)%
+  \begin{picture}(1,0.78422587)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{goal_svg-tex.pdf}}%
-    \put(0.29888712,0.46492845){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}CG NAT\end{tabular}}}}%
+    \put(0.15420766,0.36513661){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}4G.Router\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{goal_svg-tex.pdf}}%
-    \put(0.1436248,0.00073132){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}IOT devices\end{tabular}}}}%
+    \put(0.19672131,0.53267759){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}CG NAT\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{goal_svg-tex.pdf}}%
-    \put(0.92845787,0.48721781){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Client\end{tabular}}}}%
+    \put(0.16455373,0.00083789){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}IOT devices\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{goal_svg-tex.pdf}}%
+    \put(0.91803279,0.55821494){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Client\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{goal_svg-tex.pdf}}%
   \end{picture}%
 \endgroup%
