@@ -1,6 +1,6 @@
 %% Creator: Inkscape 1.1.2 (0a00cf5339, 2022-02-04, custom), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file '1-real_svg-tex.pdf' (pdf, eps, ps)
+%% Accompanies image file '1-goal_svg-tex.pdf' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{228.375bp}%
+    \setlength{\unitlength}{235.875bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,17 +50,15 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.99389163)%
+  \begin{picture}(1,0.68448331)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{1-real_svg-tex.pdf}}%
-    \put(0.61412151,0.96955665){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}OVH server\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{1-real_svg-tex.pdf}}%
-    \put(0.92610837,0.49993432){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Client\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{1-real_svg-tex.pdf}}%
-    \put(0.30870279,0.48019706){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}CG NAT\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=4]{1-real_svg-tex.pdf}}%
-    \put(0.14834154,0.00075534){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}IOT devices\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=5]{1-real_svg-tex.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{1-goal_svg-tex.pdf}}%
+    \put(0.29888712,0.46492845){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}CG NAT\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{1-goal_svg-tex.pdf}}%
+    \put(0.1436248,0.00073132){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}IOT devices\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{1-goal_svg-tex.pdf}}%
+    \put(0.92845787,0.48721781){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Client\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{1-goal_svg-tex.pdf}}%
   \end{picture}%
 \endgroup%
