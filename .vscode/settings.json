@@ -12,6 +12,7 @@
     "editor.wrappingIndent": "indent",
     "cSpell.language": "en,it",
     "cSpell.words": [
+        "domotico",
         "openwrt"
     ],
     "latex-workshop.latex.tools": [
@@ -29,4 +30,6 @@
             ]
         }
     ],
+    "todo-tree.regex.regex":"((//|#|<!--|;|/\\*|^|%|\\\\)\\s*($TAGS)\\{*|^\\s*- \\[ \\])",
+    "todo-tree.regex.regexCaseSensitive": false
 }

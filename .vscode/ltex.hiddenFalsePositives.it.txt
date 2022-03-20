@@ -1,3 +1,8 @@
 {"rule":"ER_01_002","sentence":"^\\QNella didascalia di ogni immagine vi è il link della pagina web da cui è stata presa, inoltre, sono citate anche accanto ai link nella sitografia.\\E$"}
 {"rule":"ST_04_001","sentence":"^\\Q[1]\\E$"}
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QOverview.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QIn una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'azienda Esse-ti S.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qci è stato esposto un progetto che consiste nel: - fornire ai clienti un router 4G, su cui possono essere connessi vari dispositivi, ad es. di tipo domotico.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qrendere questi dispositivi accessibili a dei clienti attraverso internet\\E$"}
+{"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\Q[width=250px]immagini/goal\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qrendere questi dispositivi accessibili ai clienti attraverso internet\\E$"}

@@ -9,13 +9,40 @@
 
 \section{Obbiettivo da ottenere}
 
-L'obbiettivo da raggiungere \`e rendere possibile la comunicazione tra un host al di sotto di un rounter nattato ed un generico client.
-
+In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'azienda \textbf{Esse-ti S.R.L.} ci \`e stato esposto un progetto che consiste nel:
+\begin{itemize}
+    \item fornire a dei clienti un router 4G, su cui possono essere connessi vari dispositivi, ad es. di tipo domotico.
+    \item rendere questi dispositivi accessibili ai clienti attraverso internet 
+\end{itemize}
 
 \begin{figure}[ht]
 	\centering
-	\includesvg{immagini/goal}
-	\caption{}
-	\label{fig:modello_a_strati}
+	\includesvg[width=250px]{immagini/goal}
+	\caption{Schema concettuale dell'obbiettivo da raggiungere}
+
+	%TODO manca label \label{fig:modello_a_strati}
+	
 \end{figure}
 
+Si vede subito che, cos\`i come \`e rappresentata, non \`e realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo per\`o non \`e possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il 4G.Router e il cliente.
+
+\begin{figure}[ht]
+	\centering
+	\includesvg[width=250px]{immagini/real}
+	\caption{Schema concettuale dell'architettura che si dovr\`a implementare}
+
+	%TODO manca label \label{fig:modello_a_strati}
+	
+\end{figure}
+
+%todo rivedi frase
+In questo modo si pu\`o configurare una VPN sul server OVH e connettervi sia il 4G.Router che la macchina del cliente. In questo modo l'unica configurazione che il cliente dovr\`a fare \`e l'installazione di un cliente VPN, ci\`o \`e il minimo possibile di configurazione.
+
+\begin{figure}[ht]
+	\centering
+	\includesvg[width=250px]{immagini/virtual}
+	\caption{Schema concettuale dell'architettura che si dovr\`a implementare}
+
+	%TODO manca label \label{fig:modello_a_strati}
+	
+\end{figure}
