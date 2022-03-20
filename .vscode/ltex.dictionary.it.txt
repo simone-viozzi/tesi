@@ -1,3 +1,5 @@
 Esse-ti
 domotico
 domotico
+Host
+gateway
