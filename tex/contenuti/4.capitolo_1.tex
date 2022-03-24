@@ -13,8 +13,8 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 
 %todo non mi piace come sta messo
 \begin{itemize}
-    \item fornire a dei clienti un router 4G, su cui possono essere connessi vari dispositivi, ad es. di tipo domotico.
-    \item rendere questi dispositivi accessibili ai clienti attraverso internet 
+	\item fornire a dei clienti un router 4G, su cui possono essere connessi vari dispositivi, ad es. di tipo domotico.
+	\item rendere questi dispositivi accessibili ai clienti attraverso internet
 \end{itemize}
 
 \begin{figure}[ht]
@@ -22,8 +22,8 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 	\includesvg[width=250px]{immagini/goal}
 	\caption{Schema concettuale dell'obbiettivo da raggiungere}
 
-	%TODO manca label \label{fig:modello_a_strati}
-	
+	\label{fig:schema_concettuale}
+
 \end{figure}
 
 Data la presenza del CG-NAT si vede subito che non \`e realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo per\`o non \`e possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il 4G.Router e il cliente.
@@ -33,8 +33,8 @@ Data la presenza del CG-NAT si vede subito che non \`e realizzabile a meno che i
 	\includesvg[width=250px]{immagini/real}
 	\caption{Schema concettuale dell'architettura che si dovr\`a implementare}
 
-	%TODO manca label \label{fig:modello_a_strati}
-	
+	\label{fig:schem_architettura_reale}
+
 \end{figure}
 
 %todo rivedi frase
@@ -47,8 +47,8 @@ La configurazione virtuale vista dal 4G.Router e dai clienti sar\`a quindi:
 	\includesvg[width=250px]{immagini/virtual}
 	\caption{Topologia virtuale}
 
-	%TODO manca label \label{fig:modello_a_strati}
-	
+	\label{fig:schema_architettura_virtuale}
+
 \end{figure}
 
 
@@ -67,7 +67,7 @@ vediamo le caratteristiche minime che i componenti dovranno avere:
 
 \subsubsection{Esse-ti 4G.Router}
 
-Ci \`e stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router
+Ci \`e stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link})
 
 
 \begin{figure}[ht]
@@ -75,22 +75,82 @@ Ci \`e stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzion
 	\includegraphics[width=250px]{immagini/4grouter.jpg}
 	\caption{4G.Router}
 
-	%TODO manca label \label{fig:modello_a_strati}
-	
+	\label{fig:esse-ti-router-4g}
+
 \end{figure}
 
-Presenta 2 interfacce di rete, una radiomobile 4G, e una Wi-Fi / LAN.
-Ha come sistema operativo una versione custom di OpenWrt.
+Per l'implementazione di questa architettura sono necessarie solo un sub-set delle specifiche:
+
+\begin{itemize} %TODO e' copiato e incollato va sistemato
+	\item Access Point wireless per offrire connettività Internet Wi-Fi a dispositivi wireless
+	\item Client Dynamic DNS per consentire all’utente di raggiungere da remoto, tramite Internet, il router stesso e tutti i dispositivi connessi via Wi-Fi o porta LAN
+	\item Gateway telefonico per consentire l’invio e la ricezione di chiamate attraverso la rete 4G LTE/UMTS/GSM a telefoni fissi, combinatori o altri dispositivi telefonici collegati all’ingresso FXS
+\end{itemize}
+
+Presenta inoltre come sistema operativo una versione personalizzata di OpenWrt.
+
+La configurazione del dispositivo puo' essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
+
+\begin{figure}
+
+	\newlength{\tempheight}
+    \setlength{\tempheight}{23ex}
+
+	\centering%
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering%
+        \includegraphics[totalheight = \tempheight]{immagini/interfacciar4g_init.png}
+        \caption{Schermata di autenticazione}
+    \end{subfigure}%
+	\hfill
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering%
+        \includegraphics[totalheight = \tempheight]{immagini/interfacciar4g_traffic.png}
+        \caption{Grafico del traffico}
+    \end{subfigure}
+
+	\vspace{1ex}
+
+	\begin{subfigure}[b]{\textwidth}
+        \centering%
+        \includegraphics[totalheight = 1.6\tempheight]{immagini/interfacciar4g_status.png}
+        \caption{Schermata con stato riassuntivo}
+    \end{subfigure}
+
+\end{figure}
+
+L'interfaccia web e' una versione personalizzata di \href{https://openwrt.org/docs/guide-user/luci/start}{Luci}
+
 
 \subsubsection{VPS OVHCloud}
 
-Come server \`e stata scelta una VPS del provider OVHCloud.
-Ospita il server OpenVPN.
+La VPS ha il solo vincolo di dover avere un'ip pubblico e una connessione a internet abbastanza veloce. Dovra' infatti sopportare un traffico simmetrico in upload / download.
+
+Per la realizzazione della topologia e' stata selezionata una macchina una VPS del provider OVHCloud, con le seguenti caratteristiche:
+
+\begin{itemize}
+	\item 2 core virtuali
+	\item 4Gb di memoria ram
+	\item 80Gb di storage NVMe
+	\item 500Mbps simmetrici di banda
+	\item ipv4 pubblico
+	\item Ubuntu 16.04
+\end{itemize}
 
 \subsubsection{Host domotico}
 
-Per i vari test \`e stata usata una Raspberry pi come host del router 4G.
+%TODO don't like
+Per effettuare le varie operazioni di testing e' stato aggiunta raspberry pi che ha svolto il ruolo di "host domotico". Sono state fatti test con ping e iperf per testare che tutta la topologia sia stata configurata correttamente.
+
 
 \subsubsection{Macchina del cliente}
 
+%TODO da espandere
 Deve poter essere una qualunque macchina, non ha vincoli di sistema operativo
+
+Necessita di avere il client openvpn installato:
+
+\begin{itemize}
+	\item con sistema operativo Windows si deve scaricare l'eseguibile dal \href{https://openvpn.net/client-connect-vpn-for-windows/}{sito ufficiale}
+	\item su linux e' sufficiente cercare nei repository ufficiali della distribuzione che si sta usando.
+\end{itemize}

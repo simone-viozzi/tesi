@@ -3,3 +3,8 @@ domotico
 domotico
 Host
 gateway
+width
+OVHCloud
+storage
+NVMe
+repository

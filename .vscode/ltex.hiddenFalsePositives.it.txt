@@ -7,3 +7,4 @@
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\Q[width=250px]immagini/goal\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qrendere questi dispositivi accessibili ai clienti attraverso internet\\E$"}
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QHa come sistema operativo una versione custom di OpenWrt.\\E$"}
+{"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QPer effettuare le varie operazioni di testing e' stato aggiunta raspberry pi che ha svolto il ruolo di \"host domotico\"\\E$"}
