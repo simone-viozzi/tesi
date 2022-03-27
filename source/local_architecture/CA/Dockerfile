@@ -29,3 +29,10 @@ COPY --chown=ubuntu:ubuntu vars vars
 
 ENV EASYRSA_BATCH=1
 RUN ./easyrsa build-ca nopass
+
+RUN mkdir ~/keys
+RUN chown ubuntu:ubuntu ~/keys
+
+WORKDIR /home/ubuntu
+
+CMD [ "bash" ]

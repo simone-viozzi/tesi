@@ -10,3 +10,5 @@ RUN opkg install luci \
       iw-full \
       ip-full \
       kmod-mac80211
+
+CMD [ "sh" ]

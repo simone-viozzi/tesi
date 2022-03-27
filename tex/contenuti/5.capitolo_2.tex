@@ -110,6 +110,7 @@ a3Qts307lAO5q49hK8hn5h43w+2MHvaiC0jXtCJp+hvR
 -----END CERTIFICATE-----
 \end{bashcode}
 
+
 \section{Configurazione della PKI di OpenVPN}
 
 Il procedimento e' simile al precedente, ma questa volta va eseguito sul server.
@@ -155,8 +156,6 @@ $ ./easyrsa gen-req server nopass
 Note: using Easy-RSA configuration from: ./vars
 
 Using SSL: openssl OpenSSL 1.1.1f  31 Mar 2020
-Can't load /home/ubuntu/openvpn-pki/pki/.rnd into RNG
-140624276354368:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:98:Filename=/home/ubuntu/openvpn-pki/pki/.rnd
 Generating an EC private key
 writing new private key to '/home/ubuntu/openvpn-pki/pki/private/server.key.438W2xM0g9'
 -----
@@ -181,3 +180,75 @@ This will create a private key for the server and a certificate request file cal
 \begin{bashcode}
 $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 \end{bashcode}
+
+Il secondo file creato, \code{server.req}, corrisponde ad una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. In questo modo ogni client che si fida della CA si fidera' di conseguenza del server OpenVPN %TODO link a web of trust
+
+\section{Firma del certificato opnevpn dalla CA}
+
+Dobbiamo quindi copiare il file \code{server.req} nel \textit{server CA}, possiamo qualunque metodo purche' sia sicuro, ad esempio con \code{scp}:
+
+\begin{bashcode}
+$ scp -3 ubuntu@openvpn_server:/home/ubuntu/openvpn-pki/pki/reqs/server.req ubuntu@ca_server:/tmp
+\end{bashcode}
+
+Dobbiamo qundi spostarci sul server CA e importare la \textit{certificate request} e firmarlo:
+
+\begin{bashcode}
+$ cd ~/openvpn-ca
+$ ./easyrsa import-req /tmp/server.req server
+$ ./easyrsa sign-req server server
+Using configuration from /home/ubuntu/openvpn-ca/pki/safessl-easyrsa.cnf
+Check that the request matches the signature
+Signature ok
+The Subject\'s Distinguished Name is as follows
+commonName            :ASN.1 12:'ChangeMe'
+Certificate is to be certified until Mar 11 15:50:45 2025 GMT (1080 days)
+
+Write out database with 1 new entries
+Data Base Updated
+\end{bashcode}
+
+Verra' creato un file in \code{~/openvpn-ca/pki/issued} chiamato \code{server.crt} che conterra' la chiave pubblica che verra' usata dal server openvpn e inoltre la firma della CA.
+
+Ora si devono copiare i file \code{ca.crt} e \code{server.crt} dal \textit{server CA} al \textit{server OpnenVPN}:
+
+
+\begin{bashcode}
+$ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/server.crt ubuntu@openvpn_server:/tmp
+$ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/ca.crt ubuntu@openvpn_server:/tmp
+\end{bashcode}
+
+Possiamo quindi tornare sul \textit{server OpenVPN} e copiare i 2 file da \code{/tmp} a \code{/etc/openvpn/server}:
+
+\begin{bashcode}
+$ sudo cp /tmp/server.crt /etc/openvpn/server
+$ sudo cp /tmp/ca.crt /etc/openvpn/server
+\end{bashcode}
+
+\section{generazione tls-crypt pre-shared key}
+
+Per aumentare ulteriormente la sicurezza del nostro \textit{server OpenVPN} possiamo creare un'ulteriore chiave, che consiste un una chiave preshared che verra' inserita in tutte le configurazioni e serve ad offuscare il certificato in fase di validazione. Quindi in caso di attacco si dovra' conoscere anche questa chiave.
+
+La creazione va fatta sul \textit{server OpenVPN}:
+
+\begin{bashcode}
+$ cd ~/openvpn-pki/
+$ openvpn --genkey --secret ta.key
+\end{bashcode}
+
+il file generato \code{ta.key} dovra' essere copiato nella directory del server openvpn:
+
+\begin{bashcode}
+$ sudo cp ta.key /etc/openvpn/server
+\end{bashcode}
+
+\section{Generazione delle chiavi per i clients}
+
+Creiamo una cartella nella home che ospitera' le chiavi dei client e le configurazioni openvpn:
+
+\begin{bashcode}
+$ mkdir -p ~/client-configs/keys
+$ chmod -R 700 ~/client-configs
+\end{bashcode}
+
+

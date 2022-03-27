@@ -34,3 +34,10 @@ ENV EASYRSA_BATCH=1
 RUN ./easyrsa gen-req server nopass
 
 RUN sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
+
+RUN mkdir ~/keys
+RUN chown ubuntu:ubuntu ~/keys
+
+WORKDIR /home/ubuntu
+
+CMD [ "bash" ]

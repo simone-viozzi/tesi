@@ -1,4 +1,5 @@
 
+
 services:
   router:
     build: ./router/
@@ -7,18 +8,19 @@ services:
       - "5051:8080"
   ca:
     build: ./CA/
+    command: /bin/bash
+    stdin_open: true
+    tty: true
     volumes:
-      - keys_to_sign:/home/ubuntu/keys_to_sign
+      - keys:/home/ubuntu/keys
   server:
     build: ./server/
+    command: /bin/bash
+    stdin_open: true
+    tty: true
     volumes:
-      - keys_to_sign:/home/ubuntu/keys_to_sign
+      - keys:/home/ubuntu/keys
 
 volumes:
-  keys_to_sign:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./keys_to_sign
-      o: bind
+  keys:
       
