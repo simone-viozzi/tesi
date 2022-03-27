@@ -1,0 +1,9 @@
+set_var EASYRSA_REQ_COUNTRY  "IT"
+set_var EASYRSA_REQ_PROVINCE "MC"
+set_var EASYRSA_REQ_CITY     "Recanati"
+set_var EASYRSA_REQ_ORG      "Esse-ti"
+set_var EASYRSA_REQ_EMAIL    "s.gasparrini@esse-ti.it"
+set_var EASYRSA_REQ_OU       "Esse-ti"
+
+set_var EASYRSA_ALGO         "ec"
+set_var EASYRSA_DIGEST       "sha512"

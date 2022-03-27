@@ -1,0 +1,11 @@
+{
+    "version": "0.2",
+    "ignorePaths": [
+        "impostazioni/"
+    ],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [],
+    "ignoreWords": [],
+    "import": []
+}

@@ -1,0 +1,183 @@
+\chapter{Configurazione del server}
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0em}
+\renewcommand{\baselinestretch}{1.15}
+
+\label{ch:server}
+
+\section{Overview della configurazione e prerequisiti}
+
+In questa sezione andremo a installare e configurare OpenVPN server sulla VPS di OVHCloud.
+
+I pacchetti necessari sono \code{openvpn} e \code{easy-rsa}, che possono essere installati con:
+
+\begin{bashcode}
+$ sudo apt-get update
+$ sudo apt-get install -y openvpn easy-rsa
+\end{bashcode}
+
+E' inoltre necessario avere un editor di testo, ad es. \code{nano} o \code{vim}
+
+\section{Creazione della Public key infrastructure Certificate Authority (PKI CA)}
+
+%TODO mettere intro su che diamine e' la pki https://datatracker.ietf.org/doc/html/rfc5280
+
+
+%TODO da tradurrre e sistemare
+easy-rsa is a CLI utility to build and manage a PKI CA. In laymen's terms, this means to create a root certificate authority, and request and sign certificates, including intermediate CAs and certificate revocation lists (CRL).
+
+
+
+La CA puo' essere configurata sulla stessa macchina dove e' stato installato opnevpn, ma cio' e' sconsigliato per motivi di sicurezza, supponiamo quindi di usare un secondo server chiamato \textit{server CA}
+
+La utility \code{easy-rsa} mette a disposizione il comando \code{make-cadir}, che permette di creare una cartella pronta ad ospitare la Certificate Authority.
+
+Andiamo quindi a crearla, nella home ad esempio:
+
+\begin{bashcode}
+$ mkdir ~/openvpn-ca
+$ ln -s /usr/share/easy-rsa/* ~/openvpn-ca/
+$ chmod 700 /home/ubuntu/openvpn-ca/
+$ cd openvpn-ca/
+$ ./easyrsa init-pki
+
+init-pki complete; you may now create a CA or requests.
+Your newly created PKI dir is: /home/ubuntu/openvpn-ca/pki
+
+$ la
+easyrsa  openssl-easyrsa.cnf  pki  vars.example  x509-types
+\end{bashcode}
+
+Ora si devono personalizzare le variabili \code{vars}, si puo' sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
+Andiamo quindi a creare un nuovo file vars:
+
+\begin{bashcode}
+$ vim vars
+set_var EASYRSA_REQ_COUNTRY  "IT"
+set_var EASYRSA_REQ_PROVINCE "MC"
+set_var EASYRSA_REQ_CITY     "Recanati"
+set_var EASYRSA_REQ_ORG      "Esse-ti"
+set_var EASYRSA_REQ_EMAIL    "s.gasparrini@esse-ti.it"
+set_var EASYRSA_REQ_OU       "Esse-ti"
+
+set_var EASYRSA_ALGO         "ec"
+set_var EASYRSA_DIGEST       "sha512"
+\end{bashcode}
+
+Le variabili nel primo blocco determinano i dati che poi verranno registrati nei certificati.
+
+Le ultime 2 sono opzioni di sicurezza, in particolare si setta l'algoritmo di cifratura %TODO add info
+
+A questo punti si deve laciare il comando \code{build-ca} per costruire la CA:
+
+\begin{bashcode}
+$ ./easyrsa build-ca
+
+Note: using Easy-RSA configuration from: ./vars
+
+Using SSL: openssl OpenSSL 1.1.1f  31 Mar 2020
+
+Enter New CA Key Passphrase: 
+Re-Enter New CA Key Passphrase: 
+read EC key
+writing EC key
+
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
+
+CA creation complete and you may now import and sign cert requests.
+Your new CA certificate file for publishing is at:
+/home/ubuntu/openvpn-ca/pki/ca.crt
+    
+\end{bashcode}
+
+Eseguendo il comando verra' chiesto di inserire una passshare, che verra' usata per criptare la chiave privata appena generata. Il secondo propt e' relativo al nome da dare alla certificazione, in questo caso e' stato lasciato il valore di default \code{Easy-RSA CA}.
+
+Se si legge il file \code{~/openvpn-ca/pki/ca.crt} si vedra' il classico formato da certificato:
+
+\begin{bashcode}
+$ cat ca.crt 
+-----BEGIN CERTIFICATE-----
+MIIB/TCCAYKgAwIBAgIUCYshxSm8eH1mf504HqQqULfVrakwCgYIKoZIzj0EAwQw
+[...]
+a3Qts307lAO5q49hK8hn5h43w+2MHvaiC0jXtCJp+hvR
+-----END CERTIFICATE-----
+\end{bashcode}
+
+\section{Configurazione della PKI di OpenVPN}
+
+Il procedimento e' simile al precedente, ma questa volta va eseguito sul server.
+
+Creiamo quindi una cartella per ospitare la PKI, es \code{~/openvpn-pki}, e linkiamo \code{easy-rsa}. Inoltre limitiamo i permessi all'utente non root che stimao usando, in questo caso "ubuntu".
+
+\begin{bashcode}
+$ mkdir ~/openvpn-pki
+$ ln -s /usr/share/easy-rsa/* ~/openvpn-pki/
+$ sudo chown ubuntu ~/openvpn-pki/
+$ chmod 700 ~/openvpn-pki/
+$ cd ~/openvpn-pki/
+\end{bashcode}
+
+Andiamo a creare un file \code{vars}:
+
+\begin{bashcode}
+$ vim vars
+set_var EASYRSA_ALGO    "ec"
+set_var EASYRSA_DIGEST  "sha512"
+\end{bashcode}
+ 
+e concludiamo la creazione della PKI con il comando:
+
+\begin{bashcode}
+$ ./easyrsa init-pki
+
+Note: using Easy-RSA configuration from: ./vars
+
+init-pki complete; you may now create a CA or requests.
+Your newly created PKI dir is: /home/ubuntu/openvpn-pki/pki
+
+\end{bashcode}
+
+%TODO !
+Now that your OpenVPN server has all the prerequisites installed, the next step is to generate a private key and Certificate Signing Request (CSR) on your OpenVPN server. After that you’ll transfer the request over to your CA to be signed, creating the required certificate. Once you have a signed certificate, you’ll transfer it back to the OpenVPN server and install it for the server to use.
+
+Come nome e' stato scelto "server":
+
+\begin{bashcode}
+$ ./easyrsa gen-req server nopass
+
+Note: using Easy-RSA configuration from: ./vars
+
+Using SSL: openssl OpenSSL 1.1.1f  31 Mar 2020
+Can't load /home/ubuntu/openvpn-pki/pki/.rnd into RNG
+140624276354368:error:2406F079:random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:98:Filename=/home/ubuntu/openvpn-pki/pki/.rnd
+Generating an EC private key
+writing new private key to '/home/ubuntu/openvpn-pki/pki/private/server.key.438W2xM0g9'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Common Name (eg: your user, host, or server name) [server]:
+
+Keypair and certificate request completed. Your files are:
+req: /home/ubuntu/openvpn-pki/pki/reqs/server.req
+key: /home/ubuntu/openvpn-pki/pki/private/server.key
+    
+\end{bashcode}
+
+%TODO!
+This will create a private key for the server and a certificate request file called server.req. Copy the server key to the /etc/openvpn/server directory:
+
+\begin{bashcode}
+$ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
+\end{bashcode}

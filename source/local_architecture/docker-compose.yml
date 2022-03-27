@@ -5,3 +5,20 @@ services:
     ports:
       - "5050:80"
       - "5051:8080"
+  ca:
+    build: ./CA/
+    volumes:
+      - keys_to_sign:/home/ubuntu/keys_to_sign
+  server:
+    build: ./server/
+    volumes:
+      - keys_to_sign:/home/ubuntu/keys_to_sign
+
+volumes:
+  keys_to_sign:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./keys_to_sign
+      o: bind
+      
