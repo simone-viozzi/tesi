@@ -16,6 +16,7 @@ services:
   server:
     build: ./server/
     command: /bin/bash
+    privileged: true
     stdin_open: true
     tty: true
     volumes:

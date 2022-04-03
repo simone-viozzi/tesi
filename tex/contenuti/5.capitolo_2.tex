@@ -251,4 +251,86 @@ $ mkdir -p ~/client-configs/keys
 $ chmod -R 700 ~/client-configs
 \end{bashcode}
 
+Creiamo quindi un certificato per un client:
+
+\begin{bashcode}
+$ cd ~/openvpn-pki/
+$ ./easyrsa gen-req client1 nopass
+\end{bashcode}
+
+Ora dobbiamo copiare \code{client1.key} nella directory appena creata, e \code{client1.req} va copiato nel server CA per essere firmato:
+
+\begin{bashcode}
+$ cp pki/private/client1.key ~/client-configs/keys/
+scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/ca.crt ubuntu@openvpn_server:/tmp
+$ scp -3 ubuntu@openvpn_server:/home/ubuntu/openvpn-pki/pki/reqs/client1.req ubuntu@ca_server:/tmp
+\end{bashcode}
+
+Dobbiamo quindi spostarci sul server CA e importare la \textit{certificate request} e firmarla:
+
+\begin{bashcode}
+$ cd ~/openvpn-ca
+$ ./easyrsa import-req /tmp/client1.req client1
+$ ./easyrsa sign-req client client1
+Using configuration from /home/ubuntu/openvpn-ca/pki/safessl-easyrsa.cnf
+Check that the request matches the signature
+Signature ok
+The Subject\'s Distinguished Name is as follows
+commonName            :ASN.1 12:'ChangeMe'
+Certificate is to be certified until Mar 16 13:15:09 2025 GMT (1080 days)
+
+Write out database with 1 new entries
+Data Base Updated
+\end{bashcode}
+
+Per poi ricopiare dal server CA al server openvpn il certificato firmato:
+
+\begin{bashcode}
+$ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/client1.crt ubuntu@openvpn_server:/tmp
+\end{bashcode}
+
+Quindi ci dobbiamo spostare sul server opnevpn e copiare le chiavi nella cartella \code{client-configs/keys}, in modo da prepararla per la crazione delle configurazioni opnevpn. E' necessario inoltre cambiare i permessi dei file rendendoli accessibili all'utente ubuntu:
+
+\begin{bashcode}
+$ cp /tmp/client1.crt ~/client-configs/keys/
+$ cp ~/openvpn-pki/ta.key ~/client-configs/keys/
+$ sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
+$ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
+\end{bashcode}
+
+\section{Configurazione del server OpenVPN}
+
+Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si puo' copiare la configurazione di esempio:
+
+\begin{bashcode}
+$ cd /etc/openvpn/server/
+$ sudo wget "https://raw.githubusercontent.com/OpenVPN/openvpn/\
+                master/sample/sample-config-files/server.conf"
+\end{bashcode}
+
+Dobbiamo quindi modificare il file e cambiare alcune configurazioni, per facilitare la lettura sara' incluso il numero riga modificato:
+
+\begin{bashcode}
+$ sudo vim server.conf
+85 dh none
+244 ;tls-auth ta.key 0 # This file is secret
+245 tls-crypt ta.key
+253 ;cipher AES-256-CBC
+254 cipher AES-256-GCM
+275 user nobody
+276 group nogroup
+318 auth sha256
+\end{bashcode}
+
+\section{configurazioni sulla network stack del server openvpn}
+
+Per abilitare l'\textit{ip forwarding} si dovra' modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a :
+
+\begin{bashcode}
+$ sudo vim /etc/sysctl.conf
+69 net.ipv4.ip_forward = 1
+$ sudo sysctl -p
+\end{bashcode}
+
+
 
