@@ -11,3 +11,9 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 USER ubuntu
 WORKDIR /home/ubuntu
+
+RUN sudo apt-get update && \
+    sudo apt-get install -y iputils-tracepath \
+                            iputils-ping \
+                            tcpdump \
+                            iperf

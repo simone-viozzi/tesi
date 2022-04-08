@@ -7,41 +7,38 @@ services:
     ports:
       - "5050:80"
       - "5051:8080"
-  ca:
-    build: ./CA/
-    command: /bin/bash
-    stdin_open: true
-    tty: true
-    volumes:
-      - keys:/home/ubuntu/keys
+  #ca:
+  #  build: ./CA/
+  #  command: /bin/bash
+  #  stdin_open: true
+  #  tty: true
+  #  volumes:
+  #    - keys:/home/ubuntu/keys
   server:
     build: ./server/
-    command: /bin/bash
     privileged: true
-    stdin_open: true
-    tty: true
-    volumes:
-      - keys:/home/ubuntu/keys
-      - ./server/scripts:/home/ubuntu/scripts
+    #stdin_open: true
+    #tty: true
+    #volumes:
+    #  - keys:/home/ubuntu/keys
+    #  - ./server/scripts:/home/ubuntu/scripts
     networks:
       vpn:
-        ipv4_address: "10.111.220.22"
+        ipv4_address: "10.0.4.2"
+    cap_add:
+      - NET_ADMIN
   client:
     build: ./client/
     stdin_open: true
     tty: true
     networks:
       vpn:
-        ipv4_address: "10.111.220.32"
-
-volumes:
-  keys:
-
+        ipv4_address: "10.0.4.3"
 
 networks:
   vpn:
     driver: "bridge"
     ipam:
       config:
-        - subnet: "10.111.220.1/24"
-          gateway: "10.111.220.1"
+        - subnet: "10.0.4.1/24"
+          gateway: "10.0.4.1"

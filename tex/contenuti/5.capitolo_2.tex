@@ -260,6 +260,7 @@ $ ./easyrsa gen-req client1 nopass
 
 Ora dobbiamo copiare \code{client1.key} nella directory appena creata, e \code{client1.req} va copiato nel server CA per essere firmato:
 
+%TODO errorrr! need to correct
 \begin{bashcode}
 $ cp pki/private/client1.key ~/client-configs/keys/
 scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/ca.crt ubuntu@openvpn_server:/tmp
@@ -330,7 +331,23 @@ Per abilitare l'\textit{ip forwarding} si dovra' modificare il file \code{/etc/s
 $ sudo vim /etc/sysctl.conf
 69 net.ipv4.ip_forward = 1
 $ sudo sysctl -p
+net.ipv4.ip_forward = 1
 \end{bashcode}
 
+\section{Configurazione del firewall}
+
+Sulla VPS scelta e' presenta il firewall \textit{firewalld}, ma per una piu' semplice configurazione e' piu' semplice disattivarlo e installare \textit{ufw}:
+
+\begin{bashcode}
+$ sudo systemctl mask firewalld
+$ sudo systemctl stop firewalld
+$ sudo apt-get install ufw
+$ sudo ufw allow ssh
+Rule added
+Rule added (v6)
+$ sudo ufw enable
+\end{bashcode}
+
+E' importantissimo ricordarsi di consentire l'ssh prima di abilitare il firewall, altrimenti si perdera' l'accesso alla VPS.
 
 
