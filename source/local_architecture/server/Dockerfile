@@ -15,7 +15,7 @@ WORKDIR /home/ubuntu
 
 RUN sudo apt-get install -y openvpn \
                             easy-rsa \
-                            vim
+                            vim 
 
 RUN mkdir ~/openvpn-pki
 
@@ -37,6 +37,8 @@ RUN sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 
 RUN mkdir ~/keys
 RUN chown ubuntu:ubuntu ~/keys
+
+RUN sudo apt-get install -y wget
 
 WORKDIR /home/ubuntu
 
