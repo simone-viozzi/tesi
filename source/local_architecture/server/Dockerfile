@@ -93,10 +93,6 @@ RUN echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
 
 WORKDIR /home/ubuntu
 
-#RUN sudo iptables -I INPUT -p udp -m udp --dport 1194 -j ACCEPT
-#RUN sudo iptables -t nat -A POSTROUTING -s 10.0.4.0/24 -o eth0@if151 -j MASQUERADE
-#RUN sudo iptables --policy FORWARD ACCEPT
-
 COPY --chown=ubuntu:ubuntu start.sh start.sh
 RUN sudo chmod +x start.sh
 
