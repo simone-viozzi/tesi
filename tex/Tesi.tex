@@ -1,5 +1,7 @@
-\documentclass[11pt, a4paper]{report}
+\documentclass[11pt,oneside,openright,a4paper]{book}
+
 \input{impostazioni/pacchetti}
+
 \newcommand\blfootnote[1]{%
   \begingroup
   \renewcommand\thefootnote{}\footnote{#1}%
@@ -10,12 +12,17 @@
 %______PREFAZIONE__________
 
 \begin{document}
-\input{contenuti/1.frontespizio}
-\input{contenuti/0.bianca}
+
+\frontmatter
+\begin{singlespace}
+\subfile{contenuti/1.frontespizio}
+%\subfile{contenuti/0.bianca}
 %\input{contenuti/dedica}
 %\input{contenuti/0.bianca}
-\pagenumbering{roman}
-\input{contenuti/2.sommario}
+%\pagenumbering{roman}
+\begin{doublespace}
+\subfile{contenuti/2.sommario}
+\end{doublespace}
 
 %___________INDICE_CAPITOLI__________
 
@@ -33,6 +40,7 @@
 
 \end{flushleft}
 \newpage
+\end{singlespace}
 
 %%___________INDICE_TABELLE__(Non serve)_____________________
 %\listoftables
@@ -40,23 +48,23 @@
 
 
 %___________CONTENUTI_______________________________
-\pagenumbering{arabic}
-\setcounter{page}{1} %Set numero di pagina
+%\pagenumbering{arabic}
+%\setcounter{page}{1} %Set numero di pagina
 
-
-\input{contenuti/3.introduzione}
+\mainmatter
+\subfile{contenuti/3.introduzione}
 %   - stack iso / osi -> cos'e' un'ip
 %   - openvpn
 %   - openwrt
 
 
-\input{contenuti/4.capitolo_1}
+\subfile{contenuti/4.capitolo_1}
 % overview
 %   - overview dell'architettura da ottenere (50%)
 %   - specifiche dei componenti (40%)
 
 
-\input{contenuti/5.capitolo_2}
+\subfile{contenuti/5.capitolo_2}
 % server
 %   - ca e chiavi varie
 %   - installazione e config di openvpn
@@ -87,7 +95,18 @@
 
 %___________BIBLIOGRAFIA____________________
 
-\input{contenuti/bibliografia}
+\begin{singlespace}
+		
+  \clearpage
+  %\noappendicestocpagenum
+  %\addappheadtotoc
+  %\appendixpage
+  %\subfile{sections/appendices}
+
+  \bibliographystyle{unsrt} %Available styles: plain abbrv plainnat, others on: https://www.overleaf.com/learn/latex/Bibtex_bibliography_styles
+  \bibliography{refs/references} %File.bib styles: https://www.overleaf.com/learn/latex/Bibliography_management_with_natbib
+  
+\end{singlespace}
 
 
 %___________________________________________________________
