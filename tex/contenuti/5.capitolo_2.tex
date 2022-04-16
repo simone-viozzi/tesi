@@ -325,7 +325,7 @@ $ sudo vim server.conf
 
 \section{configurazioni sulla network stack del server openvpn}
 
-Per abilitare l'\textit{ip forwarding} si dovra' modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a :
+Per abilitare l'\textit{ip forwarding} si dovra' modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a ricaricare le configurazioni dai file:
 
 \begin{bashcode}
 $ sudo vim /etc/sysctl.conf
@@ -336,7 +336,7 @@ net.ipv4.ip_forward = 1
 
 \section{Configurazione del firewall}
 
-Sulla VPS scelta e' presenta il firewall \textit{firewalld}, ma per una piu' semplice configurazione e' piu' semplice disattivarlo e installare \textit{ufw}:
+Sulla VPS scelta e' presente il firewall \textit{firewalld}, ma per una piu' semplice configurazione e' consigliato di disattivarlo e installare \textit{ufw}:
 
 \begin{bashcode}
 $ sudo systemctl mask firewalld
