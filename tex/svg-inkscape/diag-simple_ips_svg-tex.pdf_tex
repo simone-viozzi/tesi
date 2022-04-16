@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{149.50498741bp}%
+    \setlength{\unitlength}{141.46798494bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,19 +50,19 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,1.30751491)%
+  \begin{picture}(1,1.38179674)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{diag-simple_ips_svg-tex.pdf}}%
-    \put(0.18982636,0.92419994){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}51.178.141.119\end{tabular}}}}%
-    \put(0.17979325,0.91416683){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}51.178.141.\end{tabular}}}}%
+    \put(0.20061067,0.97670508){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}51.178.141.119\end{tabular}}}}%
+    \put(0.19000757,0.96610198){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}51.178.141.\end{tabular}}}}%
+    \put(0.37026036,1.04562527){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}ip pubblico:...\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{diag-simple_ips_svg-tex.pdf}}%
-    \put(0.17979325,1.27034224){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}OVH server\end{tabular}}}}%
+    \put(0.19000757,1.34251223){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}OVH server\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{diag-simple_ips_svg-tex.pdf}}%
-    \put(0.70653153,0.00115381){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Client\end{tabular}}}}%
+    \put(0.74667062,0.00121936){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Client\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{diag-simple_ips_svg-tex.pdf}}%
-    \put(0.37042234,0.99443171){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}ip pubblico:...\end{tabular}}}}%
+    \put(0.8951141,0.30870942){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}ip privato:...\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{diag-simple_ips_svg-tex.pdf}}%
-    \put(0.84699507,0.31719678){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}ip privato:...\end{tabular}}}}%
   \end{picture}%
 \endgroup%
