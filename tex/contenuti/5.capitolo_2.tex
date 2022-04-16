@@ -9,6 +9,21 @@
 
 In questa sezione andremo a installare e configurare OpenVPN server sulla VPS di OVHCloud.
 
+Supponiamo di partire da una configurazione di base, che contiene solo il server openvpn ed un generico client, che supponiamo sia sotto un NAT.
+
+Supponiamo inoltre che che l'ip pubblico del server sia \code{51.178.141.119}, si avra' quindi una configurazione:
+
+\begin{figure}[ht]
+
+    \centering
+	\includesvg[width=250px]{immagini/diag-simple_ips}
+	\caption{ \cite{icons}}
+
+	\label{fig:schema_concettuale}
+
+\end{figure}
+
+
 I pacchetti necessari sono \code{openvpn} e \code{easy-rsa}, che possono essere installati con:
 
 \begin{bashcode}
