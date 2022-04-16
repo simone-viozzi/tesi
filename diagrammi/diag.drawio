@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-04-16T16:20:30.079Z" agent="5.0 (X11)" etag="8wOp_R-VaY5p8vOtSU8M" version="17.4.5" type="github" pages="5">
+<mxfile host="app.diagrams.net" modified="2022-04-16T16:26:36.244Z" agent="5.0 (X11)" etag="FImZuQ9yMRBuKmUy0dPJ" version="17.4.5" type="github" pages="5">
   <diagram id="3fXwglQ7Y8zoZ6PdMQNk" name="real">
     <mxGraphModel dx="443" dy="411" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -415,7 +415,7 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram id="Pa1xBxoWVy5cFPJGKdU0" name="Page-5">
+  <diagram id="Pa1xBxoWVy5cFPJGKdU0" name="simple_ips_vpn">
     <mxGraphModel dx="443" dy="411" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
