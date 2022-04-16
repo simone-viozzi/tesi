@@ -1,3 +1,5 @@
+% LTeX: enabled=false
+
 \usepackage[a4paper,lmargin=30mm, textwidth=160mm, tmargin=20mm, textheight=257mm]{geometry}
 
 \usepackage[a-1b]{pdfx} %PDF/A
@@ -6,7 +8,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[italian]{babel}
-\usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{hyperref}[backref]%\hyperref[appendix:test]{A}
 \hypersetup{
@@ -14,29 +15,26 @@
 	allcolors = {blue},
 	linktocpage=true
 }
+\usepackage{xurl} %per spezzare gli url inseriti con \url
 \usepackage{amssymb}
-\usepackage{pdflscape}
 \usepackage{chngcntr}
 \usepackage{makeidx}
 \usepackage[bottom]{footmisc}
 \usepackage[titletoc]{appendix}
-\usepackage{array}
 \usepackage{subcaption}
 \usepackage{datetime}
 \usepackage{xcolor}
 \usepackage{colortbl}
-\usepackage{rotating}
 \usepackage{tabto}
 \usepackage{eurosym}
-\usepackage{graphicx}
-\usepackage{subfiles}
-\usepackage{natbib}
-\usepackage{tocbibind}
+\usepackage{graphicx,subfiles,natbib,tocbibind,amsmath,array,pdflscape}
 \usepackage{fancyvrb}
 \usepackage{lmodern}
 \usepackage{bibentry}
 \nobibliography*
-\usepackage{xurl} %per spezzare gli url inseriti con \url
+\usepackage{lipsum,blindtext,multirow,rotating,dcolumn}
+\usepackage{tcolorbox}
+
 \usepackage{svg}
 \svgpath{{../imgs/}}
 
@@ -44,7 +42,7 @@
 \newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
 
 \usepackage{minted}
-\usepackage{tcolorbox}
+
 
 \tcbuselibrary{minted,skins}
 
@@ -122,6 +120,11 @@
 }{}{failure}
 
 \makeatother
+
+
+\let\it\textit
+\let\bf\textbf
+
 
 \author{Simone Viozzi}
 

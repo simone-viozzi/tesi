@@ -1,13 +1,9 @@
+% LTeX: enabled=false
+%Compile with: pdflatex Tesi.tex && bibtex Tesi.aux && pdflatex Tesi.tex && pdflatex Tesi.tex
+
 \documentclass[11pt,oneside,openright,a4paper]{book}
 
 \input{impostazioni/pacchetti}
-
-\newcommand\blfootnote[1]{%
-  \begingroup
-  \renewcommand\thefootnote{}\footnote{#1}%
-  \addtocounter{footnote}{-1}%
-  \endgroup
-}
 
 %______PREFAZIONE__________
 
@@ -15,43 +11,25 @@
 
 \frontmatter
 \begin{singlespace}
-\subfile{contenuti/1.frontespizio}
-%\subfile{contenuti/0.bianca}
-%\input{contenuti/dedica}
-%\input{contenuti/0.bianca}
-%\pagenumbering{roman}
-\begin{doublespace}
-\subfile{contenuti/2.sommario}
-\end{doublespace}
+  \subfile{contenuti/1.frontespizio}
+  %\subfile{contenuti/0.bianca}
+  %\input{contenuti/dedica}
+  %\input{contenuti/0.bianca}
+  \begin{doublespace}
+    \subfile{contenuti/2.prefazione}
+  \end{doublespace}
 
-%___________INDICE_CAPITOLI__________
+  %___________INDICE_CAPITOLI__________
+  \tableofcontents 
 
-\tableofcontents %Indice capitoli
-\newpage
+  %___________INDICE_FIGURE_______
+  \listoffigures
 
-%___________INDICE_FIGURE_______
-
-\listoffigures
-\begin{flushleft}
-  \blfootnote{
-    \textit{Nella didascalia di ogni immagine vi è il link della pagina web da cui è stata presa, inoltre, sono citate anche accanto ai link nella sitografia.}
-  }
-  \\
-
-\end{flushleft}
-\newpage
 \end{singlespace}
 
-%%___________INDICE_TABELLE__(Non serve)_____________________
-%\listoftables
-%\newpage
-
-
 %___________CONTENUTI_______________________________
-%\pagenumbering{arabic}
-%\setcounter{page}{1} %Set numero di pagina
-
 \mainmatter
+
 \subfile{contenuti/3.introduzione}
 %   - stack iso / osi -> cos'e' un'ip
 %   - openvpn
@@ -103,7 +81,7 @@
   %\appendixpage
   %\subfile{sections/appendices}
 
-  \bibliographystyle{unsrt} %Available styles: plain abbrv plainnat, others on: https://www.overleaf.com/learn/latex/Bibtex_bibliography_styles
+  \bibliographystyle{abbrv} %Available styles: plain abbrv plainnat, others on: https://www.overleaf.com/learn/latex/Bibtex_bibliography_styles
   \bibliography{refs/references} %File.bib styles: https://www.overleaf.com/learn/latex/Bibliography_management_with_natbib
   
 \end{singlespace}
