@@ -8,7 +8,7 @@ In questa sezione andremo a installare e configurare OpenVPN server sulla VPS di
 
 Supponiamo di partire da una configurazione di base, che contiene solo il server openvpn ed un generico client, che supponiamo sia sotto un NAT.
 
-Supponiamo inoltre che che l'ip pubblico del server sia \code{51.178.141.119}, si avra' quindi una configurazione come in figura \ref{fig:diag-simple_ips}.
+Supponiamo inoltre che che l'ip pubblico del \it{server} sia \code{51.178.141.119}, si avra' quindi una configurazione come in figura \ref{fig:diag-simple_ips}.
 
 \begin{figure}[h]
 
@@ -27,8 +27,10 @@ Supponiamo inoltre che che l'ip pubblico del server sia \code{51.178.141.119}, s
         \caption{Configurazione virtuale da raggiungere.}
         \label{fig:diag-simple_ips_vpn}
     \end{subfigure}%
-    \caption{Configurazione di partenza e di obbiettivo. \cite{icons}}
+    \caption{Configurazione di partenza e di obbiettivo per questo capitolo. \cite{icons}}
 \end{figure}
+
+Per instaurare una comunicazione bidirezionale tra il server e il client, si dovra' configurare oppornunamente una rete vpn la cui configurazione e' rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
 
 
 I pacchetti necessari sono \code{openvpn} ed \code{easy-rsa}, che possono essere installati con:
@@ -321,7 +323,7 @@ $ sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 $ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 \end{bashcode}
 
-\section{Configurazione del server OpenVPN}
+\section{Creazione del file di configurazione del server OpenVPN}
 
 Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si puo' copiare la configurazione di esempio:
 
@@ -373,3 +375,81 @@ $ sudo ufw enable
 E' importantissimo ricordarsi di consentire l'ssh prima di abilitare il firewall, altrimenti si perdera' l'accesso alla VPS.
 
 
+\subsection{Configurazione del NAT}
+
+Per far si che i pacchetti provenienti dalla \it{vpn} entrino nella network stack del \it{server} si deve aggiungere una regola di \it{NAT} nel firewall. Per farlo si deve conoscere quale e' l'interfaccia di rete del \it{server}, cioe' quella che ha come ip il suo ip pubblico:
+
+\begin{bashcode}
+$ ip addr
+[...]
+2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether a6:23:5f:48:ba:de brd ff:ff:ff:ff:ff:ff
+    inet 51.178.141.119/20 brd 51.178.141.255 scope global dynamic ens3
+       valid_lft 1857sec preferred_lft 1857sec
+    inet6 fe80::23:bfff:ac24:aace/64 scope link
+       valid_lft forever preferred_lft forever
+[...]
+\end{bashcode}
+
+In questo caso il nome dell'interfaccia di rete e' \it{ens3}, possiamo quindi procedere con la configurazione del firewall, si andra' a modificare il file \code{/etc/ufw/before.rules} e aggiungere la regola di NAT:
+
+\begin{bashcode}
+$ sudo vim /etc/ufw/before.rules
+# ## rules.before
+# ## Rules that should be run before the ufw command line added rules. Custom
+# rules should be added to one of these chains:
+# ufw-before-input
+# ufw-before-output
+# ufw-before-forward
+#
+
+# START OPENVPN RULES
+# NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Allow traffic from OpenVPN client to ens3 
+-A POSTROUTING -s 10.8.0.0/24 -o ens3 -j MASQUERADE
+COMMIT
+# END OPENVPN RULES
+
+
+# Don't delete these required lines, otherwise there will be errors
+*filter
+. . .
+\end{bashcode}
+
+Nella modifica del file si deve stare attenti ad inserire la nuova regola in cima al file e sotto i commenti iniziali, e' inoltre importante inserire i commenti nella regola.
+
+\subsection{Configurazione del packet forwarding}
+
+Next, you need to tell UFW to allow forwarded packets by default as well. To do this, open the \code{/etc/default/ufw} file:
+
+\begin{bashcode}
+sudo nano /etc/default/ufw
+\end{bashcode}
+
+Inside, find the \code{DEFAULT\_FORWARD\_POLICY} directive and change the value from DROP to ACCEPT:
+\code{/etc/default/ufw}
+
+\begin{bashcode}
+DEFAULT_FORWARD_POLICY="ACCEPT"
+\end{bashcode}
+
+Save and close the file when you are finished.
+
+\subsection{Conclusione della configurazione del firewall}
+
+Per concludere la configurazione si deve abilitare la porta relativa alla vpn, in questo caso \code{1194}, e riavviare il firewall:
+
+\begin{bashcode}
+$ sudo ufw allow 1194/udp
+$ sudo ufw reload
+$ sudo ufw status
+Status: active
+To              Action      From
+--              ------      ----
+22              ALLOW       Anywhere
+1194/udp        ALLOW       Anywhere
+22 (v6)         ALLOW       Anywhere (v6)
+1194/udp (v6)   ALLOW       Anywhere (v6)
+\end{bashcode}
