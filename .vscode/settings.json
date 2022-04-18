@@ -107,5 +107,12 @@
         }
     ],
     "todo-tree.regex.regex": "((//|#|<!--|;|/\\*|^|%|\\\\)\\s*($TAGS)\\{*|^\\s*- \\[ \\])",
-    "todo-tree.regex.regexCaseSensitive": false
+    "todo-tree.regex.regexCaseSensitive": false,
+    "ltex.latex.environments":{
+        "lstlisting": "ignore",
+        "verbatim": "ignore",
+        "bashcode": "ignore",
+    },
+    "ltex.additionalRules.motherTongue": "it",
+
 }

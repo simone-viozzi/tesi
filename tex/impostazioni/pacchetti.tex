@@ -54,7 +54,7 @@
     listing only,
     minted style=colorful,
     minted language=bash,
-    minted options={linenos=true,numbersep=3mm,texcl=true,#1,breaklines,texcomments},
+    minted options={linenos=true,numbersep=3mm,texcl=true,#1,breaklines,texcomments,fontsize=\small},
     left=5mm,enhanced,
     overlay={\begin{tcbclipinterior}\fill[black!25] (frame.south west)
               rectangle ([xshift=5mm]frame.north west);\end{tcbclipinterior}}
@@ -136,6 +136,18 @@
 \let\it\textit
 \let\bf\textbf
 
+
+%***************************************************
+\DeclareUnicodeCharacter{2502}{\mbox{\kern.23em %│
+	\vrule height 2.2 ex depth 1 ex width .4 pt}}
+\DeclareUnicodeCharacter{251C}{\mbox{\kern.23em %├
+	\vrule height 2.2 ex depth 1 ex width .4 pt \vrule height 2.2 pt depth -1.8 pt width .23em}}
+\DeclareUnicodeCharacter{2500}{\mbox{ %─
+	\vrule height 2.2 pt depth -1.8 pt width .5em}}
+\DeclareUnicodeCharacter{2514}{\mbox{\kern.23em %└
+	\vrule height 2.2 ex depth -1.8 pt width .4 pt \vrule height 2.2 pt depth -1.8 pt width .23em}}
+\DeclareUnicodeCharacter{25CF}{$\bullet$}
+%***************************************************
 
 \author{Simone Viozzi}
 

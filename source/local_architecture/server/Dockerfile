@@ -91,6 +91,15 @@ COPY --chown=root:root server.conf /etc/openvpn/server/server.conf
 RUN echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
 #RUN sudo sysctl -p
 
+WORKDIR /home/ubuntu/client-configs/
+
+RUN mkdir -p files
+COPY --chown=ubuntu:ubuntu base.conf base.conf
+COPY --chown=ubuntu:ubuntu make_config.sh make_config.sh
+RUN chmod 700 make_config.sh
+
+RUN ./make_config.sh client1
+
 WORKDIR /home/ubuntu
 
 COPY --chown=ubuntu:ubuntu start.sh start.sh

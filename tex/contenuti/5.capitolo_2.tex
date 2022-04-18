@@ -377,7 +377,7 @@ E' importantissimo ricordarsi di consentire l'ssh prima di abilitare il firewall
 
 \subsection{Configurazione del NAT}
 
-Per far si che i pacchetti provenienti dalla \it{vpn} entrino nella network stack del \it{server} si deve aggiungere una regola di \it{NAT} nel firewall. Per farlo si deve conoscere quale e' l'interfaccia di rete del \it{server}, cioe' quella che ha come ip il suo ip pubblico:
+Per far si che i pacchetti provenienti dalla \it{VPN} entrino nella network stack del \it{server} si deve aggiungere una regola di \it{NAT} nel firewall. Per farlo si deve conoscere quale e' l'interfaccia di rete del \it{server}, cioe' quella che ha come ip il suo ip pubblico:
 
 \begin{bashcode}
 $ ip addr
@@ -422,6 +422,7 @@ Nella modifica del file si deve stare attenti ad inserire la nuova regola in cim
 
 \subsection{Configurazione del packet forwarding}
 
+% TODO !!!
 Next, you need to tell UFW to allow forwarded packets by default as well. To do this, open the \code{/etc/default/ufw} file:
 
 \begin{bashcode}
@@ -452,4 +453,50 @@ To              Action      From
 1194/udp        ALLOW       Anywhere
 22 (v6)         ALLOW       Anywhere (v6)
 1194/udp (v6)   ALLOW       Anywhere (v6)
+\end{bashcode}
+
+\section{Avvio del server OpenVPN}
+
+\begin{bashcode}
+$ sudo systemctl enable openvpn-server@server.service
+$ sudo systemctl start openvpn-server@server.service
+$ sudo systemctl status openvpn-server@server.service
+● openvpn-server@server.service - OpenVPN service for server
+     Loaded: loaded (/usr/lib/systemd/system/openvpn-server@.service; enabled; vendor preset: disabled)
+     Active: active (running) since Mon 2022-04-18 13:08:44 CEST; 4h 22min ago
+       Docs: man:openvpn(8)
+             https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage
+             https://community.openvpn.net/openvpn/wiki/HOWTO
+   Main PID: 436 (openvpn)
+     Status: "Initialization Sequence Completed"
+      Tasks: 1 (limit: 9488)
+     Memory: 4.8M
+        CPU: 199ms
+     CGroup: /system.slice/system-openvpn\x2dserver.slice/openvpn-server@server.service
+             └─436 /usr/bin/openvpn --status /run/openvpn-server/status-server.log --status-version 2 --suppress-timestamps --config server.conf
+\end{bashcode}
+
+\begin{bashcode}
+Apr 18 13:08:44 server openvpn[436]: OpenVPN 2.4.7 x86_64-pc-linux-gnu [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [PKCS11] [MH/PKTINFO] [AEAD] built on Mar 22 2022
+Apr 18 13:08:44 server openvpn[436]: library versions: OpenSSL 1.1.1f  31 Mar 2020, LZO 2.10
+Apr 18 13:08:44 server openvpn[436]: Outgoing Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
+Apr 18 13:08:44 server openvpn[436]: Outgoing Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
+Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
+Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
+Apr 18 13:08:44 server openvpn[436]: ROUTE_GATEWAY 10.0.4.1/255.255.255.0 IFACE=eth0 HWADDR=02:42:0a:00:04:02
+Apr 18 13:08:44 server openvpn[436]: TUN/TAP device tun0 opened
+Apr 18 13:08:44 server openvpn[436]: TUN/TAP TX queue length set to 100
+Apr 18 13:08:44 server openvpn[436]: /sbin/ip link set dev tun0 up mtu 1500
+Apr 18 13:08:44 server openvpn[436]: /sbin/ip addr add dev tun0 local 10.8.0.1 peer 10.8.0.2 # TODO fix ip
+Apr 18 13:08:44 server openvpn[436]: /sbin/ip route add 10.8.0.0/24 via 10.8.0.2
+Apr 18 13:08:44 server openvpn[436]: Could not determine IPv4/IPv6 protocol. Using AF_INET
+Apr 18 13:08:44 server openvpn[436]: Socket Buffers: R=[212992->212992] S=[212992->212992]
+Apr 18 13:08:44 server openvpn[436]: UDPv4 link local (bound): [AF_INET][undef]:1194
+Apr 18 13:08:44 server openvpn[436]: UDPv4 link remote: [AF_UNSPEC]
+Apr 18 13:08:44 server openvpn[436]: GID set to nogroup
+Apr 18 13:08:44 server openvpn[436]: UID set to nobody
+Apr 18 13:08:44 server openvpn[436]: MULTI: multi_init called, r=256 v=256
+Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL: base=10.8.0.4 size=62, ipv6=0
+Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL LIST
+Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
 \end{bashcode}

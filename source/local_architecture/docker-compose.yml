@@ -17,11 +17,8 @@ services:
   server:
     build: ./server/
     privileged: true
-    #stdin_open: true
-    #tty: true
-    #volumes:
-    #  - keys:/home/ubuntu/keys
-    #  - ./server/scripts:/home/ubuntu/scripts
+    volumes:
+      - clinet-configs:/home/ubuntu/client-configs/files
     networks:
       vpn:
         ipv4_address: "10.0.4.2"
@@ -31,6 +28,8 @@ services:
     build: ./client/
     stdin_open: true
     tty: true
+    volumes:
+      - clinet-configs:/home/ubuntu/configs
     networks:
       vpn:
         ipv4_address: "10.0.4.3"
@@ -42,3 +41,6 @@ networks:
       config:
         - subnet: "10.0.4.1/24"
           gateway: "10.0.4.1"
+
+volumes:
+  clinet-configs:

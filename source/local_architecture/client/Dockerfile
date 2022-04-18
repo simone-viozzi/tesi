@@ -16,4 +16,7 @@ RUN sudo apt-get update && \
     sudo apt-get install -y iputils-tracepath \
                             iputils-ping \
                             tcpdump \
-                            iperf
+                            iperf \
+                            openvpn \
+                            vim \
+                            nano
