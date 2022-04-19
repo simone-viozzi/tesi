@@ -26,6 +26,7 @@ services:
       - NET_ADMIN
   client:
     build: ./client/
+    privileged: true
     stdin_open: true
     tty: true
     volumes:
