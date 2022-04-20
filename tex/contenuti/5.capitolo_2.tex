@@ -1,7 +1,9 @@
+% <-- chapter -->
 \chapter{Configurazione del server}
-
 \label{ch:server}
 
+
+% <-- section -->
 \section{Overview della configurazione e prerequisiti}
 
 In questa sezione andremo a installare e configurare OpenVPN server sulla VPS di OVHCloud.
@@ -42,15 +44,11 @@ $ sudo apt-get install -y openvpn easy-rsa
 
 E' inoltre necessario avere un editor di testo, ad es. \code{nano} o \code{vim}
 
+
+% <-- section -->
 \section{Creazione della Public key infrastructure Certificate Authority (PKI CA)}
 
 %TODO mettere intro su che diamine e' la pki https://datatracker.ietf.org/doc/html/rfc5280
-
-
-%TODO da tradurrre e sistemare
-easy-rsa is a CLI utility to build and manage a PKI CA. In laymen's terms, this means to create a root certificate authority, and request and sign certificates, including intermediate CAs and certificate revocation lists (CRL).
-
-
 
 La CA puo' essere configurata sulla stessa macchina dove e' stato installato opnevpn, ma cio' e' sconsigliato per motivi di sicurezza, supponiamo quindi di usare un secondo server chiamato \textit{server CA}
 
@@ -121,23 +119,12 @@ Your new CA certificate file for publishing is at:
     
 \end{bashcode}
 
-Eseguendo il comando verra' chiesto di inserire una passshare, che verra' usata per criptare la chiave privata appena generata. Il secondo propt e' relativo al nome da dare alla certificazione, in questo caso e' stato lasciato il valore di default \code{Easy-RSA CA}.
+Eseguendo il comando verra' chiesto di inserire una passshare, che verra' usata per criptare la chiave privata appena generata. Il secondo prompt e' relativo al nome da dare alla certificazione, in questo caso e' stato lasciato il valore di default \code{Easy-RSA CA}.
 
-Se si legge il file \code{~/openvpn-ca/pki/ca.crt} si vedra' il classico formato da certificato:
-
-\begin{bashcode}
-$ cat ca.crt 
------BEGIN CERTIFICATE-----
-MIIB/TCCAYKgAwIBAgIUCYshxSm8eH1mf504HqQqULfVrakwCgYIKoZIzj0EAwQw
-[...]
-a3Qts307lAO5q49hK8hn5h43w+2MHvaiC0jXtCJp+hvR
------END CERTIFICATE-----
-\end{bashcode}
-
-
+% <-- section -->
 \section{Configurazione della PKI di OpenVPN}
 
-Il procedimento e' simile al precedente, ma questa volta va eseguito sul server.
+Il procedimento e' simile al precedente, ma questa volta va eseguito sul \it{server}.
 
 Creiamo quindi una cartella per ospitare la PKI, es \code{~/openvpn-pki}, e linkiamo \code{easy-rsa}. Inoltre limitiamo i permessi all'utente non root che stimao usando, in questo caso "ubuntu".
 
@@ -157,7 +144,7 @@ set_var EASYRSA_ALGO    "ec"
 set_var EASYRSA_DIGEST  "sha512"
 \end{bashcode}
  
-e concludiamo la creazione della PKI con il comando:
+Concludiamo la creazione della PKI con il comando:
 
 \begin{bashcode}
 $ ./easyrsa init-pki
@@ -169,8 +156,7 @@ Your newly created PKI dir is: /home/ubuntu/openvpn-pki/pki
 
 \end{bashcode}
 
-%TODO !
-Now that your OpenVPN server has all the prerequisites installed, the next step is to generate a private key and Certificate Signing Request (CSR) on your OpenVPN server. After that you’ll transfer the request over to your CA to be signed, creating the required certificate. Once you have a signed certificate, you’ll transfer it back to the OpenVPN server and install it for the server to use.
+A questo punto il server opnevpn ha tutti i prerequisiti per creare una sua chiave privata e relativa \it{Certificate Signing Request}. 
 
 Come nome e' stato scelto "server":
 
@@ -198,8 +184,7 @@ key: /home/ubuntu/openvpn-pki/pki/private/server.key
     
 \end{bashcode}
 
-%TODO!
-This will create a private key for the server and a certificate request file called server.req. Copy the server key to the /etc/openvpn/server directory:
+La chiave \code{server.key} va copiata nell'apposita cartella.
 
 \begin{bashcode}
 $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
@@ -207,6 +192,8 @@ $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 
 Il secondo file creato, \code{server.req}, corrisponde ad una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. In questo modo ogni client che si fida della CA si fidera' di conseguenza del server OpenVPN %TODO link a web of trust
 
+
+% <-- section -->
 \section{Firma del certificato opnevpn dalla CA}
 
 Dobbiamo quindi copiare il file \code{server.req} nel \textit{server CA}, possiamo qualunque metodo purche' sia sicuro, ad esempio con \code{scp}:
@@ -242,18 +229,20 @@ $ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/server.crt ubuntu@o
 $ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/ca.crt ubuntu@openvpn_server:/tmp
 \end{bashcode}
 
-Possiamo quindi tornare sul \textit{server OpenVPN} e copiare i 2 file da \code{/tmp} a \code{/etc/openvpn/server}:
+Possiamo quindi tornare sul \textit{server OpenVPN} e copiare i 2 file da \code{/tmp} a \\\code{/etc/openvpn/server}:
 
 \begin{bashcode}
 $ sudo cp /tmp/server.crt /etc/openvpn/server
 $ sudo cp /tmp/ca.crt /etc/openvpn/server
 \end{bashcode}
 
-\section{generazione tls-crypt pre-shared key}
+
+% <-- section -->
+\section{Generazione della \textit{tls-crypt pre-shared key}}
 
 Per aumentare ulteriormente la sicurezza del nostro \textit{server OpenVPN} possiamo creare un'ulteriore chiave, che consiste un una chiave preshared che verra' inserita in tutte le configurazioni e serve ad offuscare il certificato in fase di validazione. Quindi in caso di attacco si dovra' conoscere anche questa chiave.
 
-La creazione va fatta sul \textit{server OpenVPN}:
+La creazione va fatta sul \it{server OpenVPN}:
 
 \begin{bashcode}
 $ cd ~/openvpn-pki/
@@ -266,6 +255,8 @@ il file generato \code{ta.key} dovra' essere copiato nella directory del server 
 $ sudo cp ta.key /etc/openvpn/server
 \end{bashcode}
 
+
+% <-- section -->
 \section{Generazione delle chiavi per i clients}
 
 Creiamo una cartella nella home che ospitera' le chiavi dei client e le configurazioni openvpn:
@@ -275,19 +266,18 @@ $ mkdir -p ~/client-configs/keys
 $ chmod -R 700 ~/client-configs
 \end{bashcode}
 
-Creiamo quindi un certificato per un client:
+Creiamo quindi un certificato per un \it{client}:
 
 \begin{bashcode}
 $ cd ~/openvpn-pki/
 $ ./easyrsa gen-req client1 nopass
+
 \end{bashcode}
 
 Ora dobbiamo copiare \code{client1.key} nella directory appena creata, e \code{client1.req} va copiato nel server CA per essere firmato:
 
-%TODO errorrr! need to correct
 \begin{bashcode}
 $ cp pki/private/client1.key ~/client-configs/keys/
-scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/ca.crt ubuntu@openvpn_server:/tmp
 $ scp -3 ubuntu@openvpn_server:/home/ubuntu/openvpn-pki/pki/reqs/client1.req ubuntu@ca_server:/tmp
 \end{bashcode}
 
@@ -314,7 +304,7 @@ Per poi ricopiare dal server CA al server openvpn il certificato firmato:
 $ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/client1.crt ubuntu@openvpn_server:/tmp
 \end{bashcode}
 
-Quindi ci dobbiamo spostare sul server opnevpn e copiare le chiavi nella cartella \code{client-configs/keys}, in modo da prepararla per la crazione delle configurazioni opnevpn. E' necessario inoltre cambiare i permessi dei file rendendoli accessibili all'utente ubuntu:
+Quindi ci dobbiamo spostare sul server opnevpn e copiare le chiavi nella cartella \\\code{client-configs/keys}, in modo da prepararla per la crazione delle configurazioni opnevpn. E' necessario inoltre cambiare i permessi dei file rendendoli accessibili all'utente ubuntu:
 
 \begin{bashcode}
 $ cp /tmp/client1.crt ~/client-configs/keys/
@@ -323,6 +313,8 @@ $ sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 $ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 \end{bashcode}
 
+
+% <-- section -->
 \section{Creazione del file di configurazione del server OpenVPN}
 
 Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si puo' copiare la configurazione di esempio:
@@ -347,6 +339,8 @@ $ sudo vim server.conf
 318 auth sha256
 \end{bashcode}
 
+
+% <-- section -->
 \section{configurazioni sulla network stack del server openvpn}
 
 Per abilitare l'\textit{ip forwarding} si dovra' modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a ricaricare le configurazioni dai file:
@@ -358,6 +352,8 @@ $ sudo sysctl -p
 net.ipv4.ip_forward = 1
 \end{bashcode}
 
+
+% <-- section -->
 \section{Configurazione del firewall}
 
 Sulla VPS scelta e' presente il firewall \textit{firewalld}, ma per una piu' semplice configurazione e' consigliato di disattivarlo e installare \textit{ufw}:
@@ -455,6 +451,8 @@ To              Action      From
 1194/udp (v6)   ALLOW       Anywhere (v6)
 \end{bashcode}
 
+
+% <-- section -->
 \section{Avvio del server OpenVPN}
 
 \begin{bashcode}
@@ -500,3 +498,5 @@ Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL: base=10.8.0.4 size=62, ipv6=
 Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL LIST
 Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
 \end{bashcode}
+
+

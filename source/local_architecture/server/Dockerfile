@@ -23,10 +23,9 @@ RUN sudo apt-get update && \
                             iperf \
                             iptables
 
+# <-- Configurazione della PKI di OpenVPN -->
 RUN mkdir ~/openvpn-pki
-
 RUN ln -s /usr/share/easy-rsa/* ~/openvpn-pki/
-
 RUN sudo chown ubuntu ~/openvpn-pki/ && \
     chmod 700 ~/openvpn-pki/
 
@@ -46,6 +45,7 @@ RUN chown ubuntu:ubuntu ~/keys
 
 WORKDIR /home/ubuntu
 
+# <-- Firma del certificato opnevpn dalla CA -->
 FROM ca_base AS ca_1
 
 COPY --from=server /home/ubuntu/openvpn-pki/pki/reqs/server.req /tmp
@@ -59,11 +59,14 @@ FROM server_1 AS server_2
 COPY --from=ca_1 /home/ubuntu/openvpn-ca/pki/issued/server.crt /etc/openvpn/server/
 COPY --from=ca_1 /home/ubuntu/openvpn-ca/pki/ca.crt /etc/openvpn/server/
 
+
+# <-- Generazione della tls-crypt pre-shared key -->
 WORKDIR /home/ubuntu/openvpn-pki
 
 RUN openvpn --genkey --secret ta.key
 RUN sudo cp ta.key /etc/openvpn/server
 
+# <-- Generazione delle chiavi per i clients -->
 WORKDIR /home/ubuntu/
 RUN mkdir -p client-configs/keys
 RUN chmod -R 700 client-configs
@@ -86,8 +89,10 @@ RUN cp ~/openvpn-pki/ta.key ~/client-configs/keys/
 RUN sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 RUN sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 
+# <-- Creazione del file di configurazione del server OpenVPN -->
 COPY --chown=root:root server.conf /etc/openvpn/server/server.conf
 
+# <-- configurazioni sulla network stack del server openvpn -->
 RUN echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
 #RUN sudo sysctl -p
 

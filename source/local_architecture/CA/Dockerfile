@@ -15,6 +15,8 @@ WORKDIR /home/ubuntu
 RUN sudo apt-get install -y easy-rsa \
                             vim
 
+
+#--> Creazione della Public key infrastructure Certificate Authority (PKI CA)
 RUN mkdir ~/openvpn-ca
 
 RUN ln -s /usr/share/easy-rsa/* ~/openvpn-ca/
