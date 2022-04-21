@@ -34,6 +34,8 @@ services:
     networks:
       vpn:
         ipv4_address: "10.0.4.3"
+    depends_on:
+      - "server"
 
 networks:
   vpn:

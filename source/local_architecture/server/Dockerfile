@@ -48,7 +48,7 @@ WORKDIR /home/ubuntu
 # <-- Firma del certificato opnevpn dalla CA -->
 FROM ca_base AS ca_1
 
-COPY --from=server /home/ubuntu/openvpn-pki/pki/reqs/server.req /tmp
+COPY --from=server_1 /home/ubuntu/openvpn-pki/pki/reqs/server.req /tmp
 WORKDIR /home/ubuntu/openvpn-ca
 
 RUN ./easyrsa import-req /tmp/server.req server
@@ -98,12 +98,12 @@ RUN echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
 
 WORKDIR /home/ubuntu/client-configs/
 
-RUN mkdir -p files
+RUN mkdir files
 COPY --chown=ubuntu:ubuntu base.conf base.conf
 COPY --chown=ubuntu:ubuntu make_config.sh make_config.sh
 RUN chmod 700 make_config.sh
 
-RUN ./make_config.sh client1
+#RUN ./make_config.sh client1
 
 WORKDIR /home/ubuntu
 

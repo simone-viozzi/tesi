@@ -329,14 +329,13 @@ Dobbiamo quindi modificare il file e cambiare alcune configurazioni, per facilit
 
 \begin{bashcode}
 $ sudo vim server.conf
-85 dh none
+85  dh none             # non sonos stati usati i parametri Diffie-Hellman
 244 ;tls-auth ta.key 0 # This file is secret
-245 tls-crypt ta.key
-253 ;cipher AES-256-CBC
-254 cipher AES-256-GCM
-275 user nobody
-276 group nogroup
-318 auth sha256
+245 tls-crypt ta.key    # selezione della preshared key
+253 cipher AES-256-GCM  # selezione della cifratura scelta
+275 user nobody         # utente che eseguira' il server openvpn, in modo da restringere i permessi
+276 group nogroup       # stassa cosa per il gruppo
+318 auth sha256         # selezione del metodo di autenticazione
 \end{bashcode}
 
 
@@ -481,11 +480,11 @@ Apr 18 13:08:44 server openvpn[436]: Outgoing Control Channel Encryption: Cipher
 Apr 18 13:08:44 server openvpn[436]: Outgoing Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
 Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
 Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
-Apr 18 13:08:44 server openvpn[436]: ROUTE_GATEWAY 10.0.4.1/255.255.255.0 IFACE=eth0 HWADDR=02:42:0a:00:04:02
+Apr 18 13:08:44 server openvpn[436]: ROUTE_GATEWAY 51.178.141.119/255.255.255.0 IFACE=eth0 HWADDR=02:42:0a:00:04:02
 Apr 18 13:08:44 server openvpn[436]: TUN/TAP device tun0 opened
 Apr 18 13:08:44 server openvpn[436]: TUN/TAP TX queue length set to 100
 Apr 18 13:08:44 server openvpn[436]: /sbin/ip link set dev tun0 up mtu 1500
-Apr 18 13:08:44 server openvpn[436]: /sbin/ip addr add dev tun0 local 10.8.0.1 peer 10.8.0.2 # TODO fix ip
+Apr 18 13:08:44 server openvpn[436]: /sbin/ip addr add dev tun0 local 10.8.0.1 peer 10.8.0.2
 Apr 18 13:08:44 server openvpn[436]: /sbin/ip route add 10.8.0.0/24 via 10.8.0.2
 Apr 18 13:08:44 server openvpn[436]: Could not determine IPv4/IPv6 protocol. Using AF_INET
 Apr 18 13:08:44 server openvpn[436]: Socket Buffers: R=[212992->212992] S=[212992->212992]
@@ -500,3 +499,77 @@ Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
 \end{bashcode}
 
 
+\section{Script per la creazione delle configurazioni dei client}
+
+Per facilitare la creazione dei file di configurazione dei client, \code{client.conf}, andremo a crare uno script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
+
+\begin{bashcode}
+$ cd ~/client-configs/
+$ wget "https://raw.githubusercontent.com/OpenVPN/openvpn\
+            /master/sample/sample-config-files/client.conf" \
+                -O base.conf
+$ vim base.conf
+42   remote 51.178.141.119 1194     # va messo l'ip e la porta del server OpenVPN
+88   ;ca ca.crt                     # non useremo i file esterni ma ingloberemo 
+89   ;cert client.crt               # questi file in un file direttamente nella
+90   ;key client.key                # configurazione del client
+108  ;tls-auth ta.key 1             # stessa cosa per la preshared key
+116  cipher AES-256-GCM             # cifratura usata
+117  auth SHA256                    # autenticazione usata
+118  key-direction 1                
+                                # le seguenti righe sono delle direttive al dns dell'host
+120  ; script-security 2
+121  ; up /etc/openvpn/update-resolv-conf
+122  ; down /etc/openvpn/update-resolv-conf
+ 
+125  ; script-security 2
+126  ; up /etc/openvpn/update-systemd-resolved
+127  ; down /etc/openvpn/update-systemd-resolved
+128  ; down-pre
+129  ; dhcp-option DOMAIN-ROUTE .
+\end{bashcode}
+
+Ora creiamo lo script bash \code{make\_config.sh}:
+
+\begin{bashcode}
+$ vim make_config.sh
+#!/bin/bash
+
+# First argument: Client identifier
+    
+KEY_DIR=~/client-configs/keys
+OUTPUT_DIR=~/client-configs/files
+BASE_CONFIG=~/client-configs/base.conf
+    
+cat ${BASE_CONFIG} \
+    <(echo -e '<ca>') \
+    ${KEY_DIR}/ca.crt \
+    <(echo -e '</ca>\n<cert>') \
+    ${KEY_DIR}/${1}.crt \
+    <(echo -e '</cert>\n<key>') \
+    ${KEY_DIR}/${1}.key \
+    <(echo -e '</key>\n<tls-crypt>') \
+    ${KEY_DIR}/ta.key \
+    <(echo -e '</tls-crypt>') \
+    > ${OUTPUT_DIR}/${1}.ovpn
+$ chmod 700 make_config.sh
+\end{bashcode}
+
+Lo scopo di questo script e' di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione e la preshared key. Il tutto viene scritto in un file che ha lo stesso nome del client per cui si sta creando la configurazione ma \code{.conf}.
+
+Quindi per creare la configurazione di \it{client 1}:
+
+\begin{bashcode}
+$ ./make_config.sh client1
+\end{bashcode}
+
+Nella cartella \code{client-configs/files/} si trovera' il file di configurazione per il client \\\code{client1.ovpn}.
+
+\section{Test della configurazione}
+
+Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. Per farlo ci spostamo su una macchina client, con SO linux ad esempio, e si avvia il client:
+
+\begin{bashcode}
+$ sudo openvpn --config client1.ovpn
+
+\end{bashcode}

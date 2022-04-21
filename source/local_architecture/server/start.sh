@@ -1,5 +1,10 @@
 #! /bin/sh
 
+
+cd ~/client-configs
+./make_config.sh client1
+
+
 # <-- Configurazione del firewall -->
 sudo iptables -I INPUT -p udp -m udp --dport 1194 -j ACCEPT
 
