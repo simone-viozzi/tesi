@@ -34,10 +34,10 @@ Supponiamo inoltre che che l'ip pubblico del \it{server} sia \code{51.178.141.11
 
 Per instaurare una comunicazione bidirezionale tra il server e il client, si dovra' configurare oppornunamente una rete vpn la cui configurazione e' rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
 
-
+% TODO maybe cut this
 I pacchetti necessari sono \code{openvpn} ed \code{easy-rsa}, che possono essere installati con:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo apt-get update
 $ sudo apt-get install -y openvpn easy-rsa
 \end{bashcode}
@@ -56,7 +56,7 @@ La utility \code{easy-rsa} mette a disposizione il comando \code{make-cadir}, ch
 
 Andiamo quindi a crearla, nella home ad esempio:
 
-\begin{bashcode}
+\begin{bashcode}{Server CA}{}
 $ mkdir ~/openvpn-ca
 $ ln -s /usr/share/easy-rsa/* ~/openvpn-ca/
 $ chmod 700 /home/ubuntu/openvpn-ca/
@@ -73,7 +73,7 @@ easyrsa  openssl-easyrsa.cnf  pki  vars.example  x509-types
 Ora si devono personalizzare le variabili \code{vars}, si puo' sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
 Andiamo quindi a creare un nuovo file vars:
 
-\begin{bashcode}
+\begin{bashcode}{Server CA}{}
 $ vim vars
 set_var EASYRSA_REQ_COUNTRY  "IT"
 set_var EASYRSA_REQ_PROVINCE "MC"
@@ -92,7 +92,7 @@ Le ultime 2 sono opzioni di sicurezza, in particolare si setta l'algoritmo di ci
 
 A questo punti si deve laciare il comando \code{build-ca} per costruire la CA:
 
-\begin{bashcode}
+\begin{bashcode}{Server CA}{}
 $ ./easyrsa build-ca
 
 Note: using Easy-RSA configuration from: ./vars
@@ -128,7 +128,7 @@ Il procedimento e' simile al precedente, ma questa volta va eseguito sul \it{ser
 
 Creiamo quindi una cartella per ospitare la PKI, es \code{~/openvpn-pki}, e linkiamo \code{easy-rsa}. Inoltre limitiamo i permessi all'utente non root che stimao usando, in questo caso "ubuntu".
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ mkdir ~/openvpn-pki
 $ ln -s /usr/share/easy-rsa/* ~/openvpn-pki/
 $ sudo chown ubuntu ~/openvpn-pki/
@@ -138,7 +138,7 @@ $ cd ~/openvpn-pki/
 
 Andiamo a creare un file \code{vars}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ vim vars
 set_var EASYRSA_ALGO    "ec"
 set_var EASYRSA_DIGEST  "sha512"
@@ -146,7 +146,7 @@ set_var EASYRSA_DIGEST  "sha512"
  
 Concludiamo la creazione della PKI con il comando:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ ./easyrsa init-pki
 
 Note: using Easy-RSA configuration from: ./vars
@@ -160,7 +160,7 @@ A questo punto il server opnevpn ha tutti i prerequisiti per creare una sua chia
 
 Come nome e' stato scelto "server":
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ ./easyrsa gen-req server nopass
 
 Note: using Easy-RSA configuration from: ./vars
@@ -186,7 +186,7 @@ key: /home/ubuntu/openvpn-pki/pki/private/server.key
 
 La chiave \code{server.key} va copiata nell'apposita cartella.
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 \end{bashcode}
 
@@ -198,13 +198,13 @@ Il secondo file creato, \code{server.req}, corrisponde ad una \textit{Certificat
 
 Dobbiamo quindi copiare il file \code{server.req} nel \textit{server CA}, possiamo qualunque metodo purche' sia sicuro, ad esempio con \code{scp}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ scp -3 ubuntu@openvpn_server:/home/ubuntu/openvpn-pki/pki/reqs/server.req ubuntu@ca_server:/tmp
 \end{bashcode}
 
 Dobbiamo qundi spostarci sul server CA e importare la \textit{certificate request} e firmarlo:
 
-\begin{bashcode}
+\begin{bashcode}{Server CA}{}
 $ cd ~/openvpn-ca
 $ ./easyrsa import-req /tmp/server.req server
 $ ./easyrsa sign-req server server
@@ -224,14 +224,14 @@ Verra' creato un file in \code{~/openvpn-ca/pki/issued} chiamato \code{server.cr
 Ora si devono copiare i file \code{ca.crt} e \code{server.crt} dal \textit{server CA} al \textit{server OpnenVPN}:
 
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/server.crt ubuntu@openvpn_server:/tmp
 $ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/ca.crt ubuntu@openvpn_server:/tmp
 \end{bashcode}
 
 Possiamo quindi tornare sul \textit{server OpenVPN} e copiare i 2 file da \code{/tmp} a \\\code{/etc/openvpn/server}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo cp /tmp/server.crt /etc/openvpn/server
 $ sudo cp /tmp/ca.crt /etc/openvpn/server
 \end{bashcode}
@@ -242,16 +242,17 @@ $ sudo cp /tmp/ca.crt /etc/openvpn/server
 
 Per aumentare ulteriormente la sicurezza del nostro \textit{server OpenVPN} possiamo creare un'ulteriore chiave, che consiste un una chiave preshared che verra' inserita in tutte le configurazioni e serve ad offuscare il certificato in fase di validazione. Quindi in caso di attacco si dovra' conoscere anche questa chiave.
 
+% TODO merge i 2 pezzi di codice
 La creazione va fatta sul \it{server OpenVPN}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ cd ~/openvpn-pki/
 $ openvpn --genkey --secret ta.key
 \end{bashcode}
 
 il file generato \code{ta.key} dovra' essere copiato nella directory del server openvpn:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo cp ta.key /etc/openvpn/server
 \end{bashcode}
 
@@ -261,29 +262,28 @@ $ sudo cp ta.key /etc/openvpn/server
 
 Creiamo una cartella nella home che ospitera' le chiavi dei client e le configurazioni openvpn:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ mkdir -p ~/client-configs/keys
 $ chmod -R 700 ~/client-configs
 \end{bashcode}
 
 Creiamo quindi un certificato per un \it{client}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ cd ~/openvpn-pki/
 $ ./easyrsa gen-req client1 nopass
-
 \end{bashcode}
 
 Ora dobbiamo copiare \code{client1.key} nella directory appena creata, e \code{client1.req} va copiato nel server CA per essere firmato:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ cp pki/private/client1.key ~/client-configs/keys/
 $ scp -3 ubuntu@openvpn_server:/home/ubuntu/openvpn-pki/pki/reqs/client1.req ubuntu@ca_server:/tmp
 \end{bashcode}
 
 Dobbiamo quindi spostarci sul server CA e importare la \textit{certificate request} e firmarla:
 
-\begin{bashcode}
+\begin{bashcode}{Server CA}{}
 $ cd ~/openvpn-ca
 $ ./easyrsa import-req /tmp/client1.req client1
 $ ./easyrsa sign-req client client1
@@ -300,13 +300,13 @@ Data Base Updated
 
 Per poi ricopiare dal server CA al server openvpn il certificato firmato:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/client1.crt ubuntu@openvpn_server:/tmp
 \end{bashcode}
 
 Quindi ci dobbiamo spostare sul server opnevpn e copiare le chiavi nella cartella \\\code{client-configs/keys}, in modo da prepararla per la crazione delle configurazioni opnevpn. E' necessario inoltre cambiare i permessi dei file rendendoli accessibili all'utente ubuntu:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ cp /tmp/client1.crt ~/client-configs/keys/
 $ cp ~/openvpn-pki/ta.key ~/client-configs/keys/
 $ sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
@@ -319,7 +319,7 @@ $ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 
 Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si puo' copiare la configurazione di esempio:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ cd /etc/openvpn/server/
 $ sudo wget "https://raw.githubusercontent.com/OpenVPN/openvpn/\
                 master/sample/sample-config-files/server.conf"
@@ -327,7 +327,7 @@ $ sudo wget "https://raw.githubusercontent.com/OpenVPN/openvpn/\
 
 Dobbiamo quindi modificare il file e cambiare alcune configurazioni, per facilitare la lettura sara' incluso il numero riga modificato:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo vim server.conf
 85  dh none             # non sonos stati usati i parametri Diffie-Hellman
 244 ;tls-auth ta.key 0 # This file is secret
@@ -340,11 +340,11 @@ $ sudo vim server.conf
 
 
 % <-- section -->
-\section{configurazioni sulla network stack del server openvpn}
+\section{Configurazioni sulla network stack del server openvpn}
 
 Per abilitare l'\textit{ip forwarding} si dovra' modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a ricaricare le configurazioni dai file:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo vim /etc/sysctl.conf
 69 net.ipv4.ip_forward = 1
 $ sudo sysctl -p
@@ -357,7 +357,7 @@ net.ipv4.ip_forward = 1
 
 Sulla VPS scelta e' presente il firewall \textit{firewalld}, ma per una piu' semplice configurazione e' consigliato di disattivarlo e installare \textit{ufw}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo systemctl mask firewalld
 $ sudo systemctl stop firewalld
 $ sudo apt-get install ufw
@@ -374,7 +374,7 @@ E' importantissimo ricordarsi di consentire l'ssh prima di abilitare il firewall
 
 Per far si che i pacchetti provenienti dalla \it{VPN} entrino nella network stack del \it{server} si deve aggiungere una regola di \it{NAT} nel firewall. Per farlo si deve conoscere quale e' l'interfaccia di rete del \it{server}, cioe' quella che ha come ip il suo ip pubblico:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ ip addr
 [...]
 2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
@@ -388,7 +388,7 @@ $ ip addr
 
 In questo caso il nome dell'interfaccia di rete e' \it{ens3}, possiamo quindi procedere con la configurazione del firewall, si andra' a modificare il file \code{/etc/ufw/before.rules} e aggiungere la regola di NAT:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo vim /etc/ufw/before.rules
 # ## rules.before
 # ## Rules that should be run before the ufw command line added rules. Custom
@@ -420,14 +420,14 @@ Nella modifica del file si deve stare attenti ad inserire la nuova regola in cim
 % TODO !!!
 Next, you need to tell UFW to allow forwarded packets by default as well. To do this, open the \code{/etc/default/ufw} file:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 sudo nano /etc/default/ufw
 \end{bashcode}
 
 Inside, find the \code{DEFAULT\_FORWARD\_POLICY} directive and change the value from DROP to ACCEPT:
 \code{/etc/default/ufw}
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 DEFAULT_FORWARD_POLICY="ACCEPT"
 \end{bashcode}
 
@@ -437,7 +437,7 @@ Save and close the file when you are finished.
 
 Per concludere la configurazione si deve abilitare la porta relativa alla vpn, in questo caso \code{1194}, e riavviare il firewall:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ sudo ufw allow 1194/udp
 $ sudo ufw reload
 $ sudo ufw status
@@ -454,7 +454,9 @@ To              Action      From
 % <-- section -->
 \section{Avvio del server OpenVPN}
 
-\begin{bashcode}
+Ora che la configurazione del server e' in una situazione stabile possiamo avviarlo:
+
+\begin{bashcode}{Server}{}
 $ sudo systemctl enable openvpn-server@server.service
 $ sudo systemctl start openvpn-server@server.service
 $ sudo systemctl status openvpn-server@server.service
@@ -471,39 +473,24 @@ $ sudo systemctl status openvpn-server@server.service
         CPU: 199ms
      CGroup: /system.slice/system-openvpn\x2dserver.slice/openvpn-server@server.service
              └─436 /usr/bin/openvpn --status /run/openvpn-server/status-server.log --status-version 2 --suppress-timestamps --config server.conf
-\end{bashcode}
 
-\begin{bashcode}
-Apr 18 13:08:44 server openvpn[436]: OpenVPN 2.4.7 x86_64-pc-linux-gnu [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [PKCS11] [MH/PKTINFO] [AEAD] built on Mar 22 2022
-Apr 18 13:08:44 server openvpn[436]: library versions: OpenSSL 1.1.1f  31 Mar 2020, LZO 2.10
-Apr 18 13:08:44 server openvpn[436]: Outgoing Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
-Apr 18 13:08:44 server openvpn[436]: Outgoing Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
-Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
-Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
-Apr 18 13:08:44 server openvpn[436]: ROUTE_GATEWAY 51.178.141.119/255.255.255.0 IFACE=eth0 HWADDR=02:42:0a:00:04:02
-Apr 18 13:08:44 server openvpn[436]: TUN/TAP device tun0 opened
-Apr 18 13:08:44 server openvpn[436]: TUN/TAP TX queue length set to 100
-Apr 18 13:08:44 server openvpn[436]: /sbin/ip link set dev tun0 up mtu 1500
 Apr 18 13:08:44 server openvpn[436]: /sbin/ip addr add dev tun0 local 10.8.0.1 peer 10.8.0.2
 Apr 18 13:08:44 server openvpn[436]: /sbin/ip route add 10.8.0.0/24 via 10.8.0.2
-Apr 18 13:08:44 server openvpn[436]: Could not determine IPv4/IPv6 protocol. Using AF_INET
-Apr 18 13:08:44 server openvpn[436]: Socket Buffers: R=[212992->212992] S=[212992->212992]
 Apr 18 13:08:44 server openvpn[436]: UDPv4 link local (bound): [AF_INET][undef]:1194
 Apr 18 13:08:44 server openvpn[436]: UDPv4 link remote: [AF_UNSPEC]
-Apr 18 13:08:44 server openvpn[436]: GID set to nogroup
-Apr 18 13:08:44 server openvpn[436]: UID set to nobody
 Apr 18 13:08:44 server openvpn[436]: MULTI: multi_init called, r=256 v=256
 Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL: base=10.8.0.4 size=62, ipv6=0
 Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL LIST
 Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
 \end{bashcode}
-
+ 
+Il comando \code{systemctl enable} abilita il servizio per essere avviato all'avvio della macchina, mentre \code{systemctl start} lo avvia immediatamente. Con il comando \code{systemctl status} si puo' verificare lo stato del servizio, si vede che il servizio e' \it{active (running)}.
 
 \section{Script per la creazione delle configurazioni dei client}
 
-Per facilitare la creazione dei file di configurazione dei client, \code{client.conf}, andremo a crare uno script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
+Per facilitare la creazione dei file di configurazione dei client, \code{clientX.conf}, andremo a crare un'apposito script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ cd ~/client-configs/
 $ wget "https://raw.githubusercontent.com/OpenVPN/openvpn\
             /master/sample/sample-config-files/client.conf" \
@@ -531,7 +518,7 @@ $ vim base.conf
 
 Ora creiamo lo script bash \code{make\_config.sh}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ vim make_config.sh
 #!/bin/bash
 
@@ -555,11 +542,11 @@ cat ${BASE_CONFIG} \
 $ chmod 700 make_config.sh
 \end{bashcode}
 
-Lo scopo di questo script e' di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione e la preshared key. Il tutto viene scritto in un file che ha lo stesso nome del client per cui si sta creando la configurazione ma \code{.conf}.
+Lo scopo di questo script e' di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, e la \it{preshared key}. Il tutto viene scritto in un file che ha lo stesso nome del \it{client} per cui si sta creando la configurazione ma \code{.conf}.
 
 Quindi per creare la configurazione di \it{client 1}:
 
-\begin{bashcode}
+\begin{bashcode}{Server}{}
 $ ./make_config.sh client1
 \end{bashcode}
 
@@ -567,9 +554,55 @@ Nella cartella \code{client-configs/files/} si trovera' il file di configurazion
 
 \section{Test della configurazione}
 
-Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. Per farlo ci spostamo su una macchina client, con SO linux ad esempio, e si avvia il client:
+Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. Per farlo ci spostamo su una macchina client, con SO linux ad esempio, e si avvia il \it{client} con la configurazione creata al passo precedente:
 
-\begin{bashcode}
+\begin{bashcode}{Client}{}
 $ sudo openvpn --config client1.ovpn
-
+Thu Apr 21 12:53:04 2022 OPTIONS IMPORT: adjusting link_mtu to 1624
+Thu Apr 21 12:53:04 2022 OPTIONS IMPORT: data channel crypto options modified
+Thu Apr 21 12:53:04 2022 Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Thu Apr 21 12:53:04 2022 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+Thu Apr 21 12:53:04 2022 ROUTE_GATEWAY 10.0.4.1/255.255.255.0 IFACE=eth0 HWADDR=02:42:0a:00:04:03
+Thu Apr 21 12:53:04 2022 TUN/TAP device tun0 opened
+Thu Apr 21 12:53:04 2022 TUN/TAP TX queue length set to 100
+Thu Apr 21 12:53:04 2022 /sbin/ip link set dev tun0 up mtu 1500
+Thu Apr 21 12:53:04 2022 /sbin/ip addr add dev tun0 local 10.8.0.6 peer 10.8.0.5
+Thu Apr 21 12:53:04 2022 /sbin/ip route add 10.8.0.1/32 via 10.8.0.5
+Thu Apr 21 12:53:04 2022 WARNING: this configuration may cache passwords in memory -- use the auth-nocache option to prevent this
+Thu Apr 21 12:53:04 2022 Initialization Sequence Completed
 \end{bashcode}
+
+Se la configurazione fino a questo punto e' corretta si avra il messaggio \\\code{Initialization Sequence Completed}.
+
+Nel \it{client} si avra' una nuova interfaccia di rete chiamata \code{tun0}, questa e' l'interfaccia virtuale creata dalla vpn.
+
+\begin{bashcode}{Client}{}
+2: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 100
+    link/none 
+    inet 10.8.0.6 peer 10.8.0.5/32 scope global tun0
+       valid_lft forever preferred_lft forever
+\end{bashcode}
+
+Si puo' vedere come l'ip assegnato al \it{client} dalla vpn e' \code{10.8.0.6}.
+
+Per testare che la connessione sia instaurata correttamente si puo' usare la utility \code{ping}, ad esempio possiamo fare il ping dal \it{client} verso l'ip interno alla vpn del \it{server}:
+
+\begin{bashcode}{Client}{}
+$ ping 10.8.0.1
+PING 10.8.0.1 (10.8.0.1) 56(84) bytes of data.
+64 bytes from 10.8.0.1: icmp_seq=1 ttl=64 time=0.250 ms
+64 bytes from 10.8.0.1: icmp_seq=2 ttl=64 time=0.220 ms
+\end{bashcode}
+
+Se nel frattempo si esegue la utility \code{tpcdump} sul server si potranno vedere i pacchetti \it{echo request} e \it{echo reply}:
+
+\begin{bashcode}{Server}{}
+$ sudo tcpdump
+listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
+13:05:18.423151 IP 10.8.0.6 > 10.8.0.1: ICMP echo request, id 2, seq 1, length 64
+13:05:18.423171 IP 10.8.0.1 > 10.8.0.6: ICMP echo reply, id 2, seq 1, length 64
+13:05:19.431496 IP 10.8.0.6 > 10.8.0.1: ICMP echo request, id 2, seq 2, length 64
+13:05:19.431518 IP 10.8.0.1 > 10.8.0.6: ICMP echo reply, id 2, seq 2, length 64
+\end{bashcode}
+
+Si vede quindi che e' possibile una comunicazione bidirezionale tra \it{client}, \code{10.8.0.6}, e \it{server}, \code{10.8.0.1}.

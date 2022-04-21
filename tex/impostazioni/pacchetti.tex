@@ -47,17 +47,54 @@
 
 \tcbuselibrary{minted,skins}
 
-\newtcblisting{bashcode}[1][]{
+%\newtcblisting{bashcode}[1][]{
+%listing engine=minted,
+%colback=light-gray,
+%colframe=black!0,
+%    listing only,
+%    minted style=colorful,
+%    minted language=bash,
+%    minted options={
+%		linenos=true,
+%		numbersep=3mm,
+%		texcl=true,#1,
+%		breaklines,
+%		texcomments,
+%		fontsize=\footnotesize
+%	},
+%    left=5mm,enhanced,
+%    overlay={\begin{tcbclipinterior}\fill[black!25] (frame.south west)
+%              rectangle ([xshift=5mm]frame.north west);\end{tcbclipinterior}}
+%}
+
+\newtcblisting[auto counter, number within=section]{bashcode}[2]{
     listing engine=minted,
     colback=light-gray,
-    colframe=black!0,
+    colframe=black!50,
     listing only,
     minted style=colorful,
     minted language=bash,
-    minted options={linenos=true,numbersep=3mm,texcl=true,#1,breaklines,texcomments,fontsize=\footnotesize},
-    left=5mm,enhanced,
-    overlay={\begin{tcbclipinterior}\fill[black!25] (frame.south west)
-              rectangle ([xshift=5mm]frame.north west);\end{tcbclipinterior}}
+    minted options={
+		linenos=true,
+		numbersep=3mm,
+		texcl=true,
+        %#2,
+		breaklines,
+		texcomments,
+		fontsize=\footnotesize
+	},
+    overlay={
+        \begin{tcbclipinterior}
+            \fill[black!25] (frame.south west)
+              rectangle ([xshift=5mm]frame.north west);
+        \end{tcbclipinterior}
+    },
+    coltitle=white,
+    boxrule=0.5mm,
+    left=5mm,
+    title={\large \textit{#1}},
+    label=#2,
+    enhanced jigsaw,
 }
 
 

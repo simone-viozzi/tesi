@@ -1,0 +1,152 @@
+% LTeX: enabled=false
+
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[a4paper,lmargin=30mm, textwidth=160mm, tmargin=20mm, textheight=257mm]{geometry}
+
+\usepackage[a-1b]{pdfx} %PDF/A
+
+\usepackage[onehalfspacing]{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.95}
+
+\usepackage{tcolorbox}
+\usepackage{minted}
+
+\usepackage{ifthen}
+
+
+\newcounter{commentCount}
+\newcounter{filePrg}
+\newcounter{inputPrg}
+
+\usepackage{tabularx}
+\newcolumntype{\CeX}{>{\centering\let\newline\\\arraybackslash}X}%
+\newcommand{\TwoSymbolsAndText}[3]{%
+  \begin{tabularx}{\textwidth}{c\CeX c}%
+    #1 & #2 & #3
+  \end{tabularx}%
+}
+
+\tcbuselibrary{minted,skins}
+
+%\usepackage{fontawesome}
+
+
+\newtcolorbox[use counter=commentCount,]{commentBox}[2]{
+  size=title,
+  arc=1.5mm,
+  %breakable,
+  enhanced jigsaw,
+  colframe=black,
+  coltitle=white,
+  boxrule=0.5mm,
+  colback=white,
+  coltext=black,
+  title=#1,
+  label=comment:#2,
+}
+
+
+\newtcblisting[blend into=listings]{codeInput}[3]{
+    listing engine=minted, %
+    minted language=#1, 
+    minted options={
+        autogobble,
+        breaklines,
+        breakanywhere,
+        bgcolor=codebackground,
+        breaksymbolleft=,
+        breaksymbolright=,
+        fontsize=\footnotesize
+      },
+    listing only, %
+    size=title,
+    arc=1.5mm,
+    breakable,
+    enhanced jigsaw,
+    colframe=Black,
+    coltitle=White,
+    boxrule=0.5mm,
+    colback=codebackground, %
+    coltext=Black,
+    title=\TwoSymbolsAndText{\faCode}{%
+      \footnotesize{\texttt{#2}}
+    }{\faCode},
+    list text=#3
+  }
+
+
+
+
+\newtcblisting[auto counter, number within=section]{bashcode}[2]{
+    listing engine=minted,
+    colback=light-gray,
+    colframe=black!50,
+    listing only,
+    minted style=colorful,
+    minted language=bash,
+    minted options={
+		linenos=true,
+		numbersep=3mm,
+		texcl=true,
+        %#2,
+		breaklines,
+		texcomments,
+		fontsize=\footnotesize
+	},
+    overlay={
+        \begin{tcbclipinterior}
+            \fill[black!25] (frame.south west)
+              rectangle ([xshift=5mm]frame.north west);
+        \end{tcbclipinterior}
+    },
+    coltitle=white,
+    boxrule=0.5mm,
+    left=5mm,
+    title={\large \textit{#1}},
+    label=#2,
+    enhanced jigsaw,
+}
+
+
+\begin{document}
+
+
+\begin{bashcode}{ccc}{test}
+$ vim make_config.sh
+#!/bin/bash
+dd
+# First argument: Client identifier
+    
+KEY_DIR=~/client-configs/keys
+OUTPUT_DIR=~/client-configs/files
+BASE_CONFIG=~/client-configs/base.conf
+    
+cat ${BASE_CONFIG} \
+    <(echo -e '<ca>') \
+    ${KEY_DIR}/ca.crt \
+    <(echo -e '</ca>\n<cert>') \
+    ${KEY_DIR}/${1}.crt \
+    <(echo -e '</cert>\n<key>') \
+    ${KEY_DIR}/${1}.key \
+    <(echo -e '</key>\n<tls-crypt>') \
+    ${KEY_DIR}/ta.key \
+    <(echo -e '</tls-crypt>') \
+    > ${OUTPUT_DIR}/${1}.ovpn
+$ chmod 700 make_config.sh
+\end{bashcode}
+
+
+\begin{commentBox}{My first comment!!!}{asfds}
+    My first comment here!
+\end{commentBox}
+
+ciuao \ref{test} gffds
+
+fdsadfsa \ref{comment:asfds}  v
+
+\end{document}

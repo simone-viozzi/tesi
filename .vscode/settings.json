@@ -114,5 +114,7 @@
         "bashcode": "ignore",
     },
     "ltex.additionalRules.motherTongue": "it",
+    "latex-workshop.latex.recipe.default": "lastUsed",
+    "latex-workshop.latex.autoBuild.interval": 5000
 
 }
