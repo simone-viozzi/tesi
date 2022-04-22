@@ -4,16 +4,26 @@ services:
     build: ./router/
     stdin_open: true
     tty: true
+    privileged: true
     ports:
       - "5050:80"
       - "5051:8080"
-  #ca:
-  #  build: ./CA/
-  #  command: /bin/bash
-  #  stdin_open: true
-  #  tty: true
-  #  volumes:
-  #    - keys:/home/ubuntu/keys
+    depends_on:
+      - "server"
+    networks:
+      vpn:
+        ipv4_address: "10.0.4.4"
+      local:
+        ipv4_address: "192.168.0.2"
+  host-domotico:
+    build: ./host_domotico/
+    stdin_open: true
+    tty: true
+    depends_on:
+      - "router"
+    networks:
+      local:
+        ipv4_address: "192.168.0.3"
   server:
     build: ./server/
     privileged: true
@@ -44,6 +54,14 @@ networks:
       config:
         - subnet: "10.0.4.1/24"
           gateway: "10.0.4.1"
+  local:
+    driver: "bridge"
+    ipam:
+      config:
+        - subnet: "192.168.0.1/24"
+          gateway: "192.168.0.1"
+
+
 
 volumes:
   clinet-configs:

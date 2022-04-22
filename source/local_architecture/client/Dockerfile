@@ -20,3 +20,11 @@ RUN sudo apt-get update && \
                             openvpn \
                             vim \
                             nano
+
+WORKDIR /home/ubuntu
+
+COPY --chown=ubuntu:ubuntu start.sh start.sh
+RUN sudo chmod +x start.sh
+
+WORKDIR /home/ubuntu/
+ENTRYPOINT [ "./start.sh" ]

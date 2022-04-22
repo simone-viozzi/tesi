@@ -15,7 +15,6 @@ RUN opkg update && \
       opkg install kmod-mac80211 
 RUN opkg update && \
       opkg install bash
+RUN opkg update && \
+      opkg install openvpn
 
-
-
-CMD [ "bash" ]

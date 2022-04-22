@@ -17,3 +17,5 @@ RUN sudo apt-get update && \
                             iputils-ping \
                             tcpdump \
                             iperf
+
+ENTRYPOINT [ "/bin/bash" ]
