@@ -36,7 +36,7 @@ COPY --chown=ubuntu:ubuntu vars vars
 RUN ./easyrsa init-pki
 
 ENV EASYRSA_BATCH=1
-RUN ./easyrsa gen-req server nopass
+RUN ./easyrsa gen-req server nopass batch
 
 RUN sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 
@@ -72,8 +72,8 @@ RUN mkdir -p client-configs/keys
 RUN chmod -R 700 client-configs
 
 WORKDIR /home/ubuntu/openvpn-pki
-RUN ./easyrsa gen-req client1 nopass
-RUN ./easyrsa gen-req router1 nopass
+RUN ./easyrsa gen-req client1 nopass batch
+RUN ./easyrsa gen-req router1 nopass batch
 RUN cp pki/private/client1.key ~/client-configs/keys/
 RUN cp pki/private/router1.key ~/client-configs/keys/
 

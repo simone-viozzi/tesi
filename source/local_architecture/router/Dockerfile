@@ -39,15 +39,6 @@ RUN echo "iptables -A POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --chec
 RUN sed -i '/^exit 0/i cat \/tmp\/resolv.conf > \/etc\/resolv.conf' /etc/rc.local
 
 
-#RUN echo $'\n\
-#preinit_ip() {\n\
-#        echo "- disabling preinit_ip -"\n\
-#}\n' >> /lib/preinit/11_disable_preinit_network
-
-#RUN rm /lib/preinit/10_indicate_preinit /lib/preinit/70_initramfs_test
-#RUN rm /etc/board.d/*
-#RUN sed -i 's/\"y\"/\"n\"/g' /lib/preinit/00_preinit.conf
-
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
