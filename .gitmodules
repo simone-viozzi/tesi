@@ -2,3 +2,8 @@
 	path = source/tirocinio
 	url = https://github.com/simone-viozzi/tirocinio.git
 	ignore = all
+
+[submodule "source/openwrt"]
+	path = source/openwrt
+	url = https://github.com/openwrt/openwrt.git
+	ignore = all
