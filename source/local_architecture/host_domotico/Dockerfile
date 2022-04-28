@@ -1,5 +1,5 @@
 
-# PC_1
+# host domotico
 
 FROM ubuntu
 
@@ -16,6 +16,11 @@ RUN sudo apt-get update && \
     sudo apt-get install -y iputils-tracepath \
                             iputils-ping \
                             tcpdump \
-                            iperf
+                            iperf \
+                            iproute2 \
+                            net-tools
 
-ENTRYPOINT [ "/bin/bash" ]
+COPY start.sh start.sh
+RUN sudo chmod +x start.sh
+
+ENTRYPOINT [ "./start.sh" ]

@@ -1,0 +1,43 @@
+config globals globals
+    option 'ula_prefix' 'auto'
+
+
+config interface 'loopback'
+        option proto 'static'
+        option ipaddr '127.0.0.1'
+        option netmask '255.0.0.0'
+        option device 'lo'
+
+
+config interface 'lan'
+        option type     'bridge'
+        option proto    'static'
+        option ipaddr   '192.168.0.2'
+        option netmask  '255.255.255.0'
+        option gateway  '192.168.0.1'
+        option device   'eth0'
+        option ip6assign 64
+
+
+config interface 'wan'
+        option proto 'static'
+        option ipaddr '10.0.4.4'
+        option device 'eth1'
+
+config route
+	option target '10.0.4.0'
+	option netmask '255.255.255.0'
+        option source '10.0.4.4'
+	option table 'main'
+	option interface 'eth1'
+        option proto 'kernel'
+
+
+config route
+	option target '192.168.1.0'
+	option netmask '255.255.255.0'
+        option source '192.168.1.2'
+	option table 'main'
+	option interface 'eth0'
+        option proto 'kernel'
+        option gateway '192.168.1.1'

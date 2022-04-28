@@ -1,20 +1,55 @@
 
 FROM openwrtorg/rootfs
 
-RUN mkdir -p /var/lock
+RUN mkdir -p /var/run \
+ && mkdir -p /var/lock
+
+RUN opkg remove --force-depends \
+      dnsmasq* \
+      wpad* \
+      iw*
 
 RUN opkg update && \
       opkg install luci
 RUN opkg update && \
-      opkg install wpad-wolfssl 
-RUN opkg update && \
       opkg install iw-full 
+RUN opkg update && \
+      opkg install wpad-wolfssl 
 RUN opkg update && \
       opkg install ip-full 
 RUN opkg update && \
-      opkg install kmod-mac80211 
-RUN opkg update && \
-      opkg install bash
+      opkg install kmod-mac80211
 RUN opkg update && \
       opkg install openvpn
+RUN opkg update && \
+      opkg install dnsmasq-full
+RUN opkg update && \
+      opkg install iptables-mod-checksum
+RUN opkg update && \
+      opkg install tcpdump
+RUN opkg update && \
+      opkg install vim-fuller
 
+RUN opkg list-upgradable | awk '{print $1}' | xargs opkg upgrade || true
+
+
+COPY config/* /etc/config/
+
+RUN echo "iptables -A POSTROUTING -t mangle -p udp --dport 68 -j CHECKSUM --checksum-fill" >> /etc/firewall.user
+RUN sed -i '/^exit 0/i cat \/tmp\/resolv.conf > \/etc\/resolv.conf' /etc/rc.local
+
+
+#RUN echo $'\n\
+#preinit_ip() {\n\
+#        echo "- disabling preinit_ip -"\n\
+#}\n' >> /lib/preinit/11_disable_preinit_network
+
+#RUN rm /lib/preinit/10_indicate_preinit /lib/preinit/70_initramfs_test
+#RUN rm /etc/board.d/*
+#RUN sed -i 's/\"y\"/\"n\"/g' /lib/preinit/00_preinit.conf
+
+
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+ENTRYPOINT [ "./start.sh" ]

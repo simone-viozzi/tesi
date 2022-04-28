@@ -73,18 +73,25 @@ RUN chmod -R 700 client-configs
 
 WORKDIR /home/ubuntu/openvpn-pki
 RUN ./easyrsa gen-req client1 nopass
+RUN ./easyrsa gen-req router1 nopass
 RUN cp pki/private/client1.key ~/client-configs/keys/
+RUN cp pki/private/router1.key ~/client-configs/keys/
 
 FROM ca_1 AS ca_2 
 
 COPY --from=server_2 /home/ubuntu/openvpn-pki/pki/reqs/client1.req /tmp
+COPY --from=server_2 /home/ubuntu/openvpn-pki/pki/reqs/router1.req /tmp
 WORKDIR /home/ubuntu/openvpn-ca
 RUN ./easyrsa import-req /tmp/client1.req client1
 RUN ./easyrsa sign-req client client1
 
+RUN ./easyrsa import-req /tmp/router1.req router1
+RUN ./easyrsa sign-req client router1
+
 FROM server_2 AS server_3
 
 COPY --from=ca_2 /home/ubuntu/openvpn-ca/pki/issued/client1.crt /home/ubuntu/client-configs/keys/
+COPY --from=ca_2 /home/ubuntu/openvpn-ca/pki/issued/router1.crt /home/ubuntu/client-configs/keys/
 RUN cp ~/openvpn-pki/ta.key ~/client-configs/keys/
 RUN sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 RUN sudo chown ubuntu:ubuntu ~/client-configs/keys/*
@@ -102,8 +109,6 @@ RUN mkdir files
 COPY --chown=ubuntu:ubuntu base.conf base.conf
 COPY --chown=ubuntu:ubuntu make_config.sh make_config.sh
 RUN chmod 700 make_config.sh
-
-#RUN ./make_config.sh client1
 
 WORKDIR /home/ubuntu
 

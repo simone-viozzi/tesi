@@ -5,6 +5,7 @@
 
 % <-- section -->
 \section{Overview della configurazione e prerequisiti}
+\label{sec:overview_server}
 
 In questa sezione andremo a installare e configurare OpenVPN server sulla VPS di OVHCloud.
 
@@ -47,6 +48,7 @@ E' inoltre necessario avere un editor di testo, ad es. \code{nano} o \code{vim}
 
 % <-- section -->
 \section{Creazione della Public key infrastructure Certificate Authority (PKI CA)}
+\label{sec:pki_ca}
 
 %TODO mettere intro su che diamine e' la pki https://datatracker.ietf.org/doc/html/rfc5280
 
@@ -123,6 +125,7 @@ Eseguendo il comando verra' chiesto di inserire una passshare, che verra' usata 
 
 % <-- section -->
 \section{Configurazione della PKI di OpenVPN}
+\label{sec:pki_openvpn}
 
 Il procedimento e' simile al precedente, ma questa volta va eseguito sul \it{server}.
 
@@ -195,6 +198,7 @@ Il secondo file creato, \code{server.req}, corrisponde ad una \textit{Certificat
 
 % <-- section -->
 \section{Firma del certificato opnevpn dalla CA}
+\label{sec:sign_openvpn}
 
 Dobbiamo quindi copiare il file \code{server.req} nel \textit{server CA}, possiamo qualunque metodo purche' sia sicuro, ad esempio con \code{scp}:
 
@@ -239,8 +243,9 @@ $ sudo cp /tmp/ca.crt /etc/openvpn/server
 
 % <-- section -->
 \section{Generazione della \textit{tls-crypt pre-shared key}}
+\label{sec:tls-crypt}
 
-Per aumentare ulteriormente la sicurezza del nostro \textit{server OpenVPN} possiamo creare un'ulteriore chiave, che consiste un una chiave preshared che verra' inserita in tutte le configurazioni e serve ad offuscare il certificato in fase di validazione. Quindi in caso di attacco si dovra' conoscere anche questa chiave.
+Per aumentare ulteriormente la sicurezza del nostro \textit{server OpenVPN} possiamo creare un'ulteriore chiave, che consiste un una chiave \it{preshared} che verra' inserita in tutte le configurazioni e serve a offuscare il certificato in fase di validazione. Quindi in caso di attacco si dovra' conoscere anche questa chiave.
 
 % TODO merge i 2 pezzi di codice
 La creazione va fatta sul \it{server OpenVPN}:
@@ -259,8 +264,9 @@ $ sudo cp ta.key /etc/openvpn/server
 
 % <-- section -->
 \section{Generazione delle chiavi per i clients}
+\label{sec:client_keys}
 
-Creiamo una cartella nella home che ospitera' le chiavi dei client e le configurazioni openvpn:
+Creiamo una cartella nella \it{home} che ospitera' le chiavi dei \it{client} e le configurazioni openvpn:
 
 \begin{bashcode}{Server}{}
 $ mkdir -p ~/client-configs/keys
@@ -304,7 +310,7 @@ Per poi ricopiare dal server CA al server openvpn il certificato firmato:
 $ scp -3 ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/client1.crt ubuntu@openvpn_server:/tmp
 \end{bashcode}
 
-Quindi ci dobbiamo spostare sul server opnevpn e copiare le chiavi nella cartella \\\code{client-configs/keys}, in modo da prepararla per la crazione delle configurazioni opnevpn. E' necessario inoltre cambiare i permessi dei file rendendoli accessibili all'utente ubuntu:
+Quindi ci dobbiamo spostare sul server OpenVPN e copiare le chiavi nella cartella \\\code{client-configs/keys}, in modo da prepararla per la creazione delle configurazioni OpenVPN. E' necessario inoltre cambiare i permessi dei file rendendoli accessibili all'utente Ubuntu:
 
 \begin{bashcode}{Server}{}
 $ cp /tmp/client1.crt ~/client-configs/keys/
@@ -316,6 +322,7 @@ $ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 
 % <-- section -->
 \section{Creazione del file di configurazione del server OpenVPN}
+\label{sec:server_config}
 
 Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si puo' copiare la configurazione di esempio:
 
@@ -341,6 +348,7 @@ $ sudo vim server.conf
 
 % <-- section -->
 \section{Configurazioni sulla network stack del server openvpn}
+\label{sec:network_stack}
 
 Per abilitare l'\textit{ip forwarding} si dovra' modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a ricaricare le configurazioni dai file:
 
@@ -354,6 +362,7 @@ net.ipv4.ip_forward = 1
 
 % <-- section -->
 \section{Configurazione del firewall}
+\label{sec:firewall}
 
 Sulla VPS scelta e' presente il firewall \textit{firewalld}, ma per una piu' semplice configurazione e' consigliato di disattivarlo e installare \textit{ufw}:
 
@@ -367,7 +376,7 @@ Rule added (v6)
 $ sudo ufw enable
 \end{bashcode}
 
-E' importantissimo ricordarsi di consentire l'ssh prima di abilitare il firewall, altrimenti si perdera' l'accesso alla VPS.
+E' importantissimo ricordarsi di consentire l'SSH prima di abilitare il firewall, altrimenti si perdera' l'accesso alla VPS.
 
 
 \subsection{Configurazione del NAT}
@@ -413,7 +422,7 @@ COMMIT
 . . .
 \end{bashcode}
 
-Nella modifica del file si deve stare attenti ad inserire la nuova regola in cima al file e sotto i commenti iniziali, e' inoltre importante inserire i commenti nella regola.
+Nella modifica del file si deve stare attenti a inserire la nuova regola in cima al file e sotto i commenti iniziali, e' inoltre importante inserire i commenti nella regola.
 
 \subsection{Configurazione del packet forwarding}
 
@@ -453,6 +462,7 @@ To              Action      From
 
 % <-- section -->
 \section{Avvio del server OpenVPN}
+\label{sec:start_server}
 
 Ora che la configurazione del server e' in una situazione stabile possiamo avviarlo:
 
@@ -486,9 +496,11 @@ Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
  
 Il comando \code{systemctl enable} abilita il servizio per essere avviato all'avvio della macchina, mentre \code{systemctl start} lo avvia immediatamente. Con il comando \code{systemctl status} si puo' verificare lo stato del servizio, si vede che il servizio e' \it{active (running)}.
 
+% <-- section -->
 \section{Script per la creazione delle configurazioni dei client}
+\label{sec:script_client}
 
-Per facilitare la creazione dei file di configurazione dei client, \code{clientX.conf}, andremo a crare un'apposito script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
+Per facilitare la creazione dei file di configurazione dei client, \code{clientX.conf}, andremo a creare un apposito script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
 
 \begin{bashcode}{Server}{}
 $ cd ~/client-configs/
@@ -553,8 +565,9 @@ $ ./make_config.sh client1
 Nella cartella \code{client-configs/files/} si trovera' il file di configurazione per il client \\\code{client1.ovpn}.
 
 \section{Test della configurazione}
+\label{sec:test_config_server}
 
-Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. Per farlo ci spostamo su una macchina client, con SO linux ad esempio, e si avvia il \it{client} con la configurazione creata al passo precedente:
+Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. Per farlo ci spostiamo su una macchina client, con SO Linux ad esempio, e si avvia il \it{client} con la configurazione creata al passo precedente:
 
 \begin{bashcode}{Client}{}
 $ sudo openvpn --config client1.ovpn
@@ -572,7 +585,7 @@ Thu Apr 21 12:53:04 2022 WARNING: this configuration may cache passwords in memo
 Thu Apr 21 12:53:04 2022 Initialization Sequence Completed
 \end{bashcode}
 
-Se la configurazione fino a questo punto e' corretta si avra il messaggio \\\code{Initialization Sequence Completed}.
+Se la configurazione fino a questo punto e' corretta si avra' il messaggio \\\code{Initialization Sequence Completed}.
 
 Nel \it{client} si avra' una nuova interfaccia di rete chiamata \code{tun0}, questa e' l'interfaccia virtuale creata dalla vpn.
 
@@ -594,7 +607,7 @@ PING 10.8.0.1 (10.8.0.1) 56(84) bytes of data.
 64 bytes from 10.8.0.1: icmp_seq=2 ttl=64 time=0.220 ms
 \end{bashcode}
 
-Se nel frattempo si esegue la utility \code{tpcdump} sul server si potranno vedere i pacchetti \it{echo request} e \it{echo reply}:
+Se nel frattempo si esegue la utility \code{tpcdump} sul server si potranno vedere i pacchetti \it{echo request} ed \it{echo reply}:
 
 \begin{bashcode}{Server}{}
 $ sudo tcpdump

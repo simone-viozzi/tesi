@@ -1,0 +1,8 @@
+.vscode
+openwrt.conf
+.env
+*.tar.gz
+*.img
+*.img.gz
+etc/config/*
+!etc/config/*.tpl

@@ -1,0 +1,12 @@
+
+version: "3"
+services:
+  luci-cli:
+    container_name: luci-cli
+    hostname: luci-cli
+    build: .
+    privileged: true
+    ports:
+      - "80:80"
+      - "443:443"
+    working_dir: /usr/src/luci-cli

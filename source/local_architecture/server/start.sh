@@ -3,6 +3,7 @@
 
 cd ~/client-configs
 ./make_config.sh client1
+./make_config.sh router1
 
 
 # <-- Configurazione del firewall -->

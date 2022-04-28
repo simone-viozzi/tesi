@@ -19,7 +19,9 @@ RUN sudo apt-get update && \
                             iperf \
                             openvpn \
                             vim \
-                            nano
+                            nano \
+                            iproute2 \
+                            net-tools
 
 WORKDIR /home/ubuntu
 

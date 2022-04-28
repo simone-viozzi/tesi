@@ -1,2 +1,14 @@
 
 \chapter{Configurazione Router}
+
+\section{Overview della configurazione}
+
+In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere le opportune regole in modo che il traffico proveniente dall'host domotico sia indirizzato verso la VPN
+
+\section{Creazione della configurazione OpenVPN}
+
+Si devono seguire gli step descritti in sezione \ref{sec:client_keys}, per poi usare lo script creato in sezione \ref{sec:script_client}:
+
+\begin{bashcode}{Server}{}
+$ ./make_config.sh router
+\end{bashcode}
