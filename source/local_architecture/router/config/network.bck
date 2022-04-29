@@ -16,7 +16,6 @@ config interface 'lan'
         option netmask  '255.255.255.0'
         option gateway  '192.168.130.1'
         option device   'eth0'
-        option dns      '1.1.1.1'
         option ip6assign 64
 
 
@@ -27,7 +26,6 @@ config interface 'wan'
         option netmask  '255.255.255.0'
         option gateway  '10.0.4.1'
         option device   'eth1'
-        option dns      '1.1.1.1'
         option ip6assign 64
 
 
