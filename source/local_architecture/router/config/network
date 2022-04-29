@@ -12,9 +12,9 @@ config interface 'loopback'
 config interface 'lan'
         option type     'bridge'
         option proto    'static'
-        option ipaddr   '192.168.1.2'
+        option ipaddr   '192.168.130.2'
         option netmask  '255.255.255.0'
-        option gateway  '192.168.0.1'
+        option gateway  '192.168.130.1'
         option device   'eth0'
         option ip6assign 64
 
