@@ -7,8 +7,12 @@ In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere 
 
 \section{Creazione della configurazione OpenVPN}
 
-Si devono seguire gli step descritti in sezione \ref{sec:client_keys}, per poi usare lo script creato in sezione \ref{sec:script_client}:
+Si devono seguire gli step descritti in sezione \ref{sec:client_keys}, quindi creare la certificate request e firmarla nel \it{server CA}. Per poi usare lo script creato in sezione \ref{sec:script_client} per costruire il file di configurazione:
 
 \begin{bashcode}{Server}{}
 $ ./make_config.sh router
 \end{bashcode}
+
+
+\section{Preparazione del Router 4g}
+
