@@ -10,7 +10,7 @@ In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere 
 L'interfaccia grafica dovrebbe essere gia' installata e raggiungibile, in caso contrario puo' essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
 
 % TODO la figura non sta al posto suo
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
 
     \begin{subfigure}{0.5\textwidth}
@@ -82,6 +82,7 @@ Di default non e' presente \it{OpenVPN} nel \it{Router 4g}, lo si puo' installar
 \begin{bashcode}{Router 4g}{}
 $ opkg update
 $ opkg install openvpn
+$ opkg install luci-app-openvpn
 \end{bashcode}
 
 Ora possiamo avviare il client openvpn:
@@ -100,26 +101,82 @@ $ openvpn --config /configs/router.ovpn
 
 Se il file di configurazione e' stato creato correttamente si vedra' il messaggio \\\code{Initialization Sequence Completed}.
 
-Comparira' inoltre l'interfaccia \code{tun0} a cui e' stato assegnato l'indirizzo \code{10.8.0.10}. 
+Comparira' inoltre l'interfaccia \code{tun0} a cui e' stato assegnato l'indirizzo \code{10.8.0.10}.
+
+Per abilitare l'autostart di openvpn per il router si deve, per prima cosa, modificare il file \code{/etc/config/openvpn} in modo che faccia riferimento alla config corretta:
+
+\begin{bashcode}{Router 4g}{}
+$ vim /etc/config/openvpn
+20  option config /configs/router.ovpn
+\end{bashcode}
+
+Ora possiamo abilitarla usando luci:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{immagini/LuCI_vpn}
+    \caption{Configurazione della VPN tramite LuCI}
+    \label{fig:luci-vpn}
+\end{figure}
+
+Si deve mettere il check su \it{enabled} e premere start, per poi salvare le modifiche. In questo modo il router si connettera' automaticamente alla VPN anche se venisse riavviato.
 
 \section{Abilitazione del Client-to-Client nel server OpenVPN}
 
-Il \it{Router 4g} fa parte della rete VPN ma non puo' raggiungere tutti gli host della rete VPN, infatti:
+In questo momento i client della VPN, \it{client1} e \it{router}, possono comunicare tra loro, ma lo fanno passando per la network stack del \it{server}. Infatti: 
 
 \begin{bashcode}{Router 4g}{}
-$ ping -c2 10.8.0.1                     # server openvpn
-PING 10.8.0.1 (10.8.0.1): 56 data bytes
-64 bytes from 10.8.0.1: seq=0 ttl=64 time=0.285 ms
-64 bytes from 10.8.0.1: seq=1 ttl=64 time=0.208 ms
+$ ping -c2 10.8.0.2                  # client1
+PING 10.8.0.2 (10.8.0.2): 56 data bytes
+64 bytes from 10.8.0.2: seq=0 ttl=63 time=0.519 ms
+64 bytes from 10.8.0.2: seq=1 ttl=63 time=0.501 ms
 
---- 10.8.0.1 ping statistics ---
+--- 10.8.0.2 ping statistics ---
 2 packets transmitted, 2 packets received, 0% packet loss
-round-trip min/avg/max = 0.208/0.246/0.285 ms
-
-$ ping -c2 10.8.0.6                     # client1
-PING 10.8.0.6 (10.8.0.6): 56 data bytes
-
---- 10.8.0.6 ping statistics ---
-2 packets transmitted, 0 packets received, 100% packet loss
+round-trip min/avg/max = 0.501/0.510/0.519 ms
 \end{bashcode}
 
+Dal server possiamo vedere i pacchetti con \it{tcpdump}:
+
+\begin{bashcode}{Server}{}
+$ sudo tcpdump -i tun0
+listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
+16:20:50.791063 IP 10.8.0.3 > 10.8.0.2: ICMP echo request, id 1759, seq 0, length 64
+16:20:50.791098 IP 10.8.0.3 > 10.8.0.2: ICMP echo request, id 1759, seq 0, length 64
+16:20:50.791273 IP 10.8.0.2 > 10.8.0.3: ICMP echo reply, id 1759, seq 0, length 64
+16:20:50.791285 IP 10.8.0.2 > 10.8.0.3: ICMP echo reply, id 1759, seq 0, length 64
+16:20:51.791153 IP 10.8.0.3 > 10.8.0.2: ICMP echo request, id 1759, seq 1, length 64
+16:20:51.791174 IP 10.8.0.3 > 10.8.0.2: ICMP echo request, id 1759, seq 1, length 64
+16:20:51.791365 IP 10.8.0.2 > 10.8.0.3: ICMP echo reply, id 1759, seq 1, length 64
+16:20:51.791374 IP 10.8.0.2 > 10.8.0.3: ICMP echo reply, id 1759, seq 1, length 64
+\end{bashcode}
+
+Si vede che ogni richiesta viene duplicata, la prima e' in entrata sulla network stack del \it{server} e la seconda in uscita. 
+
+Per evitare questo traffico possiamo abilitare l'opzione \code{client-to-client} nel file di configurazione del server. In questo modo il layer openvpn effettuera' direttamente il forwarding tra i client della vpn \cite{client-to-client}.
+
+\begin{bashcode}{Server}{}
+$ vim /etc/openvpn/server/server.conf
+209  client-to-client
+$ sudo systemctl restart openvpn-server@server.service
+\end{bashcode}
+
+Possiamo quindi rieseguire gli stessi test fatti sopra:
+
+\begin{bashcode}{Router 4g}{}
+$ ping -c2 10.8.0.2
+PING 10.8.0.2 (10.8.0.2): 56 data bytes
+64 bytes from 10.8.0.2: seq=0 ttl=64 time=0.351 ms
+64 bytes from 10.8.0.2: seq=1 ttl=64 time=0.307 ms
+
+--- 10.8.0.2 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.307/0.329/0.351 ms
+\end{bashcode}
+
+Ma questa volta la network stack del \it{server} non vede nessun pacchetto:
+
+\begin{bashcode}{Server}{}
+$ sudo tcpdump -i tun0
+listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
+\end{bashcode}
