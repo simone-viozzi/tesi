@@ -83,6 +83,7 @@ set_var EASYRSA_REQ_CITY     "Recanati"
 set_var EASYRSA_REQ_ORG      "Esse-ti"
 set_var EASYRSA_REQ_EMAIL    "s.gasparrini@esse-ti.it"
 set_var EASYRSA_REQ_OU       "Esse-ti"
+set_var EASYRSA_REQ_CN       "openvpn-ca"
 
 set_var EASYRSA_ALGO         "ec"
 set_var EASYRSA_DIGEST       "sha512"
@@ -337,10 +338,12 @@ Dobbiamo quindi modificare il file e cambiare alcune configurazioni, per facilit
 \begin{bashcode}{Server}{}
 $ sudo vim server.conf
 85  dh none             # non sonos stati usati i parametri Diffie-Hellman
+92  topology subnet     # topologia raccomandata
 244 ;tls-auth ta.key 0 # This file is secret
 245 tls-crypt ta.key    # selezione della preshared key
 253 cipher AES-256-GCM  # selezione della cifratura scelta
-275 user nobody         # utente che eseguira' il server openvpn, in modo da restringere i permessi
+275 user nobody         # utente che eseguira' il server openvpn, in modo da 
+                        #  restringere i permessi
 276 group nogroup       # stassa cosa per il gruppo
 318 auth sha256         # selezione del metodo di autenticazione
 \end{bashcode}

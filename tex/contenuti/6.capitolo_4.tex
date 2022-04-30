@@ -9,6 +9,7 @@ In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere 
 
 L'interfaccia grafica dovrebbe essere gia' installata e raggiungibile, in caso contrario puo' essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
 
+% TODO la figura non sta al posto suo
 \begin{figure}[h!]
     \centering
 
@@ -88,6 +89,7 @@ Ora possiamo avviare il client openvpn:
 \begin{bashcode}{Router 4g}{}
 $ openvpn --config /configs/router.ovpn
 2022-04-29 17:26:37 OpenVPN 2.5.6 x86_64-openwrt-linux-gnu [SSL (mbed TLS)] [LZ4] [EPOLL] [MH/PKTINFO] [AEAD]
+[...]
 2022-04-29 17:26:37 VERIFY EKU OK
 2022-04-29 17:26:37 VERIFY OK: depth=0, CN=server
 2022-04-29 17:26:37 Control Channel: TLSv1.2, cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384, 2048 bit key
@@ -102,7 +104,7 @@ Comparira' inoltre l'interfaccia \code{tun0} a cui e' stato assegnato l'indirizz
 
 \section{Abilitazione del Client-to-Client nel server OpenVPN}
 
-Il \it{router 4g} fa parte della rete VPN ma non puo' raggiungere tutti gli host della rete VPN, infatti:
+Il \it{Router 4g} fa parte della rete VPN ma non puo' raggiungere tutti gli host della rete VPN, infatti:
 
 \begin{bashcode}{Router 4g}{}
 $ ping -c2 10.8.0.1                     # server openvpn

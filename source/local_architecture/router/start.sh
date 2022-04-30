@@ -1,20 +1,11 @@
 #! /bin/sh
 
 init(){
-sleep 7
-
-service network stop
-service network start
-service network reload
-
-#default via 192.168.0.1 dev eth0 
-#10.0.4.0/24 dev eth1 proto kernel scope link src 10.0.4.4 
-#192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.2
-
-
+sleep 10
+    openvpn --config /configs/router1.ovpn &
+    sleep 3
+    ping -c 2 10.8.0.1
 }
 
-#(init) &
+(init) &
 exec /sbin/init
-
-ash

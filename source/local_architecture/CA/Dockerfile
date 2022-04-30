@@ -36,7 +36,3 @@ RUN ./easyrsa build-ca nopass
 
 RUN mkdir ~/keys
 RUN chown ubuntu:ubuntu ~/keys
-
-WORKDIR /home/ubuntu
-
-CMD [ "bash" ]

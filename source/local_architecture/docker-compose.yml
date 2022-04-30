@@ -1,5 +1,8 @@
 
 services:
+  ca:
+    build: ./CA
+    image: ca_base
   router:
     build: ./router/
     stdin_open: true
@@ -49,6 +52,8 @@ services:
         ipv4_address: "10.0.4.2"
     cap_add:
       - NET_ADMIN
+    depends_on:
+      - ca
   client:
     build: ./client/
     privileged: true
