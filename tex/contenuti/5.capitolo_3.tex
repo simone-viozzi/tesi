@@ -574,16 +574,11 @@ Ora che abbiamo un file di configurazione per il client, possiamo testare che la
 
 \begin{bashcode}{Client}{}
 $ sudo openvpn --config client1.ovpn
-Thu Apr 21 12:53:04 2022 OPTIONS IMPORT: adjusting link_mtu to 1624
-Thu Apr 21 12:53:04 2022 OPTIONS IMPORT: data channel crypto options modified
+[...]
 Thu Apr 21 12:53:04 2022 Outgoing Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
 Thu Apr 21 12:53:04 2022 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
-Thu Apr 21 12:53:04 2022 ROUTE_GATEWAY 10.0.4.1/255.255.255.0 IFACE=eth0 HWADDR=02:42:0a:00:04:03
-Thu Apr 21 12:53:04 2022 TUN/TAP device tun0 opened
-Thu Apr 21 12:53:04 2022 TUN/TAP TX queue length set to 100
-Thu Apr 21 12:53:04 2022 /sbin/ip link set dev tun0 up mtu 1500
-Thu Apr 21 12:53:04 2022 /sbin/ip addr add dev tun0 local 10.8.0.6 peer 10.8.0.5
-Thu Apr 21 12:53:04 2022 /sbin/ip route add 10.8.0.1/32 via 10.8.0.5
+Thu Apr 21 12:53:04 2022 ROUTE_GATEWAY 192.168.1.20/255.255.255.0 IFACE=eth0 HWADDR=02:42:0a:00:04:03
+Thu Apr 21 12:53:04 2022 /sbin/ip route add 10.8.0.1/32 via 10.8.0.2
 Thu Apr 21 12:53:04 2022 WARNING: this configuration may cache passwords in memory -- use the auth-nocache option to prevent this
 Thu Apr 21 12:53:04 2022 Initialization Sequence Completed
 \end{bashcode}
@@ -593,18 +588,18 @@ Se la configurazione fino a questo punto e' corretta si avra' il messaggio \\\co
 Nel \it{client} si avra' una nuova interfaccia di rete chiamata \code{tun0}, questa e' l'interfaccia virtuale creata dalla vpn.
 
 \begin{bashcode}{Client}{}
-2: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 100
+2: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500
     link/none 
-    inet 10.8.0.6 peer 10.8.0.5/32 scope global tun0
+    inet 10.8.0.2/24 scope global tun0
        valid_lft forever preferred_lft forever
 \end{bashcode}
 
-Si puo' vedere come l'ip assegnato al \it{client} dalla vpn e' \code{10.8.0.6}.
+Si puo' vedere come l'ip assegnato al \it{client} dalla vpn e' \code{10.8.0.2}.
 
 Per testare che la connessione sia instaurata correttamente si puo' usare la utility \code{ping}, ad esempio possiamo fare il ping dal \it{client} verso l'ip interno alla vpn del \it{server}:
 
 \begin{bashcode}{Client}{}
-$ ping 10.8.0.1
+$ ping -c2 10.8.0.1
 PING 10.8.0.1 (10.8.0.1) 56(84) bytes of data.
 64 bytes from 10.8.0.1: icmp_seq=1 ttl=64 time=0.250 ms
 64 bytes from 10.8.0.1: icmp_seq=2 ttl=64 time=0.220 ms
@@ -615,10 +610,10 @@ Se nel frattempo si esegue la utility \code{tpcdump} sul server si potranno vede
 \begin{bashcode}{Server}{}
 $ sudo tcpdump
 listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
-13:05:18.423151 IP 10.8.0.6 > 10.8.0.1: ICMP echo request, id 2, seq 1, length 64
-13:05:18.423171 IP 10.8.0.1 > 10.8.0.6: ICMP echo reply, id 2, seq 1, length 64
-13:05:19.431496 IP 10.8.0.6 > 10.8.0.1: ICMP echo request, id 2, seq 2, length 64
-13:05:19.431518 IP 10.8.0.1 > 10.8.0.6: ICMP echo reply, id 2, seq 2, length 64
+13:11:12.018615 IP 10.8.0.2 > 10.8.0.1: ICMP echo request, id 11, seq 1, length 64
+13:11:12.018640 IP 10.8.0.1 > 10.8.0.2: ICMP echo reply, id 11, seq 1, length 64
+13:11:13.039993 IP 10.8.0.2 > 10.8.0.1: ICMP echo request, id 11, seq 2, length 64
+13:11:13.040018 IP 10.8.0.1 > 10.8.0.2: ICMP echo reply, id 11, seq 2, length 64
 \end{bashcode}
 
-Si vede quindi che e' possibile una comunicazione bidirezionale tra \it{client}, \code{10.8.0.6}, e \it{server}, \code{10.8.0.1}.
+Si vede quindi che e' possibile una comunicazione bidirezionale tra \it{client}, \code{10.8.0.2}, e \it{server}, \code{10.8.0.1}.

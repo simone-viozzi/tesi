@@ -3,13 +3,14 @@
 
 \section{Overview della configurazione}
 
-In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere le opportune regole in modo che il traffico proveniente dall'host domotico sia indirizzato verso la VPN
+In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VPN.
 
 \newsavebox{\myimage}
+
 \begin{figure}[H]
-    \centering
+    \centering%
     \savebox{\myimage}{
-        \includegraphics[width=0.45\linewidth]{immagini/diag-router_real}
+        \includegraphics[width=0.45\textwidth]{immagini/diag-router_real}
     }
     \begin{subfigure}{0.4\textwidth}
         \centering
@@ -17,7 +18,7 @@ In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere 
         \caption{Diagramma di stato del router}
         \label{fig:diag-router}
     \end{subfigure}
-    \hfill 
+    \hfill%
     \begin{subfigure}{0.5\textwidth}
         \centering
         \raisebox{\dimexpr.5\ht\myimage-.5\height\relax}{
@@ -33,7 +34,6 @@ In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere 
 
 L'interfaccia grafica dovrebbe essere gia' installata e raggiungibile, in caso contrario puo' essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
 
-% TODO la figura non sta al posto suo
 \begin{figure}[H]
     \centering
 
