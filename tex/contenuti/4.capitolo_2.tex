@@ -14,7 +14,7 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 	\item rendere questi dispositivi accessibili ai clienti attraverso internet
 \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includesvg[width=250px]{immagini/diag-goal}
 	\caption{Schema concettuale dell'obbiettivo da raggiungere. \cite{icons}}
@@ -26,7 +26,7 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 Data la presenza del CG-NAT si vede subito che non \`e realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo per\`o non \`e possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il 4G.Router e il cliente.
 
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includesvg[width=250px]{immagini/diag-real}
 	\caption{Schema concettuale dell'architettura che si dovr\`a implementare. \cite{icons}}
@@ -40,7 +40,7 @@ In questo modo si pu\`o configurare una VPN sul server OVH e connettervi sia il 
 
 La configurazione virtuale vista dal 4G.Router e dai clienti sar\`a quindi:
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includesvg[width=250px]{immagini/diag-virtual}
 	\caption{Topologia virtuale. \cite{icons}}
@@ -89,7 +89,7 @@ Presenta inoltre come sistema operativo una versione personalizzata di OpenWrt.
 
 La configurazione del dispositivo puo' essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
 
-\begin{figure}
+\begin{figure}[H]
 
 	\newlength{\tempheight}
     \setlength{\tempheight}{23ex}
