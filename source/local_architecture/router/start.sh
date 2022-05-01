@@ -6,8 +6,6 @@ init(){
     sed -i '20s|.*|        option config /configs/router1.ovpn|' /etc/config/openvpn
 
     service openvpn restart
-    #sleep 10
-    #openvpn --config /configs/router1.ovpn &
     
     sleep 2
     ping -c 2 10.8.0.1
