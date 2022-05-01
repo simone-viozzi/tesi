@@ -40,30 +40,30 @@ Luci e' la web interface ufficiale di \it{openwrt}, dovrebbe essere gia' install
 
     \begin{subfigure}{0.5\textwidth}
         \centering
-        \includegraphics[height=0.6\linewidth]{immagini/LuCI_login}
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_login}
         \caption{Login page}
         \label{fig:luci-login}
     \end{subfigure}%
     \hfill
     \begin{subfigure}{0.5\textwidth}
         \centering
-        \includegraphics[height=0.6\linewidth]{immagini/LuCI_status}
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_status}
         \caption{Status page}
         \label{fig:luci-status}
     \end{subfigure}%
 
     \begin{subfigure}{0.5\textwidth}
         \centering
-        \includegraphics[height=0.6\linewidth]{immagini/LuCI_graphs}
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_graphs}
         \caption{Graphs page}
         \label{fig:luci-graphs}
     \end{subfigure}%
     \hfill
     \begin{subfigure}{0.5\textwidth}
         \centering
-        \includegraphics[height=0.6\linewidth]{immagini/LuCI_interfaces}
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_interfaces}
         \caption{Interfaces page}
-        \label{fig:luci-graphs}
+        \label{fig:luci-interfaces}
     \end{subfigure}%
     \caption{Interfaccia grafica LuCI}
 \end{figure}
@@ -213,5 +213,15 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 
 \section{Assegnazione ip statico al Router}
 
-Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale ip viene assegnato al router e' necessario assegnargliene uno statico. Questo viene fatto usando le \code{cleint-config-dir}
+Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale ip viene assegnato al router e' necessario assegnargliene uno statico. Questo viene fatto usando la \code{cleint-config-dir}.
 
+\begin{bashcode}{Server}{}
+$ sudo mkdir /etc/openvpn/server/ccd    # creo la client-config-dir
+$ vim /etc/openvpn/server/server.conf   # abilito l'opzione nella config del server
+167  client-config-dir ccd
+$ vim /etc/openvpn/server/ccd/router
+ifconfig-push 10.8.0.254 255.255.255.0  # impongo l'ip per questo common name
+$ sudo systemctl restart openvpn-server@server.service
+\end{bashcode}
+
+Cosi' facendo al router gli verra' sempre assegnato l'ip \code{10.8.0.254}, indipendentemente dall'ordine in cui gli host si connettono alla vpn. Cio' ci permette di sapere sempre e a priori qual'e' l'ip del router.

@@ -110,6 +110,11 @@ COPY --chown=ubuntu:ubuntu base.conf base.conf
 COPY --chown=ubuntu:ubuntu make_config.sh make_config.sh
 RUN chmod 700 make_config.sh
 
+# <-- client config dirs -->
+RUN sudo mkdir /etc/openvpn/server/ccd
+RUN echo "ifconfig-push 10.8.0.254 255.255.255.0" | sudo tee /etc/openvpn/server/ccd/router1
+
+
 WORKDIR /home/ubuntu
 
 COPY --chown=ubuntu:ubuntu start.sh start.sh

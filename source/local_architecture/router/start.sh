@@ -8,8 +8,8 @@ init(){
     service openvpn restart
     
     sleep 2
-    ping -c 2 10.8.0.1 >/dev/null || echo "-----------------------\nserver is down\n-----------------------"
-    ping -c 2 10.8.0.2 >/dev/null || echo "-----------------------\nclient to client is off\n-----------------------"
+    ping -c 2 10.8.0.1 >/dev/null || echo -e "-----------------------\nserver is down\n-----------------------"
+    ping -c 2 10.8.0.2 >/dev/null || echo -e "-----------------------\nclient to client is off\n-----------------------"
 }
 
 (init) &
