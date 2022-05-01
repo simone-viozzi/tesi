@@ -5,6 +5,30 @@
 
 In questo capitolo andremo a connettere il router 4g alla rete vpn e aggiungere le opportune regole in modo che il traffico proveniente dall'host domotico sia indirizzato verso la VPN
 
+\newsavebox{\myimage}
+\begin{figure}[H]
+    \centering
+    \savebox{\myimage}{
+        \includegraphics[width=0.45\linewidth]{immagini/diag-router_real}
+    }
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \usebox{\myimage}
+        \caption{Diagramma di stato del router}
+        \label{fig:diag-router}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \raisebox{\dimexpr.5\ht\myimage-.5\height\relax}{
+            \includegraphics[width=1\linewidth]{immagini/diag-router_goal}
+        }
+        \caption{Diagramma di stato del router}
+        \label{fig:diag-router1}
+    \end{subfigure}
+\end{figure}
+
+
 \section{Introduzione a Luci}
 
 L'interfaccia grafica dovrebbe essere gia' installata e raggiungibile, in caso contrario puo' essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
