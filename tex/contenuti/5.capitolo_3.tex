@@ -267,6 +267,14 @@ $ sudo cp ta.key /etc/openvpn/server
 \section{Generazione delle chiavi per i clients}
 \label{sec:client_keys}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{immagini/diag-firma_certificato_client}
+    \label{fig:diag-firma_certificato}
+    \caption{Diagramma per schematizzare la procedura di firma di un certificato client. \cite{icons}}
+\end{figure}
+
+
 Creiamo una cartella nella \it{home} che ospitera' le chiavi dei \it{client} e le configurazioni openvpn:
 
 \begin{bashcode}{Server}{}
