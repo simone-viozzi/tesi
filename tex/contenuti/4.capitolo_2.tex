@@ -16,7 +16,7 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 
 \begin{figure}[H]
 	\centering
-	\includesvg[width=250px]{immagini/diag-goal}
+	\includegraphics[width=0.5\linewidth]{immagini/diag-goal}
 	\caption{Schema concettuale dell'obbiettivo da raggiungere. \cite{icons}}
 
 	\label{fig:schema_concettuale}
@@ -28,7 +28,7 @@ Data la presenza del CG-NAT si vede subito che non \`e realizzabile a meno che i
 
 \begin{figure}[H]
 	\centering
-	\includesvg[width=250px]{immagini/diag-real}
+	\includegraphics[width=0.5\linewidth]{immagini/diag-real}
 	\caption{Schema concettuale dell'architettura che si dovr\`a implementare. \cite{icons}}
 
 	\label{fig:schem_architettura_reale}
@@ -42,7 +42,7 @@ La configurazione virtuale vista dal 4G.Router e dai clienti sar\`a quindi:
 
 \begin{figure}[H]
 	\centering
-	\includesvg[width=250px]{immagini/diag-virtual}
+	\includegraphics[width=0.5\linewidth]{immagini/diag-virtual}
 	\caption{Topologia virtuale. \cite{icons}}
 
 	\label{fig:schema_architettura_virtuale}
@@ -92,34 +92,34 @@ La configurazione del dispositivo puo' essere fatta sia da terminale, entrando i
 \begin{figure}[H]
 
 	\newlength{\tempheight}
-    \setlength{\tempheight}{23ex}
+	\setlength{\tempheight}{23ex}
 
 	\centering%
-    \begin{subfigure}[t]{0.5\textwidth}
-        \centering%
-        \includegraphics[totalheight = \tempheight]{immagini/interfacciar4g_init.png}
-        \caption{Schermata di autenticazione}
-    \end{subfigure}%
+	\begin{subfigure}[t]{0.5\textwidth}
+		\centering%
+		\includegraphics[totalheight=\tempheight]{immagini/interfacciar4g_init}
+		\caption{Schermata di autenticazione}
+	\end{subfigure}%
 	\hfill
-    \begin{subfigure}[t]{0.5\textwidth}
-        \centering%
-        \includegraphics[totalheight = \tempheight]{immagini/interfacciar4g_traffic.png}
-        \caption{Grafico del traffico}
-    \end{subfigure}
+	\begin{subfigure}[t]{0.5\textwidth}
+		\centering%
+		\includegraphics[totalheight=\tempheight]{immagini/interfacciar4g_traffic}
+		\caption{Grafico del traffico}
+	\end{subfigure}
 
 	\vspace{1ex}
 
 	\begin{subfigure}[b]{\textwidth}
-        \centering%
-        \includegraphics[totalheight = 1.6\tempheight]{immagini/interfacciar4g_status.png}
-        \caption{Schermata con stato riassuntivo}
-    \end{subfigure}
+		\centering%
+		\includegraphics[totalheight=1.6\tempheight]{immagini/interfacciar4g_status}
+		\caption{Schermata con stato riassuntivo}
+	\end{subfigure}
 
 \end{figure}
 
 L'interfaccia web e' una versione personalizzata di \href{https://openwrt.org/docs/guide-user/luci/start}{Luci}.
 
-Per semplicita' si fara' riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente router.
+Per semplicita' si fara' riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \it{Router}.
 
 \subsection{VPS OVHCloud}
 
@@ -136,7 +136,7 @@ Per la realizzazione della topologia e' stata selezionata una macchina una VPS d
 	\item Ubuntu 16.04
 \end{itemize}
 
-Per semplicita' si fara' riferimento alla \textit{VPS OVHCloud} come server.
+Per semplicita' si fara' riferimento alla \textit{VPS OVHCloud} come \it{Server}.
 
 \subsection{Host domotico}
 
