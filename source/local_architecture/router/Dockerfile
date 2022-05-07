@@ -31,6 +31,9 @@ RUN opkg update && \
       opkg install vim-fuller
 RUN opkg update && \
       opkg install luci-app-openvpn
+RUN opkg update && \
+      opkg install iptables
+
 
 RUN opkg list-upgradable | awk '{print $1}' | xargs opkg upgrade || true
 
