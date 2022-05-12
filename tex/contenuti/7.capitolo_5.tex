@@ -191,17 +191,17 @@ Possiamo inoltre usare \code{tracepath} per vedere gli hop:
 \begin{bashcode}{Client}{}
 $ tracepath 192.168.130.3
 1?: [LOCALHOST]                      pmtu 1500
-1:  10.8.0.254                                            0.471ms
-1:  10.8.0.254                                            0.473ms
-2:  192.168.130.3                                         0.567ms reached
+1:  10.8.0.254                       0.471ms
+1:  10.8.0.254                       0.473ms
+2:  192.168.130.3                    0.567ms reached
     Resume: pmtu 1500 hops 2 back 2
 \end{bashcode}
 
 \begin{bashcode}{host-domotico}{}
 $ tracepath 10.8.0.2
 1?: [LOCALHOST]                      pmtu 1500
-1:  router-1   0.062ms
-1:  router-1   0.068ms
-2:  10.8.0.2                                              0.592ms reached
+1:  router-1                         0.062ms
+1:  router-1                         0.068ms
+2:  10.8.0.2                         0.592ms reached
     Resume: pmtu 1500 hops 2 back 2
 \end{bashcode}
