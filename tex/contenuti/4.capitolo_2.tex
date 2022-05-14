@@ -6,7 +6,7 @@
 
 \section{Obbiettivo da ottenere}
 
-In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'azienda \textbf{Esse-ti S.R.L.} ci \`e stato esposto un progetto che consiste nel:
+In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'azienda \textbf{Esse-ti S.R.L.} ci è stato esposto un progetto che consiste nel:
 
 %todo non mi piace come sta messo
 \begin{itemize}
@@ -23,22 +23,22 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 
 \end{figure}
 
-Data la presenza del CG-NAT si vede subito che non \`e realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo per\`o non \`e possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il 4G.Router e il cliente.
+Data la presenza del CG-NAT si vede subito che non è realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo però non è possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il 4G.Router e il cliente.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{immagini/diag-real}
-	\caption{Schema concettuale dell'architettura che si dovr\`a implementare. \cite{icons}}
+	\caption{Schema concettuale dell'architettura che si dovrà implementare. \cite{icons}}
 
 	\label{fig:schem_architettura_reale}
 
 \end{figure}
 
 %todo rivedi frase
-In questo modo si pu\`o configurare una VPN sul server OVH e connettervi sia il 4G.Router che la macchina del cliente. In questo modo l'unica configurazione che il cliente dovr\`a fare \`e l'installazione di un cliente VPN, ci\`o \`e il minimo possibile di configurazione.
+In questo modo si può configurare una VPN sul server OVH e connettervi sia il 4G.Router che la macchina del cliente. In questo modo l'unica configurazione che il cliente dovrà fare è l'installazione di un cliente VPN, ciò è il minimo possibile di configurazione.
 
-La configurazione virtuale vista dal 4G.Router e dai clienti sar\`a quindi:
+La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 
 \begin{figure}[H]
 	\centering
@@ -65,7 +65,7 @@ vediamo le caratteristiche minime che i componenti dovranno avere:
 
 \subsection{Esse-ti 4G.Router}
 
-Ci \`e stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link})
+Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link})
 
 
 \begin{figure}[ht]

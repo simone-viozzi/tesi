@@ -3,7 +3,7 @@
 
 \section{Overview della configurazione}
 
-Per simulare gli host domotici e' stata usatata una raspberry pi.
+Per simulare gli host domotici è stata usatata una raspberry pi.
 
 \begin{figure}[H]
     \centering
@@ -29,9 +29,9 @@ Per simulare gli host domotici e' stata usatata una raspberry pi.
 
 \section{Creazione della firewall zone per la VPN} 
 
-Per rendere possibile la comunicazione tra la rete \it{lan} del \it{Router} e la VPN e' necessario configurare opportunamente il firewall.
+Per rendere possibile la comunicazione tra la rete \it{lan} del \it{Router} e la VPN è necessario configurare opportunamente il firewall.
 
-Cio' viene fatto direttamente da luci, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \ref{fig:luci-firewall-init}.
+Ciò viene fatto direttamente da luci, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \ref{fig:luci-firewall-init}.
 
 % rifare lo screen in modo che prenda solo la parte al centro
 \begin{figure}[H]
@@ -50,7 +50,7 @@ Si deve quindi aggiungere una nuova zona, chiamata vpn, con le seguenti opzioni:
 
 Possiamo vedere la pagina di configurazione:
 
-% TODO forse e' meglio se le 2 figure stanno vicine
+% TODO forse è meglio se le 2 figure stanno vicine
 
 % TODO rifare lo screen
 \begin{figure}[H]
@@ -74,7 +74,7 @@ Dopo aver salvato, la pagina del firewall sara':
 
 Per rendere attiva la zona firewall appena creata gli si deve assegnare almeno un'interfaccia, in questo caso gli si deve assegnare l'interfaccia tun0.
 
-Cio' va fatto da luci, nella sezione \it{interfaces}. Si deve quindi aggiungere una nuova interfaccia con le seguenti opzioni:
+Ciò va fatto da luci, nella sezione \it{interfaces}. Si deve quindi aggiungere una nuova interfaccia con le seguenti opzioni:
 \begin{itemize}
     \item Name: tun0
     \item Proto: static
@@ -104,14 +104,14 @@ Cio' va fatto da luci, nella sezione \it{interfaces}. Si deve quindi aggiungere 
 
 \section{Modifiche alla configurazione OpenVPN del server}
 
-Per instaurare una comunicazione bidirezionale tra \it{host-domotico} e \it{client} e' necessario che:
+Per instaurare una comunicazione bidirezionale tra \it{host-domotico} e \it{client} è necessario che:
 
 \begin{enumerate}
     \item il server vpn sia consapevole che il \it{router} vuole esporre una sua sottorete verso la vpn
     \item il client abbia l'opportuna rotta per raggiungere la sottorete dove si trova l'\it{host-domotico}
 \end{enumerate}
 
-Per il punto 1 e' necessario aggiungere la seguente riga nel file \\\code{/etc/openvpn/server/ccd/router}
+Per il punto 1 è necessario aggiungere la seguente riga nel file \\\code{/etc/openvpn/server/ccd/router}
 
 \begin{bashcode}{Server}{}
 $ vim /etc/openvpn/server/ccd/router
@@ -121,7 +121,7 @@ $ vim /etc/openvpn/server/server.conf
 169 route 192.168.130.0 255.255.255.0  # aggiungo la rotta nel server
 \end{bashcode}
 
-Per il punto 2 e' necessario aggiungere la seguente riga alla configurazione OpenVPN nel \it{Server}:
+Per il punto 2 è necessario aggiungere la seguente riga alla configurazione OpenVPN nel \it{Server}:
 
 \begin{bashcode}{Server}{}
 $ vim /etc/openvpn/server/server.conf
@@ -160,7 +160,7 @@ $ tcpdump -i tun0
 listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \end{bashcode}
 
-Il server non ha visto traffico poiche' ha l'opzione \code{client-to-client} abilitata, cio' comporta che il layer vpn effettua il routing senza passare per l'interfaccia di rete del router.
+Il server non ha visto traffico poichè ha l'opzione \code{client-to-client} abilitata, ciò comporta che il layer vpn effettua il routing senza passare per l'interfaccia di rete del router.
 
 \begin{bashcode}{Router}{}
 $ tcpdump -i tun0
