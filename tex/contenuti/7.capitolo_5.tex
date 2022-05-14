@@ -33,6 +33,7 @@ Per rendere possibile la comunicazione tra la rete \it{lan} del \it{Router} e la
 
 Cio' viene fatto direttamente da luci, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \ref{fig:luci-firewall-init}.
 
+% rifare lo screen in modo che prenda solo la parte al centro
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_init}
@@ -49,6 +50,9 @@ Si deve quindi aggiungere una nuova zona, chiamata vpn, con le seguenti opzioni:
 
 Possiamo vedere la pagina di configurazione:
 
+% TODO forse e' meglio se le 2 figure stanno vicine
+
+% TODO rifare lo screen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_vpn}
@@ -58,6 +62,7 @@ Possiamo vedere la pagina di configurazione:
 
 Dopo aver salvato, la pagina del firewall sara':
 
+% TODO rifare lo screen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_end}
@@ -99,7 +104,7 @@ Cio' va fatto da luci, nella sezione \it{interfaces}. Si deve quindi aggiungere 
 
 \section{Modifiche alla configurazione OpenVPN del server}
 
-Per instaurare una comunicazione bidirezionale tra \it{host-domotico} e \it{clien} e' necessario che:
+Per instaurare una comunicazione bidirezionale tra \it{host-domotico} e \it{client} e' necessario che:
 
 \begin{enumerate}
     \item il server vpn sia consapevole che il \it{router} vuole esporre una sua sottorete verso la vpn
@@ -123,6 +128,8 @@ $ vim /etc/openvpn/server/server.conf
 168 push "route 192.168.130.0 255.255.255.0"
 \end{bashcode}
 
+Dopo aver modificato la configurazione del server devo riavviarlo con \code{systemctl restart}
+
 In questo modo nel \it{client1} verra' aggiunta una nuova rotta nel momento in cui si connette alla vpn:
 
 \begin{bashcode}{Client}{}
@@ -133,9 +140,9 @@ $ ip route
 
 \section{Test della configurazione}
 
-Per testare la connessione tra \code{client} e \code{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \code{Server} e \code{Router} per vedere il percorso dei pacchetti.
+Per testare la connessione tra \it{client} e \it{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \it{Server} e \it{Router} per vedere il percorso dei pacchetti.
 
-Vediamo quindi un ping dal client verso l'host-domotico, con server e router in ascolto sull'interfaccia tun0
+Vediamo quindi un ping dal client verso l'host-domotico, con server e router in ascolto sull'interfaccia tun0:
 
 \begin{bashcode}{Client}{}
 $ ping -c 1 192.168.130.3
