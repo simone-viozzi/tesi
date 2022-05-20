@@ -1,4 +1,4 @@
-
+S
 \chapter{Introduzione}
 
 
@@ -7,10 +7,22 @@
 % https://en.wikipedia.org/wiki/Internet_protocol_suite
 % https://it.wikipedia.org/wiki/Modello_OSI
 
+% TODO aggiungi riferimenti all'incapsulamento
+% TODO aggiungi schema per descrivere l'incapsulamento
 
+L'architettura che determina il funzionamento di Internet si basa su un modello a strati, in cui ogni strato e' indipendente da quelli sottostanti.
 
+Vediamo una versione semplificata del modello iso osi:
 
+\begin{enumerate}
+    \item[5.] \textbf{livello applicazione}: e' il livello con cui gli utenti internet interagiscono comunemente, a questo livello fanno parte i protocolli http/https, ssh, ftp etc. 
+    \item[4.] \textbf{livello di trasporto}: i protocolli piu' comuni sono tcp / udp
+    \item[3.] \textbf{livello di rete}: protocollo ip
+    \item[2.] \textbf{livello di Data Link}: prococollo ethernet
+    \item[1.] \textbf{livello fisico}: determina il mezzo fisico su cui viaggiano i pacchetti
+\end{enumerate}
 
+Possiamo vedere questa distinzione su una cattura di un pacchetto con \it{Wireshark}:
 
 \begin{bashcode}{Wireshark}{}
 > Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
@@ -26,6 +38,7 @@
             [Application Data Protocol: http-over-tls]
 \end{bashcode}
 
+Si puo' vedere la stratificazione
 
 
 \section{Openvpn}
@@ -33,7 +46,12 @@
 % https://wiki.wireshark.org/OpenVPN
 % https://build.openvpn.net/doxygen/network_protocol.html
 
-% TODO aggiungi screen di wireshark su pacchetto openvpn
+OpenVPN e' un applicativo opensource che permette di instaurare una connessione VPN tra computer. Fa uso di protocolli di crittografia che garantiscono che la connessione sia privata e sicura.
+Al contrario di altri protocolli VPN, come % TODO vedi da slide huawei nella parte delle vpn
+
+e' di livello applicazione e va incapsulato in udp o tcp,
+
+vediamo una cattura di wireshark:
 
 \begin{bashcode}{Wireshark}{}
 > Frame 90: 82 bytes on wire (656 bits), 82 bytes captured (656 bits) on interface br-08876ccdf1f5, id 0
@@ -47,7 +65,21 @@
             Data: 00000019a366196eb2aca181df226faf8514ab73f524f7ef335d55fc57322d032a2095e4
 \end{bashcode}
 
+% TODO do not like -> https://it.wikipedia.org/wiki/OpenVPN#Rete
+All'interno del campo data del pacchetto openvpn vi e', criptato, un pacchetto IP o addirittura anche un pacchetto ethernet.
+
+Per la cifratura si serve della libreria OpenSSL, ne supporta quindi tutti i protocolli di cifratura. Ha inoltre ulteriori estensioni alla sicurezza come l'utilizzo dell'autenticazione di pacchetto HMAC.
+
+% https://en.wikipedia.org/wiki/Pre-shared_key
 
 \section{Openwrt}
 
+OpenWRT e' un sistema operativo per sistemi enbedded, e' principalmente usato nei router. E' basato su kernel linux, con specifica attenzione dell'ottimizazione del sistema per fare in modo che possa eseguirsi su sistemi con risorse estremamente ridotte.
+Al contrario di altri sistemi operativi per dispositivi embedding, OpenWRT presenta un filesystem con permessi di scrittura, cio' permette all'utente di accedervi e modificare a runtime le funzionalita' del dispositivo.
+
+Comprende una shell linux comprensiva delle funzionalita' piu' comuni, compreso il suo gestore pacchetti opkg.
+
+OpenWRT puo' essere configurato sia tramite shell che tramite interfaccia web (LuCI).
+
+% TODO move the openwrt shell banner e gli screen di luci
 
