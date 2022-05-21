@@ -3,6 +3,7 @@
 
 \section{Overview della configurazione}
 
+% TODO aggiungi descrizione
 Per simulare gli host domotici è stata usatata una raspberry pi.
 
 \begin{figure}[H]
@@ -128,8 +129,9 @@ $ vim /etc/openvpn/server/server.conf
 168 push "route 192.168.130.0 255.255.255.0"
 \end{bashcode}
 
-Dopo aver modificato la configurazione del server devo riavviarlo con \code{systemctl restart}
+Dopo aver modificato la configurazione del server va riavviarlo con \code{systemctl restart}
 
+% TODO da rivedere
 In questo modo nel \it{client1} verra' aggiunta una nuova rotta nel momento in cui si connette alla vpn:
 
 \begin{bashcode}{Client}{}
@@ -192,7 +194,7 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 11:56:10.470230 IP 10.8.0.2 > host-domotico: ICMP echo reply, id 14, seq 1, length 64
 \end{bashcode}
 
-
+% TODO da espandere
 Possiamo inoltre usare \code{tracepath} per vedere gli hop:
 
 \begin{bashcode}{Client}{}
