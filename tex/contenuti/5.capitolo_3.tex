@@ -521,7 +521,7 @@ Il comando \code{systemctl enable} abilita il servizio per essere avviato all'av
 \section{Script per la creazione delle configurazioni dei client}
 \label{sec:script_client}
 
-Per facilitare la creazione dei file di configurazione dei client, \code{clientX.conf}, andremo a creare un apposito script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
+Per facilitare la creazione dei file di configurazione dei client, \code{clientX.ovpn}, andremo a creare un apposito script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
 
 \begin{bashcode}{Server}{}
 $ cd ~/client-configs/
@@ -531,12 +531,12 @@ $ wget "https://raw.githubusercontent.com/OpenVPN/openvpn\
 $ vim base.conf
 42   remote 51.178.141.119 1194     # va messo l'ip e la porta del server OpenVPN
 88   ;ca ca.crt                     # non useremo i file esterni ma ingloberemo 
-89   ;cert client.crt               # questi file in un file direttamente nella
-90   ;key client.key                # configurazione del client
-108  ;tls-auth ta.key 1             # stessa cosa per la preshared key
+89   ;cert client.crt               #   questi file in un file direttamente nella
+90   ;key client.key                #   configurazione del client
+108  ;tls-auth ta.key 1             # 
 116  cipher AES-256-GCM             # cifratura usata
 117  auth SHA256                    # autenticazione usata
-118  key-direction 1                
+118  key-direction 1                # indica che e' un client
 \end{bashcode}
 
 Ora creiamo lo script bash \code{make\_config.sh}:
@@ -545,7 +545,9 @@ Ora creiamo lo script bash \code{make\_config.sh}:
 $ vim make_config.sh
 #!/bin/bash
 
-# First argument: Client identifier
+# usage:
+# \$ make\_config.sh client1
+# will use [ca.crt, client1.crt, client1.key, ta.key] to create client1.ovpn
     
 KEY_DIR=~/client-configs/keys
 OUTPUT_DIR=~/client-configs/files
@@ -565,7 +567,8 @@ cat ${BASE_CONFIG} \
 $ chmod 700 make_config.sh
 \end{bashcode}
 
-Lo scopo di questo script è di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, e la \it{preshared key}. Il tutto viene scritto in un file che ha lo stesso nome del \it{client} per cui si sta creando la configurazione ma \code{.conf}.
+% TODO da riscrivere!
+Lo scopo di questo script è di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, e la \it{preshared key}. Il tutto viene scritto in un file che ha lo stesso nome del \it{client} per cui si sta creando la configurazione ma \code{.ovpn}.
 
 Quindi per creare la configurazione di \it{client 1}:
 
