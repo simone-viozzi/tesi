@@ -568,7 +568,9 @@ $ chmod 700 make_config.sh
 \end{bashcode}
 
 % TODO da riscrivere!
-Lo scopo di questo script è di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, e la \it{preshared key}. Il tutto viene scritto in un file che ha lo stesso nome del \it{client} per cui si sta creando la configurazione ma \code{.ovpn}.
+Lo scopo di questo script è di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, e la \it{preshared key}. 
+
+Il tutto viene scritto in un file che ha lo stesso nome del \it{client} per cui si sta creando la configurazione ma \code{.ovpn}.
 
 Quindi per creare la configurazione di \it{client 1}:
 
@@ -581,7 +583,8 @@ Nella cartella \code{client-configs/files/} si troverà il file di configurazion
 \section{Test della configurazione}
 \label{sec:test_config_server}
 
-Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. Per farlo ci spostiamo su una macchina client, con SO Linux ad esempio, e si avvia il \it{client} con la configurazione creata al passo precedente:
+Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. 
+Per farlo ci spostiamo su una macchina client, con SO Linux ad esempio, e si puo' connettere il \it{client} alla vpn con la configurazione creata al passo precedente:
 
 \begin{bashcode}{Client}{}
 $ sudo openvpn --config client1.ovpn
@@ -599,7 +602,8 @@ Se la configurazione fino a questo punto è corretta si avrà il messaggio \\\co
 Nel \it{client} si avrà una nuova interfaccia di rete chiamata \code{tun0}, questa è l'interfaccia virtuale creata dalla vpn.
 
 \begin{bashcode}{Client}{}
-2: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500
+$ ip addr
+2: tun0: <MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500
     link/none 
     inet 10.8.0.2/24 scope global tun0
        valid_lft forever preferred_lft forever

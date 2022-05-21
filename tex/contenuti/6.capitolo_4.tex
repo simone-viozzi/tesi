@@ -30,7 +30,7 @@ In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VP
     \end{subfigure}
 \end{figure}
 
-
+% TODO da spostare nell'introduzione
 % <-- section -->
 \section{Introduzione a Luci}
 
@@ -75,6 +75,7 @@ L'homepage, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del rout
 
 L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \it{DHCP}, i processi in esecuzione, etc. 
 
+% TODO da spostare nell'introduzione
 \section{Accesso ssh al Router}
 
 Oltre all'interfaccia grafica \it{LuCI} si può accedere al router tramite ssh.
@@ -131,7 +132,7 @@ $ openvpn --config /configs/router.ovpn
 
 Se il file di configurazione è stato creato correttamente si vedrà il messaggio \\\code{Initialization Sequence Completed}.
 
-Comparirà inoltre l'interfaccia \code{tun0} a cui è stato assegnato l'indirizzo \code{10.8.0.10}.
+Comparirà inoltre l'interfaccia \code{tun0} a cui è stato assegnato l'indirizzo \code{10.8.0.3}.
 
 Per abilitare l'autostart di openvpn per il router si deve, per prima cosa, modificare il file \code{/etc/config/openvpn} in modo che faccia riferimento alla config corretta:
 
@@ -185,7 +186,7 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \end{bashcode}
 
 Si vede che ogni richiesta viene duplicata, la prima è in entrata sulla network stack del \it{server} e la seconda in uscita. 
-
+% TODO forse da mettere lo schema che fa vedere la network stack?
 Per evitare questo traffico possiamo abilitare l'opzione \code{client-to-client} nel file di configurazione del server. In questo modo il layer openvpn effettuerà direttamente il forwarding tra i client della vpn \cite{client-to-client}.
 
 \begin{bashcode}{Server}{}
@@ -217,7 +218,8 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 
 \section{Assegnazione ip statico al Router}
 
-Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale ip viene assegnato al router è necessario assegnargliene uno statico. Questo viene fatto usando la \code{cleint-config-dir}.
+Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale ip viene assegnato al router è necessario assegnargliene uno statico.
+Questo viene fatto usando la \code{cleint-config-dir}.
 
 \begin{bashcode}{Server}{}
 $ sudo mkdir /etc/openvpn/server/ccd    # creo la client-config-dir
