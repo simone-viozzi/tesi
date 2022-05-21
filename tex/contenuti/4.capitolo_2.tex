@@ -35,8 +35,10 @@ Data la presenza del CG-NAT si vede subito che non è realizzabile a meno che il
 
 \end{figure}
 
-%todo rivedi frase
-In questo modo si può configurare una VPN sul server OVH e connettervi sia il 4G.Router che la macchina del cliente. In questo modo l'unica configurazione che il cliente dovrà fare è l'installazione di un cliente VPN, ciò è il minimo possibile di configurazione.
+% todo rivedi frase
+In questo modo si può configurare una VPN sul server OVH e connettervi sia il 4G.Router che la macchina del cliente. 
+% TODO ripetizione bad
+In questo modo l'unica configurazione che il cliente dovrà fare è l'installazione di un cliente VPN, ciò è il minimo possibile di configurazione.
 
 La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 
@@ -61,6 +63,7 @@ i componenti necessari sono:
 	\item Macchina del cliente
 \end{itemize}
 
+% TODO non ha senso i : qua
 vediamo le caratteristiche minime che i componenti dovranno avere:
 
 \subsection{Esse-ti 4G.Router}
@@ -79,7 +82,8 @@ Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funziona
 
 Per l'implementazione di questa architettura sono necessarie solo un sub-set delle specifiche:
 
-\begin{itemize} %TODO e' copiato e incollato va sistemato
+%TODO e' copiato e incollato va sistemato!
+\begin{itemize}
 	\item Access Point wireless per offrire connettività Internet Wi-Fi a dispositivi wireless
 	\item Client Dynamic DNS per consentire all’utente di raggiungere da remoto, tramite Internet, il router stesso e tutti i dispositivi connessi via Wi-Fi o porta LAN
 	\item Gateway telefonico per consentire l’invio e la ricezione di chiamate attraverso la rete 4G LTE/UMTS/GSM a telefoni fissi, combinatori o altri dispositivi telefonici collegati all’ingresso FXS
@@ -117,6 +121,7 @@ La configurazione del dispositivo puo' essere fatta sia da terminale, entrando i
 
 \end{figure}
 
+% TODO da spostare sopra
 L'interfaccia web e' una versione personalizzata di \href{https://openwrt.org/docs/guide-user/luci/start}{Luci}.
 
 Per semplicita' si fara' riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \it{Router}.
@@ -125,7 +130,7 @@ Per semplicita' si fara' riferimento all'\textit{Esse-ti 4G.Router} chiamandolo 
 
 La VPS ha il solo vincolo di dover avere un'ip pubblico e una connessione a internet abbastanza veloce. Dovra' infatti sopportare un traffico simmetrico in upload / download.
 
-Per la realizzazione della topologia e' stata selezionata una macchina una VPS del provider OVHCloud, con le seguenti caratteristiche:
+Per la realizzazione della topologia e' stata selezionata una macchina VPS del provider OVHCloud, con le seguenti caratteristiche:
 
 \begin{itemize}
 	\item 2 core virtuali
@@ -147,7 +152,7 @@ Per effettuare le varie operazioni di testing e' stato aggiunta \it{raspberry pi
 \subsection{Macchina del cliente}
 
 %TODO da espandere
-Deve poter essere una qualunque macchina, non ha vincoli di sistema operativo
+Deve poter essere una qualunque macchina, non ha quindi vincoli di sistema operativo.
 
 Necessita di avere il client openvpn installato:
 

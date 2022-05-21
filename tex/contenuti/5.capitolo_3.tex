@@ -56,6 +56,8 @@ La CA può essere configurata sulla stessa macchina dove è stato installato opn
 
 La utility \code{easy-rsa} mette a disposizione il comando \code{make-cadir}, che permette di creare una cartella pronta ad ospitare la Certificate Authority.
 
+
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{immagini/diag-firma_certificato_ca}
@@ -134,7 +136,7 @@ Your new CA certificate file for publishing is at:
 Eseguendo il comando verrà chiesto di inserire una passshare, che verrà usata per criptare la chiave privata appena generata. Il secondo prompt è relativo al nome da dare alla certificazione, in questo caso è stato lasciato il valore di default \code{Easy-RSA CA}.
 
 % <-- section -->
-\section{Configurazione della PKI di OpenVPN}
+\subsection{Configurazione della PKI di OpenVPN}
 \label{sec:pki_openvpn}
 
 Il procedimento è simile al precedente, ma questa volta va eseguito sul \it{server}.
@@ -207,7 +209,7 @@ Il secondo file creato, \code{server.req}, corrisponde ad una \textit{Certificat
 
 % TODO sta sezione serve davvero?
 % <-- section -->
-\section{Firma del certificato opnevpn dalla CA}
+\subsection{Firma del certificato opnevpn dalla CA}
 \label{sec:sign_openvpn}
 
 Dobbiamo quindi copiare il file \code{server.req} nel \textit{server CA}, possiamo qualunque metodo purchè sia sicuro, ad esempio con \code{scp}:
@@ -346,7 +348,7 @@ $ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 \section{Creazione del file di configurazione del server OpenVPN}
 \label{sec:server_config}
 
-Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si può copiare la configurazione di esempio:
+Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si può usare la configurazione di esempio offerta da openvpn:
 
 \begin{bashcode}{Server}{}
 $ cd /etc/openvpn/server/
@@ -389,7 +391,7 @@ net.ipv4.ip_forward = 1
 \section{Configurazione del firewall}
 \label{sec:firewall}
 
-Sulla VPS scelta è presente il firewall \textit{firewalld}, ma per una più semplice configurazione è consigliato di disattivarlo e installare \textit{ufw}:
+Sulla VPS scelta è presente il firewall \code{firewalld}, ma per una più semplice configurazione è consigliato di disattivarlo e installare \code{ufw}:
 
 \begin{bashcode}{Server}{}
 $ sudo systemctl mask firewalld
@@ -451,21 +453,14 @@ Nella modifica del file si deve stare attenti a inserire la nuova regola in cima
 
 \subsection{Configurazione del packet forwarding}
 
-% TODO da tradurre
-Next, you need to tell UFW to allow forwarded packets by default as well. To do this, open the \code{/etc/default/ufw} file:
+Precedentemente abbiamo abilitato il forwarding nella network stack del server, ora si deve abilitare la corrspondente opzione nel firewall. Si deve quindi cambiare la regola di default per i pacchetti inoltrati da \code{DROP} a \code{ACCEPT}.
+
+Per farlo si deve modificare il file \code{/etc/default/ufw}:
 
 \begin{bashcode}{Server}{}
-sudo nano /etc/default/ufw
-\end{bashcode}
-
-Inside, find the \code{DEFAULT\_FORWARD\_POLICY} directive and change the value from DROP to ACCEPT:
-\code{/etc/default/ufw}
-
-\begin{bashcode}{Server}{}
+$ sudo vim /etc/default/ufw
 DEFAULT_FORWARD_POLICY="ACCEPT"
 \end{bashcode}
-
-Save and close the file when you are finished.
 
 \subsection{Conclusione della configurazione del firewall}
 
