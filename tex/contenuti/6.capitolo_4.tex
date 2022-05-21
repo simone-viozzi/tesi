@@ -219,13 +219,15 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \section{Assegnazione ip statico al Router}
 
 Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale ip viene assegnato al router è necessario assegnargliene uno statico.
+
+% TODO aggiungi per che serve la ccd
 Questo viene fatto usando la \code{cleint-config-dir}.
 
 \begin{bashcode}{Server}{}
 $ sudo mkdir /etc/openvpn/server/ccd    # creo la client-config-dir
-$ vim /etc/openvpn/server/server.conf   # abilito l'opzione nella config del server
+$ sudo vim /etc/openvpn/server/server.conf   # abilito l'opzione nella config del server
 167  client-config-dir ccd
-$ vim /etc/openvpn/server/ccd/router
+$ sudo vim /etc/openvpn/server/ccd/router
 ifconfig-push 10.8.0.254 255.255.255.0  # impongo l'ip per questo common name
 $ sudo systemctl restart openvpn-server@server.service
 \end{bashcode}
