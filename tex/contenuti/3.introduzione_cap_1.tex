@@ -8,16 +8,24 @@
 % https://it.wikipedia.org/wiki/Modello_OSI
 % https://datatracker.ietf.org/doc/html/rfc1122
 % https://datatracker.ietf.org/doc/html/rfc791
+% https://datatracker.ietf.org/doc/html/rfc791#section-2.1
+% https://datatracker.ietf.org/doc/html/rfc791#section-2.2
 
-% TODO aggiungi riferimenti all'incapsulamento
-% TODO aggiungi schema per descrivere l'incapsulamento
+% to be removed
+\subsection{cos'e' internet}
 
-
-%%%
+%%% \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
 % An Internet communication system consists of interconnected packet networks supporting communication among host computers using the Internet protocols.  The networks are interconnected using packet-switching computers called "gateways" or "IP routers" by the Internet community, and "Intermediate Systems" by the OSI world [INTRO:13].
 %%%
 
 L'architettura che determina il funzionamento di Internet si basa su un modello a strati, in cui ogni strato e' indipendente da quelli sottostanti.
+
+\subsection{Modello tcp/ip}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{immagini/modello_iso_osi}
+\end{figure}
 
 %%  Internet Protocol Suite
 %%
@@ -30,8 +38,12 @@ L'architettura che determina il funzionamento di Internet si basa su un modello 
 %%    follows [INTRO:4]:
 %%
 %%
-%%    o  Application Layer
-%%
+
+Vediamo una versione semplificata del modello iso osi:
+
+\begin{enumerate} % \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
+    \item[4.] \textbf{Application Layer}: 
+
 %%        The application layer is the top layer of the Internet
 %%        protocol suite.  The Internet suite does not further
 %%        subdivide the application layer, although some of the
@@ -59,10 +71,10 @@ L'architettura che determina il funzionamento di Internet si basa su un modello 
 %%        Support protocols, used for host name mapping, booting,
 %%        and management, include SNMP, BOOTP, RARP, and the Domain
 %%        Name System (DNS) protocols.
-%%
-%%
-%%    o  Transport Layer
-%%
+
+
+    \item[3.] \textbf{Transport Layer}: 
+    
 %%        The transport layer provides end-to-end communication
 %%        services for applications.  There are two primary
 %%        transport layer protocols at present:
@@ -80,10 +92,9 @@ L'architettura che determina il funzionamento di Internet si basa su un modello 
 %%        transport protocols may be expanded in the future.
 %%
 %%        Transport layer protocols are discussed in Chapter 4.
-%%
-%%
-%%    o  Internet Layer
-%%
+
+    \item[2.] \textbf{Internet Layer}: 
+    
 %%        All Internet transport protocols use the Internet Protocol
 %%        (IP) to carry data from source host to destination host.
 %%        IP is a connectionless or datagram internetwork service,
@@ -112,10 +123,9 @@ L'architettura che determina il funzionamento di Internet si basa su un modello 
 %%
 %%        The Internet layer protocols IP, ICMP, and IGMP are
 %%        discussed in Chapter 3.
-%%
-%%
-%%    o  Link Layer
-%%
+
+    \item[1.] \textbf{Link Layer}: 
+    
 %%        To communicate on its directly-connected network, a host
 %%        must implement the communication protocol used to
 %%        interface to that network.  We call this a link layer or
@@ -125,14 +135,6 @@ L'architettura che determina il funzionamento di Internet si basa su un modello 
 %%        corresponding to the many different types of networks.
 %%        See Chapter 2.
 
-Vediamo una versione semplificata del modello iso osi:
-
-\begin{enumerate}
-    \item[5.] \textbf{livello applicazione}: e' il livello con cui gli utenti internet interagiscono comunemente, a questo livello fanno parte i protocolli http/https, ssh, ftp etc. 
-    \item[4.] \textbf{livello di trasporto}: i protocolli piu' comuni sono tcp / udp
-    \item[3.] \textbf{livello di rete}: protocollo ip
-    \item[2.] \textbf{livello di Data Link}: prococollo ethernet
-    \item[1.] \textbf{livello fisico}: determina il mezzo fisico su cui viaggiano i pacchetti
 \end{enumerate}
 
 Possiamo vedere questa distinzione su una cattura di un pacchetto con \it{Wireshark}:
@@ -151,15 +153,11 @@ Possiamo vedere questa distinzione su una cattura di un pacchetto con \it{Wiresh
              [Application Data Protocol: http-over-tls]
 \end{bashcode}
 
-% https://datatracker.ietf.org/doc/html/rfc791#section-2.1
-% https://datatracker.ietf.org/doc/html/rfc791#section-2.2
+\subsection{Come avviene la comunicazione}
 
-Si puo' vedere la stratificazione
+essendo internet una rete di reti, la comunicazione avviene hop dopo hop. ogni router conoscera' soltanto il prossimo hop che i pacchetti devono eseguire.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{immagini/modello_iso_osi}
-\end{figure}
+
 
 
 \section{Openvpn}
