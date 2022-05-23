@@ -20,12 +20,7 @@
 
 L'architettura che determina il funzionamento di Internet si basa su un modello a strati, in cui ogni strato e' indipendente da quelli sottostanti.
 
-\subsection{Modello tcp/ip}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{immagini/modello_iso_osi}
-\end{figure}
+\subsection{Internet Protocol Suite}
 
 %%  Internet Protocol Suite
 %%
@@ -33,16 +28,24 @@ L'architettura che determina il funzionamento di Internet si basa su un modello 
 %%    the layered set of protocols comprising the Internet protocol
 %%    suite.  A host typically must implement at least one protocol
 %%    from each layer.
-%%
+
+Per comunicare su Internet, gli Host devono implementare un set di protocolli che costituiscono l'\it{Internet protocol suite} \cite{RFC_1122}. I protocolli si suddividono in strati logici che li raggruppano in 4 categorie, ogni Host deve implementare almeno un protocollo per ogni strato.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{immagini/diag2-modello_a_strati}
+    \caption{Rappresentazione degli strati del modello TCP/Ip con relativo incapsulamento e dispositivo di dominio}
+\end{figure}
+
+
+
 %%    The protocol layers used in the Internet architecture are as
 %%    follows [INTRO:4]:
-%%
-%%
-
-Vediamo una versione semplificata del modello iso osi:
 
 \begin{enumerate} % \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
-    \item[4.] \textbf{Application Layer}: 
+    \item[4.] \textbf{Application Layer}: Il livello applicazione e' il layer piu' alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
+    I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. \newline
+    I protocolli di supporto forniscono alcune fuinzionalita' di supporto per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
 
 %%        The application layer is the top layer of the Internet
 %%        protocol suite.  The Internet suite does not further
@@ -73,7 +76,8 @@ Vediamo una versione semplificata del modello iso osi:
 %%        Name System (DNS) protocols.
 
 
-    \item[3.] \textbf{Transport Layer}: 
+    \item[3.] \textbf{Transport Layer}: Il livello di trasporto fornisce una comunicazione end-to-end tra per le applicazioni, infatti in generale il campo data del livello di trasporto non viene letto da nessuno se non l'applicazione di sorgente e destinazione. \newline
+    I protocolli principali di questo livello sono TCP e UDP: il tcp e' connection-oriented e fornisce alta affidabilita'; mentre l'udp e' connection-less, quindi non si hanno garanzie su... cosa?. % TODO!
     
 %%        The transport layer provides end-to-end communication
 %%        services for applications.  There are two primary
