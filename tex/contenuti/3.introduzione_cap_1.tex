@@ -77,7 +77,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 
 
     \item[3.] \textbf{Transport Layer}: Il livello di trasporto fornisce una comunicazione end-to-end tra per le applicazioni, infatti in generale il campo data del livello di trasporto non viene letto da nessuno se non l'applicazione di sorgente e destinazione. \newline
-    I protocolli principali di questo livello sono TCP e UDP: il tcp e' connection-oriented e fornisce alta affidabilita'; mentre l'udp e' connection-less, quindi non si hanno garanzie su... cosa?. % TODO!
+    I protocolli principali di questo livello sono TCP e UDP: il \href{https://en.wikipedia.org/wiki/Transmission_Control_Protocol}{TCP} e' connection-oriented e fornisce alta affidabilita'; mentre l'\href{https://en.wikipedia.org/wiki/User_Datagram_Protocol}{UDP} e' connection-less, quindi ogni inaffidabilità della rete deve essere gestita a livello applicazione.
     
 %%        The transport layer provides end-to-end communication
 %%        services for applications.  There are two primary
@@ -97,7 +97,9 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%
 %%        Transport layer protocols are discussed in Chapter 4.
 
-    \item[2.] \textbf{Internet Layer}: 
+    % TODO da rivedere
+    \item[2.] \textbf{Internet Layer}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non e' end-to-end, quindi e' intrinsecamente di tipo connection-less, non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilita' dei servizi quando essa e' richiesta. \newline 
+    Di questo layer fanno parte i protocolli \href{https://en.wikipedia.org/wiki/Internet_Protocol}{IP}, \href{https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol}{ICMP}, etc.
     
 %%        All Internet transport protocols use the Internet Protocol
 %%        (IP) to carry data from source host to destination host.
@@ -128,7 +130,8 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%        The Internet layer protocols IP, ICMP, and IGMP are
 %%        discussed in Chapter 3.
 
-    \item[1.] \textbf{Link Layer}: 
+    % TODO da rivedere
+    \item[1.] \textbf{Link Layer}: E' il layer piu' vicino al mezzo fisico su cui viaggiano i dati, ogni host deve implementare il protocollo usato per la specifica interfaccia che usa. Ad esempio un'host con un'interfaccia Ethernet deve implementare i protocolli.. ?
     
 %%        To communicate on its directly-connected network, a host
 %%        must implement the communication protocol used to
@@ -141,7 +144,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 
 \end{enumerate}
 
-Possiamo vedere questa distinzione su una cattura di un pacchetto con \it{Wireshark}:
+Possiamo vedere a cosa corrisponde in pratica con una cattura di un pacchetto eseguita con \it{Wireshark}:
 
 \begin{bashcode}{Wireshark}{}
 1 > Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
