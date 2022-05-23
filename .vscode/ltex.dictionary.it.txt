@@ -49,3 +49,6 @@ upload
 protocol
 Protocol
 connection-less
+Ethernet
+header
+layer

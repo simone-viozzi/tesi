@@ -35,6 +35,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
     \centering
     \includegraphics[width=0.8\textwidth]{immagini/diag2-modello_a_strati}
     \caption{Rappresentazione degli strati del modello TCP/Ip con relativo incapsulamento e dispositivo di dominio}
+    \label{fig:modello-a-strati}
 \end{figure}
 
 
@@ -146,12 +147,12 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 
 Possiamo vedere a cosa corrisponde in pratica con una cattura di un pacchetto eseguita con \it{Wireshark}:
 
-\begin{bashcode}{Wireshark}{}
+\begin{bashcode}{Wireshark}{code:tls-wireshark}
 1 > Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
-2 > Ethernet II, Src: IntelCor_eb:91:5f (cc:d9:ac:eb:91:5f), Dst: HuaweiDe_27:a9:24 (0c:e4:a0:27:a9:24)
-3 > Internet Protocol Version 4, Src: 192.168.8.119, Dst: 142.250.180.174
-4 > Transmission Control Protocol, Src Port: 36354, Dst Port: 443, Seq: 36720, Ack: 13639, Len: 39
-5 > Transport Layer Security
+1 > Ethernet II, Src: IntelCor_eb:91:5f (cc:d9:ac:eb:91:5f), Dst: HuaweiDe_27:a9:24 (0c:e4:a0:27:a9:24)
+2 > Internet Protocol Version 4, Src: 192.168.8.119, Dst: 142.250.180.174
+3 > Transmission Control Protocol, Src Port: 36354, Dst Port: 443, Seq: 36720, Ack: 13639, Len: 39
+4 > Transport Layer Security
      > TLSv1.3 Record Layer: Application Data Protocol: http-over-tls
              Opaque Type: Application Data (23)
              Version: TLS 1.2 (0x0303)
@@ -160,17 +161,32 @@ Possiamo vedere a cosa corrisponde in pratica con una cattura di un pacchetto es
              [Application Data Protocol: http-over-tls]
 \end{bashcode}
 
-\subsection{Come avviene la comunicazione}
+\subsection{Incapsulamento}
 
-essendo internet una rete di reti, la comunicazione avviene hop dopo hop. ogni router conoscera' soltanto il prossimo hop che i pacchetti devono eseguire.
+Ogni protocollo di ogni layer aggiunge un header e un trailer, come si vede in fig. \ref{fig:modello-a-strati}.
+Ad esempio analizzando la cattura in Wireshark, code. \ref{code:tls-wireshark}, si puo' vedere lo stack dei protocolli e i loro relativi header:
 
+\begin{itemize}
+    \item \textbf{Ethernet II}: Aggiunge 14 bytes di header e 4 bytes di trailer \cite{ethernet-ii}.
+    \item \textbf{Internet Protocol Version 4}: Aggiunge un minimo di 20 bytes di header \cite{RFC_0791}
+    \item \textbf{Transmission Control Protocol}: Aggiunge un minimo di 20 bytes di header \cite{RFC_0793}
+    \item \textbf{Transport Layer Security}: \cite{RFC_8446} % TODO 
+\end{itemize}
 
-
+Si vede come sono stati aggiunti complessivamente un minimo di 58 bytes di hoverhead dovuti ai protocolli.
 
 \section{Openvpn}
 
 % https://wiki.wireshark.org/OpenVPN
 % https://build.openvpn.net/doxygen/network_protocol.html
+
+%%   OpenVPN [OpenVPN] is a commonly used protocol designed as an
+%%   alternative to IPsec.  A major goal of this protocol is to provide a
+%%   VPN that is simple to configure and works over a variety of
+%%   transports.  OpenVPN encapsulates either IP packets or Ethernet
+%%   frames within a secure tunnel and can run over either UDP or TCP.
+%%   For key establishment, OpenVPN can either use TLS as a handshake
+%%   protocol or use pre-shared keys.
 
 OpenVPN e' un applicativo opensource che permette di instaurare una connessione VPN tra computer. Fa uso di protocolli di crittografia che garantiscono che la connessione sia privata e sicura.
 Al contrario di altri protocolli VPN, come % TODO vedi da slide huawei nella parte delle vpn
