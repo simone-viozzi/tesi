@@ -167,13 +167,16 @@ Ogni protocollo di ogni layer aggiunge un header e un trailer, come si vede in f
 Ad esempio analizzando la cattura in Wireshark, code. \ref{code:tls-wireshark}, si puo' vedere lo stack dei protocolli e i loro relativi header:
 
 \begin{itemize}
-    \item \textbf{Ethernet II}: Aggiunge 14 bytes di header e 4 bytes di trailer \cite{ethernet-ii}.
-    \item \textbf{Internet Protocol Version 4}: Aggiunge un minimo di 20 bytes di header \cite{RFC_0791}
-    \item \textbf{Transmission Control Protocol}: Aggiunge un minimo di 20 bytes di header \cite{RFC_0793}
+    \item \textbf{Ethernet II}: Aggiunge 14 byte di header e 4 byte di trailer \cite{ethernet-ii}.
+    \item \textbf{Internet Protocol Version 4}: Aggiunge un minimo di 20 byte di header \cite{RFC_0791}
+    \item \textbf{Transmission Control Protocol}: Aggiunge un minimo di 20 byte di header \cite{RFC_0793}
     \item \textbf{Transport Layer Security}: \cite{RFC_8446} % TODO 
 \end{itemize}
 
-Si vede come sono stati aggiunti complessivamente un minimo di 58 bytes di hoverhead dovuti ai protocolli.
+Si vede come sono stati aggiunti complessivamente un minimo di 58 byte di hoverhead dovuti ai protocolli.
+
+
+
 
 \section{Openvpn}
 
