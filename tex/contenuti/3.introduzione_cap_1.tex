@@ -163,19 +163,21 @@ Possiamo vedere a cosa corrisponde in pratica con una cattura di un pacchetto es
 
 \subsection{Incapsulamento}
 
-Ogni protocollo di ogni layer aggiunge un header e un trailer, come si vede in fig. \ref{fig:modello-a-strati}.
+Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vedere una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
+
 Ad esempio analizzando la cattura in Wireshark, code. \ref{code:tls-wireshark}, si puo' vedere lo stack dei protocolli e i loro relativi header:
 
 \begin{itemize}
-    \item \textbf{Ethernet II}: Aggiunge 14 byte di header e 4 byte di trailer \cite{ethernet-ii}.
-    \item \textbf{Internet Protocol Version 4}: Aggiunge un minimo di 20 byte di header \cite{RFC_0791}
-    \item \textbf{Transmission Control Protocol}: Aggiunge un minimo di 20 byte di header \cite{RFC_0793}
-    \item \textbf{Transport Layer Security}: \cite{RFC_8446} % TODO 
+    \item \textbf{Transport Layer Security}\cite{RFC_8446}: E' il dato effettivo che e' stato trasmesso in rete  
+    
+    \item \textbf{Transmission Control Protocol}\cite{RFC_0793}: incapsula il layer applicazione in un layer di trasporto usando il protocollo TCP. Aggiunge un minimo di 20 byte di header 
+    
+    \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: incapsula il layer di trasporto in un pacchetto IP. Aggiunge un minimo di 20 byte di header 
+    
+    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico e' un'ethernet quindi il pacchetto IP viene incapsulato con il protocollo ethernet. Aggiunge 14 byte di header e 4 byte di trailer .
 \end{itemize}
 
-Si vede come sono stati aggiunti complessivamente un minimo di 58 byte di hoverhead dovuti ai protocolli.
-
-
+Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati di protocolli che complessivamente hanno aggiunto un minimo di 58 byte di hoverhead.
 
 
 \section{Openvpn}
@@ -191,10 +193,10 @@ Si vede come sono stati aggiunti complessivamente un minimo di 58 byte di hoverh
 %%   For key establishment, OpenVPN can either use TLS as a handshake
 %%   protocol or use pre-shared keys.
 
-OpenVPN e' un applicativo opensource che permette di instaurare una connessione VPN tra computer. Fa uso di protocolli di crittografia che garantiscono che la connessione sia privata e sicura.
-Al contrario di altri protocolli VPN, come % TODO vedi da slide huawei nella parte delle vpn
+OpenVPN e' un applicativo opensource che ha come obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn puo' incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che puo' viaggiare sia su TCP che UDP.
 
-e' di livello applicazione e va incapsulato in udp o tcp,
+
+
 
 vediamo una cattura di wireshark:
 
@@ -216,6 +218,8 @@ All'interno del campo data del pacchetto openvpn vi e', criptato, un pacchetto I
 Per la cifratura si serve della libreria OpenSSL, ne supporta quindi tutti i protocolli di cifratura. Ha inoltre ulteriori estensioni alla sicurezza come l'utilizzo dell'autenticazione di pacchetto HMAC.
 
 % https://en.wikipedia.org/wiki/Pre-shared_key
+
+Usa un'applicativo unico che puo' funzionare sia da server che da client in base alla configurazione che si usa.
 
 \section{Openwrt}
 
