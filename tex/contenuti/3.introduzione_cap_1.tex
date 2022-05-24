@@ -193,12 +193,9 @@ Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati
 %%   For key establishment, OpenVPN can either use TLS as a handshake
 %%   protocol or use pre-shared keys.
 
-OpenVPN e' un applicativo opensource che ha come obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn puo' incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che puo' viaggiare sia su TCP che UDP.
+OpenVPN e' un applicativo opensource che hal' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn puo' incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che puo' viaggiare sia su TCP che UDP. Nella configurazione e' possibile usare qualsiasi porta, tutto cio' lo rende estremamente flessibile.
 
-
-
-
-vediamo una cattura di wireshark:
+Possiamo ad esempio vedere una cattura di wireshark di un pacchetto OpenVPN su UDP e porta 1194:
 
 \begin{bashcode}{Wireshark}{}
 > Frame 90: 82 bytes on wire (656 bits), 82 bytes captured (656 bits) on interface br-08876ccdf1f5, id 0
@@ -212,8 +209,8 @@ vediamo una cattura di wireshark:
             Data: 00000019a366196eb2aca181df226faf8514ab73f524f7ef335d55fc57322d032a2095e4
 \end{bashcode}
 
-% TODO do not like -> https://it.wikipedia.org/wiki/OpenVPN#Rete
-All'interno del campo data del pacchetto openvpn vi e', criptato, un pacchetto IP o addirittura anche un pacchetto ethernet.
+
+
 
 Per la cifratura si serve della libreria OpenSSL, ne supporta quindi tutti i protocolli di cifratura. Ha inoltre ulteriori estensioni alla sicurezza come l'utilizzo dell'autenticazione di pacchetto HMAC.
 
