@@ -2,7 +2,7 @@
 \chapter{Introduzione}
 
 
-\section{TCP/Ip e modello a strati}
+\section{TCP/IP e modello a strati}
 
 % https://en.wikipedia.org/wiki/Internet_protocol_suite
 % https://it.wikipedia.org/wiki/Modello_OSI
@@ -11,14 +11,23 @@
 % https://datatracker.ietf.org/doc/html/rfc791#section-2.1
 % https://datatracker.ietf.org/doc/html/rfc791#section-2.2
 
-% to be removed
-\subsection{cos'e' internet}
 
 %%% \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
 % An Internet communication system consists of interconnected packet networks supporting communication among host computers using the Internet protocols.  The networks are interconnected using packet-switching computers called "gateways" or "IP routers" by the Internet community, and "Intermediate Systems" by the OSI world [INTRO:13].
+
+% After looking at the major milestones in the history of the Internet, let's take a closer look into the current architectural design of the Internet.
+
+% Connecting hosts running the same applications but located in different types of networks. A computer network is a complex system that is built on top of multiple components. These components can vary in technologies making up different types of networks that offer different types of applications. For example in the figure below, we have two BitTorrent clients that communicate even though they are using very different networks/technologies (Wifi vs Ethernet). So, how do these technologies and components interconnect and come together to meet the needs of each application? The designers of the network protocols provide structure to the network architecture by organizing the protocols into layers.
 %%%
 
-L'architettura che determina il funzionamento di Internet si basa su un modello a strati, in cui ogni strato e' indipendente da quelli sottostanti.
+% TODO da riscrivere!!
+
+Internet e' una rete di telecomunicazione ad accesso pubblico reso possibile da una suite di protocolli.
+
+Un sistema di comunicazione Internet consiste in un interconnessione tra reti di pacchetti, che supportano la comunicazione tra hosts usando una suite di protocolli.
+
+L'obbiettivo di Internet e' quello di collegare hosts attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varieta' di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilita' necessaria e non aggiungere troppa complessita', l'architettura di Internet e' sta suddivisa in alcuni strati.
+
 
 \subsection{Internet Protocol Suite}
 
@@ -132,7 +141,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%        discussed in Chapter 3.
 
     % TODO da rivedere
-    \item[1.] \textbf{Link Layer}: E' il layer piu' vicino al mezzo fisico su cui viaggiano i dati, ogni host deve implementare il protocollo usato per la specifica interfaccia che usa. Ad esempio un'host con un'interfaccia Ethernet deve implementare i protocolli.. ?
+    \item[1.] \textbf{Link Layer}: E' il layer piu' vicino al mezzo fisico su cui viaggiano i dati, ogni host deve implementare il protocollo usato per la specifica interfaccia che usa. Ad esempio un'host con un'interfaccia Ethernet deve implementare i protocolli \it{Ethernet II} e \it{IEEE 802.3}.
     
 %%        To communicate on its directly-connected network, a host
 %%        must implement the communication protocol used to
@@ -167,6 +176,7 @@ Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il p
 
 Ad esempio analizzando la cattura in Wireshark, code. \ref{code:tls-wireshark}, si puo' vedere lo stack dei protocolli e i loro relativi header:
 
+% TODO da sistemare
 \begin{itemize}
     \item \textbf{Transport Layer Security}\cite{RFC_8446}: E' il dato effettivo che e' stato trasmesso in rete  
     
@@ -174,7 +184,7 @@ Ad esempio analizzando la cattura in Wireshark, code. \ref{code:tls-wireshark}, 
     
     \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: incapsula il layer di trasporto in un pacchetto IP. Aggiunge un minimo di 20 byte di header 
     
-    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico e' un'ethernet quindi il pacchetto IP viene incapsulato con il protocollo ethernet. Aggiunge 14 byte di header e 4 byte di trailer .
+    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico e' una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Questo aggiunge 14 byte di header e 4 byte di trailer.
 \end{itemize}
 
 Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati di protocolli che complessivamente hanno aggiunto un minimo di 58 byte di hoverhead.
@@ -228,4 +238,68 @@ Comprende una shell linux comprensiva delle funzionalita' piu' comuni, compreso 
 OpenWRT puo' essere configurato sia tramite shell che tramite interfaccia web (LuCI).
 
 % TODO move the openwrt shell banner e gli screen di luci
+
+% <-- section -->
+\section{Introduzione a Luci}
+
+Luci è la web interface ufficiale di \it{openwrt}, dovrebbe essere già installata e raggiungibile, in caso contrario può essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_login}
+        \caption{Login page}
+        \label{fig:luci-login}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_status}
+        \caption{Status page}
+        \label{fig:luci-status}
+    \end{subfigure}%
+
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_graphs}
+        \caption{Graphs page}
+        \label{fig:luci-graphs}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{0.5\textwidth}
+        \centering
+        \includegraphics[height=0.65\linewidth]{immagini/LuCI_interfaces}
+        \caption{Interfaces page}
+        \label{fig:luci-interfaces}
+    \end{subfigure}%
+    \caption{Interfaccia grafica LuCI}
+\end{figure}
+
+Le credenziali di default sono \code{Username:root} \code{Password:root}, come mostrato in fig. \ref{fig:luci-login}.
+
+L'homepage, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \it{DHCP}.
+
+L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \it{DHCP}, i processi in esecuzione, etc. 
+
+% TODO da spostare nell'introduzione
+\section{Accesso ssh al Router}
+
+Oltre all'interfaccia grafica \it{LuCI} si può accedere al router tramite ssh.
+
+\begin{bashcode}{Router 4g}{}
+BusyBox v1.35.0 (2022-04-24 21:09:51 UTC) built-in shell (ash)
+    _______                     ________        __
+    |       |.-----.-----.-----.|  |  |  |.----.|  |_
+    |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+    |_______||   __|_____|__|__||________||__|  |____|
+            |__| W I R E L E S S   F R E E D O M
+    -----------------------------------------------------
+    OpenWrt SNAPSHOT, r19521-46980294f6
+    -----------------------------------------------------
+\end{bashcode}
+
+Non esiste un account utente quindi viene effettuato il login come root.
+
 
