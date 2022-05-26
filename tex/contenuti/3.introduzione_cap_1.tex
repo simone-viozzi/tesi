@@ -229,13 +229,15 @@ Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su U
             Data: 00000019a366196eb2aca181df226faf8514ab73f524f7ef335d55fc57322d032a2095e4
 \end{bashcode}
 
-%TODO mettere intro su che diamine è la pki https://datatracker.ietf.org/doc/html/rfc5280
-
 \subsection{Crittografia}
 
 % OpenVPN uses the OpenSSL library to provide encryption of both the data and control channels. It lets OpenSSL do all the encryption and authentication work, allowing OpenVPN to use all the ciphers available in the OpenSSL package. It can also use the HMAC packet authentication feature to add an additional layer of security to the connection (referred to as an "HMAC Firewall" by the creator). It can also use hardware acceleration to get better encryption performance.[14][15] Support for mbed TLS is available starting from version 2.3.[16]
 
 Per la cifratura si serve della libreria OpenSSL, ne supporta quindi tutti i protocolli di cifratura. Ha inoltre ulteriori estensioni alla sicurezza come l'utilizzo dell'autenticazione di pacchetto HMAC.
+
+% https://community.openvpn.net/openvpn/wiki/How_does_PKI_work
+% https://it.wikipedia.org/wiki/Infrastruttura_a_chiave_pubblica
+% https://en.wikipedia.org/wiki/Public_key_infrastructure
 
 \subsection{Autenticazione}
 
