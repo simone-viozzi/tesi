@@ -50,13 +50,10 @@ $ sudo apt-get install -y openvpn easy-rsa
 \section{Creazione della Public key infrastructure Certificate Authority (PKI CA)}
 \label{sec:pki_ca}
 
-%TODO mettere intro su che diamine è la pki https://datatracker.ietf.org/doc/html/rfc5280
+La CA può essere configurata sulla stessa macchina dove è stato installato opnevpn, ma ciò è sconsigliato per motivi di sicurezza, supponiamo quindi di usare un secondo server chiamato \textit{server CA}.
 
-La CA può essere configurata sulla stessa macchina dove è stato installato opnevpn, ma ciò è sconsigliato per motivi di sicurezza, supponiamo quindi di usare un secondo server chiamato \textit{server CA}
-
-La utility \code{easy-rsa} mette a disposizione il comando \code{make-cadir}, che permette di creare una cartella pronta ad ospitare la Certificate Authority.
-
-
+% TODO non mi piace
+La procedura di creazione della CA e' la seguente:
 
 \begin{figure}[H]
     \centering
@@ -66,6 +63,8 @@ La utility \code{easy-rsa} mette a disposizione il comando \code{make-cadir}, ch
 \end{figure}
 
 % TODO fare in modo che sotto fa riferimento al diagramma
+
+La utility \code{easy-rsa} mette a disposizione il comando \code{make-cadir}, che permette di creare una cartella pronta ad ospitare la Certificate Authority.
 
 Andiamo quindi a crearla, nella home ad esempio:
 

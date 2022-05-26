@@ -203,9 +203,19 @@ Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati
 %%   For key establishment, OpenVPN can either use TLS as a handshake
 %%   protocol or use pre-shared keys.
 
-OpenVPN e' un applicativo opensource che hal' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn puo' incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che puo' viaggiare sia su TCP che UDP. Nella configurazione e' possibile usare qualsiasi porta, tutto cio' lo rende estremamente flessibile.
+% OpenVPN is a virtual private network (VPN) system that implements techniques to create secure point-to-point or site-to-site connections in routed or bridged configurations and remote access facilities. It implements both client and server applications.
 
-Possiamo ad esempio vedere una cattura di wireshark di un pacchetto OpenVPN su UDP e porta 1194:
+% OpenVPN allows peers to authenticate each other using pre-shared secret keys, certificates or username/password. When used in a multiclient-server configuration, it allows the server to release an authentication certificate for every client, using signatures and certificate authority.
+
+% It uses the OpenSSL encryption library extensively, as well as the TLS protocol, and contains many security and control features. It uses a custom security protocol[11] that utilizes SSL/TLS for key exchange. It is capable of traversing network address translators (NATs) and firewalls.
+
+% OpenVPN has been ported and embedded to several systems. For example, DD-WRT has the OpenVPN server function. SoftEther VPN, a multi-protocol VPN server, also has an implementation of OpenVPN protocol.
+
+% It was written by James Yonan and is free software, released under the terms of the GNU General Public License version 2 (GPLv2).[12] Additionally, commercial licenses are available.[13] 
+
+OpenVPN e' un applicativo open source che ha l' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn puo' incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che puo' viaggiare sia su TCP che UDP. Ha molte opzioni di configurazione, come la possibilita' di usare qualsiasi porta, oppure l'uso della compressione. Il tutto e' concentrato in un singolo applicativo che puo' funzionare sia da client che da server, in base alla configurazione fornita.
+
+Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su UDP e porta 1194:
 
 \begin{bashcode}{Wireshark}{}
 > Frame 90: 82 bytes on wire (656 bits), 82 bytes captured (656 bits) on interface br-08876ccdf1f5, id 0
@@ -219,14 +229,29 @@ Possiamo ad esempio vedere una cattura di wireshark di un pacchetto OpenVPN su U
             Data: 00000019a366196eb2aca181df226faf8514ab73f524f7ef335d55fc57322d032a2095e4
 \end{bashcode}
 
+%TODO mettere intro su che diamine è la pki https://datatracker.ietf.org/doc/html/rfc5280
 
+\subsection{Crittografia}
 
+% OpenVPN uses the OpenSSL library to provide encryption of both the data and control channels. It lets OpenSSL do all the encryption and authentication work, allowing OpenVPN to use all the ciphers available in the OpenSSL package. It can also use the HMAC packet authentication feature to add an additional layer of security to the connection (referred to as an "HMAC Firewall" by the creator). It can also use hardware acceleration to get better encryption performance.[14][15] Support for mbed TLS is available starting from version 2.3.[16]
 
 Per la cifratura si serve della libreria OpenSSL, ne supporta quindi tutti i protocolli di cifratura. Ha inoltre ulteriori estensioni alla sicurezza come l'utilizzo dell'autenticazione di pacchetto HMAC.
 
-% https://en.wikipedia.org/wiki/Pre-shared_key
+\subsection{Autenticazione}
 
-Usa un'applicativo unico che puo' funzionare sia da server che da client in base alla configurazione che si usa.
+% OpenVPN has several ways to authenticate peers with each other. OpenVPN offers pre-shared keys, certificate-based, and username/password-based authentication. Preshared secret key is the easiest, and certificate-based is the most robust and feature-rich. In version 2.0 username/password authentications can be enabled, both with or without certificates. However, to make use of username/password authentications, OpenVPN depends on third-party modules.
+
+
+
+\subsection{Networking}
+
+% OpenVPN can run over User Datagram Protocol (UDP) or Transmission Control Protocol (TCP) transports, multiplexing created SSL tunnels on a single TCP/UDP port[17] (RFC 3948 for UDP).[18]
+
+% From 2.3.x series on, OpenVPN fully supports IPv6 as protocol of the virtual network inside a tunnel and the OpenVPN applications can also establish connections via IPv6.[19] It has the ability to work through most proxy servers (including HTTP) and is good at working through network address translation (NAT) and getting out through firewalls. The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options. OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
+
+% OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alternative to IPsec in situations where an ISP may block specific VPN protocols in order to force users to subscribe to a higher-priced, "business grade," service tier. For example, Comcast previously declared that their @Home product was, and had always been, designated as a residential service and did not allow the use of commercial applications. Their argument was that conducting remote work via a VPN can adversely affect the network performance of their regular residential subscribers. They offered an alternative, @Home Professional, this would cost more than @Home product. So, anyone wishing to use VPN would have to subscribe to higher-priced, business-grade service tier.[20]
+
+
 
 \section{Openwrt}
 
