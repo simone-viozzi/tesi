@@ -67,3 +67,5 @@ filesystem
 runtime
 shell
 linux
+connection-oriented
+domotici
