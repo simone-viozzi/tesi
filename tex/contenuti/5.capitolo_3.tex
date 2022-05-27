@@ -7,11 +7,11 @@
 \section{Overview della configurazione e prerequisiti}
 \label{sec:overview_server}
 
-In questa sezione andremo a installare e configurare OpenVPN server sulla VPS di OVHCloud.
+In questo capitolo andremo a installare e configurare \it{OpenVPN server} sulla VPS di OVHCloud.
 
-Supponiamo di partire da una configurazione di base, che contiene solo il server openvpn ed un generico client, che supponiamo sia sotto un NAT.
+Supponiamo di partire da una configurazione di base, che contiene quindi solo il server openvpn e un generico client. Come da specifiche il Server deve avere a disposizione un'ip pubblico e il client deve essere il piu' generico possibile, lo supponiamo quindi sotto a un NAT.
 
-Supponiamo inoltre che che l'ip pubblico del \it{server} sia \code{51.178.141.119}, si avrà quindi una configurazione come in figura \ref{fig:diag-simple_ips}.
+Supponiamo inoltre che l'ip pubblico del \it{Server} sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
 \begin{figure}[H]
 
@@ -33,41 +33,39 @@ Supponiamo inoltre che che l'ip pubblico del \it{server} sia \code{51.178.141.11
     \caption{Configurazione di partenza e di obbiettivo per questo capitolo. \cite{icons}}
 \end{figure}
 
-Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare oppornunamente una rete vpn la cui configurazione è rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
+Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare opportunamente una rete VPN, che risultera' nella configurazione rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
 
 % TODO maybe cut this
-I pacchetti necessari sono \code{openvpn} ed \code{easy-rsa}, che possono essere installati con:
+I pacchetti necessari per questo capitolo sono \code{openvpn}, \code{easy-rsa} e un editor di testo, che possono essere installati con:
 
 \begin{bashcode}{Server}{}
 $ sudo apt-get update
-$ sudo apt-get install -y openvpn easy-rsa
+$ sudo apt-get install -y openvpn easy-rsa vim
 \end{bashcode}
 
-È inoltre necessario avere un editor di testo, ad es. \code{nano} o \code{vim}
-
-
 % <-- section -->
-\section{Creazione della Public key infrastructure Certificate Authority (PKI CA)}
+\section{Creazione della Public key infrastructure}
 \label{sec:pki_ca}
 
-La CA può essere configurata sulla stessa macchina dove è stato installato opnevpn, ma ciò è sconsigliato per motivi di sicurezza, supponiamo quindi di usare un secondo server chiamato \textit{server CA}.
+Per la gestione dell'autenticazione dei client alla VPN e' necessario creare una \it{PKI}, come descritto nella sezione \ref{subsec:auth}, per una maggiore sicurezza e' indicato separare la \it{Certificate Authority} dal \it{Server OpenVPN}.
 
-% TODO non mi piace
-La procedura di creazione della CA e' la seguente:
+La gestione della PKI viene fatta usando l'utility \it{easy-rsa}, possiamo riassumere i comandi principali della sua creazione nel seguente schema:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{immagini/diag-firma_certificato_ca}
+    \caption{Diagramma per schematizzare la procedura di creazione della CA.}
     \label{fig:diag-firma_certificato_ca}
-    \caption{Diagramma per schematizzare la procedura di firma di un certificato client. \cite{icons}}
 \end{figure}
 
 % TODO fare in modo che sotto fa riferimento al diagramma
+\subsection{Creazione della CA}
 
-% TODO ??? 
-La utility \code{easy-rsa} mette a disposizione il comando \code{make-cadir}, che permette di creare una cartella pronta ad ospitare la Certificate Authority.
+% TODO !
+Supponiamo quindi di usare un secondo server chiamato \textit{Server CA}, i suoi requisiti sono: SO Ubuntu e connessione a internet.
 
-Andiamo quindi a crearla, nella home ad esempio:
+
+Andiamo quindi a crearla, nella home ad esempio (passaggio 1 fig.\ref{fig:diag-firma_certificato_ca}):
 
 \begin{bashcode}{Server CA}{}
 $ mkdir ~/openvpn-ca
@@ -102,7 +100,7 @@ Le variabili nel primo blocco determinano i dati che poi verranno registrati nei
 
 Le ultime 2 sono opzioni di sicurezza, in particolare si setta l'algoritmo di cifratura %TODO add info
 
-A questo punti si deve laciare il comando \code{build-ca} per costruire la CA:
+A questo punti si deve laciare il comando \code{build-ca} per costruire la CA (passaggio 2 fig.\ref{fig:diag-firma_certificato_ca}):
 
 \begin{bashcode}{Server CA}{}
 $ ./easyrsa build-ca
@@ -168,6 +166,8 @@ init-pki complete; you may now create a CA or requests.
 Your newly created PKI dir is: /home/ubuntu/openvpn-pki/pki
 
 \end{bashcode}
+
+\subsection{Creazione della chiave privata del server OpenVPN}
 
 A questo punto il server opnevpn ha tutti i prerequisiti per creare una sua chiave privata e relativa \it{Certificate Signing Request}. 
 
