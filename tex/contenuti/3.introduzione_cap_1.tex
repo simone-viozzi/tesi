@@ -55,7 +55,8 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 \begin{enumerate} % \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
     \item[layer 4:] \textbf{Application}: Il livello applicazione è il layer pi\`u alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
-    I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. \newline
+    I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. \newline 
+    % TODO da riscrivere!!
     I protocolli di supporto forniscono alcune fuinzionalità di supporto per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
 
 %%        The application layer is the top layer of the Internet
@@ -87,8 +88,7 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 %%        Name System (DNS) protocols.
 
 
-    \item[layer 3:] \textbf{Transport}: Il livello di trasporto fornisce una comunicazione end-to-end tra per le applicazioni, infatti in generale il campo data del livello di trasporto non viene letto da nessuno se non l'applicazione di sorgente e destinazione. \newline
-    I protocolli principali di questo livello sono TCP e UDP: il \href{https://en.wikipedia.org/wiki/Transmission_Control_Protocol}{TCP} è connection-oriented e fornisce alta affidabilità; mentre l'\href{https://en.wikipedia.org/wiki/User_Datagram_Protocol}{UDP} è connection-less, quindi ogni inaffidabilità della rete deve essere gestita a livello applicazione.
+    \item[layer 3:] \textbf{Transport}: Il livello di trasporto fornisce una comunicazione end-to-end tra per le applicazioni, infatti in generale il campo data del livello di trasporto non viene letto da nessuno se non l'applicazione di sorgente e destinazione. I protocolli principali di questo livello sono TCP e UDP: il \href{https://en.wikipedia.org/wiki/Transmission_Control_Protocol}{TCP} è connection-oriented e fornisce alta affidabilità; mentre l'\href{https://en.wikipedia.org/wiki/User_Datagram_Protocol}{UDP} è connection-less, quindi ogni inaffidabilità della rete deve essere gestita a livello applicazione.
     
 %%        The transport layer provides end-to-end communication
 %%        services for applications.  There are two primary
@@ -109,8 +109,7 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 %%        Transport layer protocols are discussed in Chapter 4.
 
     % TODO da rivedere
-    \item[layer 2:] \textbf{Internet}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non è end-to-end, quindi è intrinsecamente di tipo connection-less, non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilità dei servizi quando essa è richiesta. \newline 
-    Di questo layer fanno parte i protocolli \href{https://en.wikipedia.org/wiki/Internet_Protocol}{IP}, \href{https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol}{ICMP}, etc.
+    \item[layer 2:] \textbf{Internet}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non è end-to-end, quindi è intrinsecamente di tipo connection-less, non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilità dei servizi quando essa è richiesta. Di questo layer fanno parte i protocolli \href{https://en.wikipedia.org/wiki/Internet_Protocol}{IP}, \href{https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol}{ICMP}, etc.
     
 %%        All Internet transport protocols use the Internet Protocol
 %%        (IP) to carry data from source host to destination host.
@@ -170,6 +169,9 @@ Possiamo vedere a cosa corrisponde in pratica con una cattura di un pacchetto es
              Encrypted Application Data: 389bf9516cce567d0d90ef62ba2a87376091fedb7f66f3b9e60e45a39376b1ae667a
              [Application Data Protocol: http-over-tls]
 \end{bashcode}
+
+% TODO va qui?
+In questo caso e' stato catturato un pacchetto proveniente da una pagina web https.
 
 \subsection{Incapsulamento}
 

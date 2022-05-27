@@ -7,6 +7,7 @@ In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VP
 
 \newsavebox{\myimage}
 
+ % TODO mancano captions
 \begin{figure}[H]
     \centering%
     \savebox{\myimage}{
@@ -15,8 +16,7 @@ In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VP
     \begin{subfigure}{0.4\textwidth}
         \centering
         \usebox{\myimage}
-        % TODO mancano captions
-        \caption{Diagramma di stato del router}
+        \caption{Configurazione iniziale}
         \label{fig:diag-router}
     \end{subfigure}
     \hfill%
@@ -25,7 +25,7 @@ In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VP
         \raisebox{\dimexpr.5\ht\myimage-.5\height\relax}{
             \includegraphics[width=1\linewidth]{immagini/diag-router_goal}
         }
-        \caption{Diagramma di stato del router}
+        \caption{Configurazione da raggiungere}
         \label{fig:diag-router1}
     \end{subfigure}
 \end{figure}
@@ -35,7 +35,6 @@ In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VP
 \section{Creazione della configurazione Openvpn}
 
 % TODO da riscrivere
-
 Si devono seguire gli step descritti in sezione \ref{sec:client_keys}, quindi creare la certificate request e firmarla nel \it{server CA}. Per poi usare lo script creato in sezione \ref{sec:script_client} per costruire il file di configurazione:
 
 \begin{bashcode}{Server}{}
