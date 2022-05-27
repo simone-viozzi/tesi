@@ -4,7 +4,7 @@
 \section{Overview della configurazione}
 
 % TODO aggiungi descrizione
-Per simulare gli host domotici è stata usatata una raspberry pi.
+Per simulare gli host domotici è stata usata una \it{raspberry pi}.
 
 \begin{figure}[H]
     \centering
@@ -112,7 +112,7 @@ Per instaurare una comunicazione bidirezionale tra \it{host-domotico} e \it{clie
     \item il client abbia l'opportuna rotta per raggiungere la sottorete dove si trova l'\it{host-domotico}
 \end{enumerate}
 
-Per il punto 1 è necessario aggiungere la seguente riga nel file \\\code{/etc/openvpn/server/ccd/router}
+Per il punto 1 è necessario aggiungere la seguente riga nel file \\\code{/etc/openvpn/server/ccd/router}:
 
 \begin{bashcode}{Server}{}
 $ vim /etc/openvpn/server/ccd/router
@@ -129,10 +129,10 @@ $ vim /etc/openvpn/server/server.conf
 168 push "route 192.168.130.0 255.255.255.0"
 \end{bashcode}
 
-Dopo aver modificato la configurazione del server va riavviarlo con \code{systemctl restart}
+Dopo aver modificato la configurazione del server va riavviarlo con \code{systemctl restart}.
 
 % TODO da rivedere
-In questo modo nel \it{client1} verra' aggiunta una nuova rotta nel momento in cui si connette alla vpn:
+In questo modo nella procedura di connessione alla VPN, i client aggiungeranno la rotta verso la sottorete \code{192.168.130.0/24} nella loro tabella di routing. Possiamo verificarlo con: 
 
 \begin{bashcode}{Client}{}
 $ ip route
@@ -144,7 +144,7 @@ $ ip route
 
 Per testare la connessione tra \it{client} e \it{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \it{Server} e \it{Router} per vedere il percorso dei pacchetti.
 
-Vediamo quindi un ping dal client verso l'host-domotico, con server e router in ascolto sull'interfaccia tun0:
+Vediamo quindi un ping dal client verso l'\it{host-domotico}, con server e router in ascolto sull'interfaccia tun0:
 
 \begin{bashcode}{Client}{}
 $ ping -c 1 192.168.130.3
@@ -162,7 +162,7 @@ $ tcpdump -i tun0
 listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \end{bashcode}
 
-Il server non ha visto traffico poichè ha l'opzione \code{client-to-client} abilitata, ciò comporta che il layer vpn effettua il routing senza passare per l'interfaccia di rete del router.
+Il server non ha visto traffico poiché ha l'opzione \code{client-to-client} abilitata, ciò comporta che il layer vpn effettua il routing senza passare per l'interfaccia di rete del router.
 
 \begin{bashcode}{Router}{}
 $ tcpdump -i tun0
@@ -175,7 +175,7 @@ Il router vede il pacchetto e lo instrada verso l'host corretto.
 
 Provando nella direzione inversa si ottiene lo stesso risultato
 
-\begin{bashcode}{host-domotico}{}
+\begin{bashcode}{Host-domotico}{}
 $ ping -c 1 10.8.0.2
 PING 10.8.0.2 (10.8.0.2) 56(84) bytes of data.
 64 bytes from 10.8.0.2: icmp_seq=1 ttl=63 time=0.428 ms

@@ -51,9 +51,10 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 
 %%    The protocol layers used in the Internet architecture are as
 %%    follows [INTRO:4]:
+Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 \begin{enumerate} % \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
-    \item[4.] \textbf{Application Layer}: Il livello applicazione è il layer pi\`u alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
+    \item[layer 4:] \textbf{Application}: Il livello applicazione è il layer pi\`u alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
     I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. \newline
     I protocolli di supporto forniscono alcune fuinzionalità di supporto per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
 
@@ -86,7 +87,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%        Name System (DNS) protocols.
 
 
-    \item[3.] \textbf{Transport Layer}: Il livello di trasporto fornisce una comunicazione end-to-end tra per le applicazioni, infatti in generale il campo data del livello di trasporto non viene letto da nessuno se non l'applicazione di sorgente e destinazione. \newline
+    \item[layer 3:] \textbf{Transport}: Il livello di trasporto fornisce una comunicazione end-to-end tra per le applicazioni, infatti in generale il campo data del livello di trasporto non viene letto da nessuno se non l'applicazione di sorgente e destinazione. \newline
     I protocolli principali di questo livello sono TCP e UDP: il \href{https://en.wikipedia.org/wiki/Transmission_Control_Protocol}{TCP} è connection-oriented e fornisce alta affidabilità; mentre l'\href{https://en.wikipedia.org/wiki/User_Datagram_Protocol}{UDP} è connection-less, quindi ogni inaffidabilità della rete deve essere gestita a livello applicazione.
     
 %%        The transport layer provides end-to-end communication
@@ -108,7 +109,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%        Transport layer protocols are discussed in Chapter 4.
 
     % TODO da rivedere
-    \item[2.] \textbf{Internet Layer}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non è end-to-end, quindi è intrinsecamente di tipo connection-less, non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilità dei servizi quando essa è richiesta. \newline 
+    \item[layer 2:] \textbf{Internet}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non è end-to-end, quindi è intrinsecamente di tipo connection-less, non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilità dei servizi quando essa è richiesta. \newline 
     Di questo layer fanno parte i protocolli \href{https://en.wikipedia.org/wiki/Internet_Protocol}{IP}, \href{https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol}{ICMP}, etc.
     
 %%        All Internet transport protocols use the Internet Protocol
@@ -141,7 +142,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%        discussed in Chapter 3.
 
     % TODO da rivedere
-    \item[1.] \textbf{Link Layer}: È il layer più vicino al mezzo fisico su cui viaggiano i dati, ogni host deve implementare il protocollo usato per la specifica interfaccia che usa. Ad esempio un'host con un'interfaccia Ethernet deve implementare i protocolli \it{Ethernet II} e \it{IEEE 802.3}.
+    \item[layer 1:] \textbf{Link}: È il layer più vicino al mezzo fisico su cui viaggiano i dati, ogni host deve implementare il protocollo usato per la specifica interfaccia che usa. Ad esempio un'host con un'interfaccia Ethernet deve implementare i protocolli \it{Ethernet II} e \it{IEEE 802.3}.
     
 %%        To communicate on its directly-connected network, a host
 %%        must implement the communication protocol used to

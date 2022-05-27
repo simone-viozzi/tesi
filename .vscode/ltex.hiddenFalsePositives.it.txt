@@ -11,3 +11,4 @@
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QCreiamo una cartella nella home che ospitera' le chiavi dei client e le configurazioni openvpn:\\E$"}
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QOra creiamo lo script bash makeconfig.sh:\\E$"}
 {"rule":"ST_03_001","sentence":"^\\QIl secondo file creato, server.req, corrisponde ad una Certificate Signing Request (CSR) che va firmata e validata dalla CA.\\E$"}
+{"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QCiò viene fatto direttamente da luci, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
