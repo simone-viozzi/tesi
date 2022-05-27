@@ -22,11 +22,11 @@
 
 % TODO da riscrivere!!
 
-Internet e' una rete di telecomunicazione ad accesso pubblico reso possibile da una suite di protocolli.
+Internet è una rete di telecomunicazione ad accesso pubblico reso possibile da una suite di protocolli.
 
 Un sistema di comunicazione Internet consiste in un interconnessione tra reti di pacchetti, che supportano la comunicazione tra hosts usando una suite di protocolli.
 
-L'obbiettivo di Internet e' quello di collegare hosts attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varieta' di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilita' necessaria e non aggiungere troppa complessita', l'architettura di Internet e' sta suddivisa in alcuni strati.
+L'obbiettivo di Internet è quello di collegare hosts attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati.
 
 
 \subsection{Internet Protocol Suite}
@@ -53,9 +53,9 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%    follows [INTRO:4]:
 
 \begin{enumerate} % \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
-    \item[4.] \textbf{Application Layer}: Il livello applicazione e' il layer piu' alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
+    \item[4.] \textbf{Application Layer}: Il livello applicazione è il layer pi\`u alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
     I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. \newline
-    I protocolli di supporto forniscono alcune fuinzionalita' di supporto per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
+    I protocolli di supporto forniscono alcune fuinzionalità di supporto per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
 
 %%        The application layer is the top layer of the Internet
 %%        protocol suite.  The Internet suite does not further
@@ -87,7 +87,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 
 
     \item[3.] \textbf{Transport Layer}: Il livello di trasporto fornisce una comunicazione end-to-end tra per le applicazioni, infatti in generale il campo data del livello di trasporto non viene letto da nessuno se non l'applicazione di sorgente e destinazione. \newline
-    I protocolli principali di questo livello sono TCP e UDP: il \href{https://en.wikipedia.org/wiki/Transmission_Control_Protocol}{TCP} e' connection-oriented e fornisce alta affidabilita'; mentre l'\href{https://en.wikipedia.org/wiki/User_Datagram_Protocol}{UDP} e' connection-less, quindi ogni inaffidabilità della rete deve essere gestita a livello applicazione.
+    I protocolli principali di questo livello sono TCP e UDP: il \href{https://en.wikipedia.org/wiki/Transmission_Control_Protocol}{TCP} è connection-oriented e fornisce alta affidabilità; mentre l'\href{https://en.wikipedia.org/wiki/User_Datagram_Protocol}{UDP} è connection-less, quindi ogni inaffidabilità della rete deve essere gestita a livello applicazione.
     
 %%        The transport layer provides end-to-end communication
 %%        services for applications.  There are two primary
@@ -108,7 +108,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%        Transport layer protocols are discussed in Chapter 4.
 
     % TODO da rivedere
-    \item[2.] \textbf{Internet Layer}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non e' end-to-end, quindi e' intrinsecamente di tipo connection-less, non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilita' dei servizi quando essa e' richiesta. \newline 
+    \item[2.] \textbf{Internet Layer}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non è end-to-end, quindi è intrinsecamente di tipo connection-less, non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilità dei servizi quando essa è richiesta. \newline 
     Di questo layer fanno parte i protocolli \href{https://en.wikipedia.org/wiki/Internet_Protocol}{IP}, \href{https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol}{ICMP}, etc.
     
 %%        All Internet transport protocols use the Internet Protocol
@@ -141,7 +141,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 %%        discussed in Chapter 3.
 
     % TODO da rivedere
-    \item[1.] \textbf{Link Layer}: E' il layer piu' vicino al mezzo fisico su cui viaggiano i dati, ogni host deve implementare il protocollo usato per la specifica interfaccia che usa. Ad esempio un'host con un'interfaccia Ethernet deve implementare i protocolli \it{Ethernet II} e \it{IEEE 802.3}.
+    \item[1.] \textbf{Link Layer}: E' il layer più vicino al mezzo fisico su cui viaggiano i dati, ogni host deve implementare il protocollo usato per la specifica interfaccia che usa. Ad esempio un'host con un'interfaccia Ethernet deve implementare i protocolli \it{Ethernet II} e \it{IEEE 802.3}.
     
 %%        To communicate on its directly-connected network, a host
 %%        must implement the communication protocol used to
@@ -174,17 +174,17 @@ Possiamo vedere a cosa corrisponde in pratica con una cattura di un pacchetto es
 
 Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vedere una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
 
-Ad esempio analizzando la cattura in Wireshark, code. \ref{code:tls-wireshark}, si puo' vedere lo stack dei protocolli e i loro relativi header:
+Ad esempio analizzando la cattura in Wireshark, code. \ref{code:tls-wireshark}, si può vedere lo stack dei protocolli e i loro relativi header:
 
 % TODO da sistemare
 \begin{itemize}
-    \item \textbf{Transport Layer Security}\cite{RFC_8446}: E' il dato effettivo che e' stato trasmesso in rete  
+    \item \textbf{Transport Layer Security}\cite{RFC_8446}: E' il dato effettivo che è stato trasmesso in rete  
     
     \item \textbf{Transmission Control Protocol}\cite{RFC_0793}: incapsula il layer applicazione in un layer di trasporto usando il protocollo TCP. Aggiunge un minimo di 20 byte di header 
     
     \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: incapsula il layer di trasporto in un pacchetto IP. Aggiunge un minimo di 20 byte di header 
     
-    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico e' una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Questo aggiunge 14 byte di header e 4 byte di trailer.
+    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico è una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Questo aggiunge 14 byte di header e 4 byte di trailer.
 \end{itemize}
 
 Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati di protocolli che complessivamente hanno aggiunto un minimo di 58 byte di hoverhead.
@@ -213,7 +213,7 @@ Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati
 
 % It was written by James Yonan and is free software, released under the terms of the GNU General Public License version 2 (GPLv2).[12] Additionally, commercial licenses are available.[13] 
 
-OpenVPN e' un applicativo open source che ha l' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn puo' incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che puo' viaggiare sia su TCP che UDP. Ha molte opzioni di configurazione, come la possibilita' di usare qualsiasi porta, oppure l'uso della compressione. Il tutto e' concentrato in un singolo applicativo che puo' funzionare sia da client che da server, in base alla configurazione fornita.
+OpenVPN è un applicativo open source che ha l' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn può incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che può viaggiare sia su TCP che UDP. Ha molte opzioni di configurazione, come la possibilità di usare qualsiasi porta, oppure l'uso della compressione. Il tutto è concentrato in un singolo applicativo che può funzionare sia da client che da server, in base alla configurazione fornita.
 
 Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su UDP e porta 1194:
 
@@ -233,14 +233,16 @@ Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su U
 
 % OpenVPN uses the OpenSSL library to provide encryption of both the data and control channels. It lets OpenSSL do all the encryption and authentication work, allowing OpenVPN to use all the ciphers available in the OpenSSL package. It can also use the HMAC packet authentication feature to add an additional layer of security to the connection (referred to as an "HMAC Firewall" by the creator). It can also use hardware acceleration to get better encryption performance.[14][15] Support for mbed TLS is available starting from version 2.3.[16]
 
-Per la cifratura si serve della libreria OpenSSL, ne supporta quindi tutti i protocolli di cifratura. Ha inoltre ulteriori estensioni alla sicurezza come l'utilizzo dell'autenticazione di pacchetto HMAC.
+
+
+
+
+\subsection{Autenticazione}
+\label{subsec:auth}
 
 % https://community.openvpn.net/openvpn/wiki/How_does_PKI_work
 % https://it.wikipedia.org/wiki/Infrastruttura_a_chiave_pubblica
 % https://en.wikipedia.org/wiki/Public_key_infrastructure
-
-\subsection{Autenticazione}
-\label{subsec:auth}
 
 % OpenVPN has several ways to authenticate peers with each other. OpenVPN offers pre-shared keys, certificate-based, and username/password-based authentication. Preshared secret key is the easiest, and certificate-based is the most robust and feature-rich. In version 2.0 username/password authentications can be enabled, both with or without certificates. However, to make use of username/password authentications, OpenVPN depends on third-party modules.
 
@@ -258,17 +260,27 @@ Per la cifratura si serve della libreria OpenSSL, ne supporta quindi tutti i pro
 
 \section{Openwrt}
 
-OpenWRT e' un sistema operativo per sistemi enbedded, e' principalmente usato nei router. E' basato su kernel linux, con specifica attenzione dell'ottimizazione del sistema per fare in modo che possa eseguirsi su sistemi con risorse estremamente ridotte.
-Al contrario di altri sistemi operativi per dispositivi embedding, OpenWRT presenta un filesystem con permessi di scrittura, cio' permette all'utente di accedervi e modificare a runtime le funzionalita' del dispositivo.
+\begin{bashcode}{Login banner di Openwrt}{}
+BusyBox v1.35.0 (2022-04-24 21:09:51 UTC) built-in shell (ash)
+    _______                     ________        __
+    |       |.-----.-----.-----.|  |  |  |.----.|  |_
+    |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+    |_______||   __|_____|__|__||________||__|  |____|
+            |__| W I R E L E S S   F R E E D O M
+    -----------------------------------------------------
+    OpenWrt SNAPSHOT, r19521-46980294f6
+    -----------------------------------------------------
+\end{bashcode}
 
-Comprende una shell linux comprensiva delle funzionalita' piu' comuni, compreso il suo gestore pacchetti opkg.
+OpenWRT è un sistema operativo per sistemi embedded, è principalmente usato nei router. È basato su kernel linux, con specifica attenzione dell'ottimizzazione del sistema per fare in modo che possa eseguirsi su sistemi con risorse estremamente ridotte.
+Al contrario di altri sistemi operativi per dispositivi embedding, OpenWRT presenta un filesystem con permessi di scrittura, ciò permette all'utente di accedervi e modificare a runtime le funzionalità del dispositivo.
 
-OpenWRT puo' essere configurato sia tramite shell che tramite interfaccia web (LuCI).
+Comprende una shell linux comprensiva delle funzionalità più comuni, compreso il suo gestore pacchetti opkg.
 
-% TODO move the openwrt shell banner e gli screen di luci
+OpenWRT può essere configurato sia tramite shell che tramite interfaccia web (LuCI).
 
-% <-- section -->
-\section{Introduzione a Luci}
+
+\subsection{Introduzione a Luci}
 
 Luci è la web interface ufficiale di \it{openwrt}, dovrebbe essere già installata e raggiungibile, in caso contrario può essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
 
@@ -311,23 +323,6 @@ L'homepage, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del rout
 
 L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \it{DHCP}, i processi in esecuzione, etc. 
 
-% TODO da spostare nell'introduzione
-\section{Accesso ssh al Router}
 
-Oltre all'interfaccia grafica \it{LuCI} si può accedere al router tramite ssh.
-
-\begin{bashcode}{Router 4g}{}
-BusyBox v1.35.0 (2022-04-24 21:09:51 UTC) built-in shell (ash)
-    _______                     ________        __
-    |       |.-----.-----.-----.|  |  |  |.----.|  |_
-    |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
-    |_______||   __|_____|__|__||________||__|  |____|
-            |__| W I R E L E S S   F R E E D O M
-    -----------------------------------------------------
-    OpenWrt SNAPSHOT, r19521-46980294f6
-    -----------------------------------------------------
-\end{bashcode}
-
-Non esiste un account utente quindi viene effettuato il login come root.
 
 

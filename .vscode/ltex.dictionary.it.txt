@@ -59,3 +59,11 @@ source
 infrastructure
 Public
 Signing
+Networking
+hoverhead
+end-to-end
+embedded
+filesystem
+runtime
+shell
+linux

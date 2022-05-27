@@ -47,7 +47,7 @@ $ sudo apt-get install -y openvpn easy-rsa vim
 \section{Creazione della Public key infrastructure}
 \label{sec:pki_ca}
 
-Per la gestione dell'autenticazione dei client alla VPN e' necessario creare una \it{PKI}, come descritto nella sezione \ref{subsec:auth}, per una maggiore sicurezza e' indicato separare la \it{Certificate Authority} dal \it{Server OpenVPN}.
+Per la gestione dell'autenticazione dei client alla VPN è necessario creare una \it{PKI}, come descritto nella sezione \ref{subsec:auth}, per una maggiore sicurezza è indicato separare la \it{Certificate Authority} dal \it{Server OpenVPN}.
 
 La gestione della PKI viene fatta usando l'utility \it{easy-rsa}, possiamo riassumere i comandi principali della sua creazione nel seguente schema:
 
@@ -201,7 +201,7 @@ La chiave \code{server.key} va copiata nell'apposita cartella.
 $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 \end{bashcode}
 
-Il secondo file creato, \code{server.req}, corrisponde ad una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. In questo modo ogni client che si fida della CA si fiderà di conseguenza del server OpenVPN %TODO link a web of trust
+Il secondo file creato, \code{server.req}, corrisponde a una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. In questo modo ogni client che si fida della CA si fiderà di conseguenza del server OpenVPN %TODO link a web of trust
 
 % TODO sta sezione serve davvero?
 % <-- section -->
@@ -482,7 +482,7 @@ To              Action      From
 
 Ora che la configurazione del server è in una situazione stabile possiamo avviarlo:
 
-% TODO l'output e' sbagliato perche' fa riferimento alla topologia net 30
+% TODO l'output è sbagliato perchè fa riferimento alla topologia net 30
 \begin{bashcode}{Server}{}
 $ sudo systemctl enable openvpn-server@server.service
 $ sudo systemctl start openvpn-server@server.service
@@ -532,7 +532,7 @@ $ vim base.conf
 108  ;tls-auth ta.key 1             # 
 116  cipher AES-256-GCM             # cifratura usata
 117  auth SHA256                    # autenticazione usata
-118  key-direction 1                # indica che e' un client
+118  key-direction 1                # indica che è un client
 \end{bashcode}
 
 Ora creiamo lo script bash \code{make\_config.sh}:
@@ -580,7 +580,7 @@ Nella cartella \code{client-configs/files/} si troverà il file di configurazion
 \label{sec:test_config_server}
 
 Ora che abbiamo un file di configurazione per il client, possiamo testare che la configurazione fino a questo punto sia corretta. 
-Per farlo ci spostiamo su una macchina client, con SO Linux ad esempio, e si puo' connettere il \it{client} alla vpn con la configurazione creata al passo precedente:
+Per farlo ci spostiamo su una macchina client, con SO Linux ad esempio, e si può connettere il \it{client} alla vpn con la configurazione creata al passo precedente:
 
 \begin{bashcode}{Client}{}
 $ sudo openvpn --config client1.ovpn

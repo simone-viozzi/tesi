@@ -10,3 +10,4 @@
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QPer effettuare le varie operazioni di testing e' stato aggiunta raspberry pi che ha svolto il ruolo di \"host domotico\"\\E$"}
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QCreiamo una cartella nella home che ospitera' le chiavi dei client e le configurazioni openvpn:\\E$"}
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QOra creiamo lo script bash makeconfig.sh:\\E$"}
+{"rule":"ST_03_001","sentence":"^\\QIl secondo file creato, server.req, corrisponde ad una Certificate Signing Request (CSR) che va firmata e validata dalla CA.\\E$"}
