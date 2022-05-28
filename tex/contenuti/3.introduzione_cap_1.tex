@@ -242,13 +242,17 @@ Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su U
 % OpenVPN uses the OpenSSL library to provide encryption of both the data and control channels. It lets OpenSSL do all the encryption and authentication work, allowing OpenVPN to use all the ciphers available in the OpenSSL package. It can also use the HMAC packet authentication feature to add an additional layer of security to the connection (referred to as an "HMAC Firewall" by the creator). It can also use hardware acceleration to get better encryption performance.[14][15] Support for mbed TLS is available starting from version 2.3.[16]
 % \href{https://en.wikipedia.org/wiki/OpenSSL}{OpenSSL}
 
-Per la cifratura e autenticazione viene usata la libreria \href{https://en.wikipedia.org/wiki/OpenSSL}{OpenSSL}, e' open source ed ampiamente usata dalla maggior parte dei servizi su internet. Cio' fornisce ad OpenVPN la flessibilità di poter usare tutti i cifrari disponibili nella libreria OpenSSL.
+Per la cifratura e autenticazione viene usata la libreria \href{https://en.wikipedia.org/wiki/OpenSSL}{OpenSSL}, open source ed ampiamente usata dalla maggior parte dei servizi su internet, come ad esempio l'https. Cio' fornisce ad OpenVPN la flessibilità di poter usare tutti i cifrari forniti da questa libreria.
 
 % OpenVPN has several ways to authenticate peers with each other. OpenVPN offers pre-shared keys, certificate-based, and username/password-based authentication. Preshared secret key is the easiest, and certificate-based is the most robust and feature-rich. In version 2.0 username/password authentications can be enabled, both with or without certificates. However, to make use of username/password authentications, OpenVPN depends on third-party modules.
 
 L'autenticazione puo' essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti.
 
-Il metodo piu' sicuro e' quello basato sui certificati, che sfrutta una \it{Public key infrastructure} per autenticare che i certificati forniti dai client siano effettivamente autentici. Quindi viene rilasciato un certificato per ogni utente, e in fase di autenticazione questo viene controllato con il certificato del server. Cio' permette inoltre di poter revocare in ogni momento un certificato di uno specifico client, facendogli perdere l'accesso alla VPN.
+% TODO maybe bibliografia su pki?
+Il metodo piu' sicuro e' quello basato sui certificati, che sfrutta una \it{Public key infrastructure} per autenticare che i certificati forniti dai client siano effettivamente autentici. 
+
+% TODO not like
+Quindi viene rilasciato un certificato per ogni utente, e in fase di autenticazione questo viene controllato con il certificato del server. Cio' permette inoltre di poter revocare in ogni momento un certificato di uno specifico client, facendogli perdere l'accesso alla VPN.
 
 
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
@@ -259,10 +263,23 @@ Maggiori informazioni possono essere trovate sulla \href{https://community.openv
 
 % OpenVPN can run over User Datagram Protocol (UDP) or Transmission Control Protocol (TCP) transports, multiplexing created SSL tunnels on a single TCP/UDP port[17] (RFC 3948 for UDP).[18]
 
-% From 2.3.x series on, OpenVPN fully supports IPv6 as protocol of the virtual network inside a tunnel and the OpenVPN applications can also establish connections via IPv6.[19] It has the ability to work through most proxy servers (including HTTP) and is good at working through network address translation (NAT) and getting out through firewalls. The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options. OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
+ 
 
-% OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alternative to IPsec in situations where an ISP may block specific VPN protocols in order to force users to subscribe to a higher-priced, "business grade," service tier. For example, Comcast previously declared that their @Home product was, and had always been, designated as a residential service and did not allow the use of commercial applications. Their argument was that conducting remote work via a VPN can adversely affect the network performance of their regular residential subscribers. They offered an alternative, @Home Professional, this would cost more than @Home product. So, anyone wishing to use VPN would have to subscribe to higher-priced, business-grade service tier.[20]
+% It has the ability to work through most proxy servers (including HTTP) and is good at working through network address translation (NAT) and getting out through firewalls.  
 
+% OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alternative to IPsec in situations where an ISP may block specific VPN protocols.
+
+OpenVPN viene incapsulato dai comuni protocolli di trasporto (TCP e UDP), cio' lo rende adatto in caso l'ips blocchi VPN di livello piu' basso, es ipsec. Puo' inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
+
+% The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options.
+
+% TODO da riscrivere
+Nella configurazione del server possono essere specificate delle opzioni, "push", per impostare alcune configurazioni di rete nel server o nei client, come ad esempio aggiungere una voce nella tabella di routing dei client.
+
+% OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
+
+% TODO da riscrivere
+Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Puo' quindi creare un tunnel IP di livello 3 (TUN), o Ethernet livello 2 (TAP).
 
 
 \section{Openwrt}
@@ -279,43 +296,48 @@ BusyBox v1.35.0 (2022-04-24 21:09:51 UTC) built-in shell (ash)
     -----------------------------------------------------
 \end{bashcode}
 
-OpenWRT è un sistema operativo per sistemi embedded, è principalmente usato nei router. È basato su kernel linux, con specifica attenzione dell'ottimizzazione del sistema per fare in modo che possa eseguirsi su sistemi con risorse estremamente ridotte.
-Al contrario di altri sistemi operativi per dispositivi embedding, OpenWRT presenta un filesystem con permessi di scrittura, ciò permette all'utente di accedervi e modificare a runtime le funzionalità del dispositivo.
+OpenWRT è un sistema operativo open-source per sistemi embedded, principalmente usato come firmware alternativo per router domestici.
 
-Comprende una shell linux comprensiva delle funzionalità più comuni, compreso il suo gestore pacchetti opkg.
+Si basa su kernel linux, con specifica attenzione all'ottimizzazione del sistema per renderlo adatto a dispositivi con risorse estremamente limitate.
 
-OpenWRT può essere configurato sia tramite shell che tramite interfaccia web (LuCI).
+Al contrario di altri sistemi operativi per dispositivi embedding, OpenWRT presenta un filesystem con permessi di scrittura. Questo permette di modificare il funzionamento del sistema senza dover reinstallare l'intero firmware. Per facilitare l'installazione delle funzionalità aggiuntive ha il suo gestore pacchetti (\href{https://openwrt.org/docs/guide-user/additional-software/opkg}{opkg}).
 
 
-\subsection{Introduzione a Luci}
+OpenWRT può essere configurato sia tramite shell (\href{https://en.wikipedia.org/wiki/Almquist_shell}{ash}) che tramite interfaccia web (\href{https://openwrt.org/docs/guide-user/luci/start}{LuCI}).
 
-Luci è la web interface ufficiale di \it{openwrt}, dovrebbe essere già installata e raggiungibile, in caso contrario può essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
+
+\subsection{LuCI web interface}
+
+Luci è l'interfaccia web ufficiale di \it{openwrt}, dovrebbe essere già installata e raggiungibile, in caso contrario può essere installata e configurata seguendo la guida ufficiale di \it{OpenWrt} \cite{install-luci}.
+
 
 \begin{figure}[H]
     \centering
 
-    \begin{subfigure}{0.5\textwidth}
-        \centering
-        \includegraphics[height=0.65\linewidth]{immagini/LuCI_login}
-        \caption{Login page}
-        \label{fig:luci-login}
-    \end{subfigure}%
-    \hfill
-    \begin{subfigure}{0.5\textwidth}
+    %\begin{subfigure}{0.5\textwidth}
+    %    \centering
+    %    \includegraphics[height=0.65\linewidth]{immagini/LuCI_login}
+    %    \caption{Login page}
+    %    \label{fig:luci-login}
+    %\end{subfigure}%
+    %\hfill
+    \begin{subfigure}{1\linewidth}
         \centering
         \includegraphics[height=0.65\linewidth]{immagini/LuCI_status}
         \caption{Status page}
         \label{fig:luci-status}
     \end{subfigure}%
 
-    \begin{subfigure}{0.5\textwidth}
+    \medskip
+
+    \begin{subfigure}{0.5\linewidth}
         \centering
         \includegraphics[height=0.65\linewidth]{immagini/LuCI_graphs}
         \caption{Graphs page}
         \label{fig:luci-graphs}
     \end{subfigure}%
     \hfill
-    \begin{subfigure}{0.5\textwidth}
+    \begin{subfigure}{0.5\linewidth}
         \centering
         \includegraphics[height=0.65\linewidth]{immagini/LuCI_interfaces}
         \caption{Interfaces page}
@@ -324,7 +346,6 @@ Luci è la web interface ufficiale di \it{openwrt}, dovrebbe essere già install
     \caption{Interfaccia grafica LuCI}
 \end{figure}
 
-Le credenziali di default sono \code{Username:root} \code{Password:root}, come mostrato in fig. \ref{fig:luci-login}.
 
 L'homepage, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \it{DHCP}.
 

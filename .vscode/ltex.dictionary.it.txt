@@ -92,3 +92,7 @@ accept
 lan
 Application
 sottorete
+embedding
+kernel
+open-source
+interface
