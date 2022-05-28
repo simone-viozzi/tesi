@@ -57,7 +57,7 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
     \item[layer 4:] \textbf{Application}: Il livello applicazione è il layer pi\`u alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
     I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. \newline 
     % TODO da riscrivere!!
-    I protocolli di supporto forniscono alcune fuinzionalità di supporto per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
+    I protocolli di supporto forniscono alcune funzionalità di supporto per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
 
 %%        The application layer is the top layer of the Internet
 %%        protocol suite.  The Internet suite does not further
@@ -216,7 +216,7 @@ Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati
 
 % It was written by James Yonan and is free software, released under the terms of the GNU General Public License version 2 (GPLv2).[12] Additionally, commercial licenses are available.[13] 
 
-OpenVPN è un applicativo open source che ha l' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn può incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che può viaggiare sia su TCP che UDP. Ha molte opzioni di configurazione, come la possibilità di usare qualsiasi porta, oppure l'uso della compressione. Il tutto è concentrato in un singolo applicativo che può funzionare sia da client che da server, in base alla configurazione fornita.
+OpenVPN è un applicativo open source che ha l' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn può incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che può viaggiare sia su TCP che UDP. Ha molte opzioni di configurazione, come la possibilità di usare qualsiasi porta, oppure l'uso della compressione. Il tutto è raccolto in un singolo applicativo che può funzionare sia da client che da server, in base alla configurazione fornita.
 
 Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su UDP e porta 1194:
 
@@ -232,22 +232,26 @@ Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su U
             Data: 00000019a366196eb2aca181df226faf8514ab73f524f7ef335d55fc57322d032a2095e4
 \end{bashcode}
 
-\subsection{Crittografia}
-
-% OpenVPN uses the OpenSSL library to provide encryption of both the data and control channels. It lets OpenSSL do all the encryption and authentication work, allowing OpenVPN to use all the ciphers available in the OpenSSL package. It can also use the HMAC packet authentication feature to add an additional layer of security to the connection (referred to as an "HMAC Firewall" by the creator). It can also use hardware acceleration to get better encryption performance.[14][15] Support for mbed TLS is available starting from version 2.3.[16]
-
-
-
-
-
-\subsection{Autenticazione}
+\subsection{Crittografia e autenticazione}
 \label{subsec:auth}
 
 % https://community.openvpn.net/openvpn/wiki/How_does_PKI_work
 % https://it.wikipedia.org/wiki/Infrastruttura_a_chiave_pubblica
 % https://en.wikipedia.org/wiki/Public_key_infrastructure
 
+% OpenVPN uses the OpenSSL library to provide encryption of both the data and control channels. It lets OpenSSL do all the encryption and authentication work, allowing OpenVPN to use all the ciphers available in the OpenSSL package. It can also use the HMAC packet authentication feature to add an additional layer of security to the connection (referred to as an "HMAC Firewall" by the creator). It can also use hardware acceleration to get better encryption performance.[14][15] Support for mbed TLS is available starting from version 2.3.[16]
+% \href{https://en.wikipedia.org/wiki/OpenSSL}{OpenSSL}
+
+Per la cifratura e autenticazione viene usata la libreria \href{https://en.wikipedia.org/wiki/OpenSSL}{OpenSSL}, e' open source ed ampiamente usata dalla maggior parte dei servizi su internet. Cio' fornisce ad OpenVPN la flessibilità di poter usare tutti i cifrari disponibili nella libreria OpenSSL.
+
 % OpenVPN has several ways to authenticate peers with each other. OpenVPN offers pre-shared keys, certificate-based, and username/password-based authentication. Preshared secret key is the easiest, and certificate-based is the most robust and feature-rich. In version 2.0 username/password authentications can be enabled, both with or without certificates. However, to make use of username/password authentications, OpenVPN depends on third-party modules.
+
+L'autenticazione puo' essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti.
+
+Il metodo piu' sicuro e' quello basato sui certificati, che sfrutta una \it{Public key infrastructure} per autenticare che i certificati forniti dai client siano effettivamente autentici. Quindi viene rilasciato un certificato per ogni utente, e in fase di autenticazione questo viene controllato con il certificato del server. Cio' permette inoltre di poter revocare in ogni momento un certificato di uno specifico client, facendogli perdere l'accesso alla VPN.
+
+
+Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
 
 
 

@@ -8,8 +8,11 @@
         "latex",
         "plaintext"
     ],
-    "editor.wordWrap": "on",
-    "editor.wrappingIndent": "indent",
+    "editor.wrappingIndent": "same",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 90,
+    "editor.fontSize": 15,
+    "window.zoomLevel": 0.1,
     "cSpell.language": "en,it",
     "cSpell.words": [
         "domotico",
