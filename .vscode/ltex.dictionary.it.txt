@@ -96,3 +96,5 @@ embedding
 kernel
 open-source
 interface
+Control
+Version
