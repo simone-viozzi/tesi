@@ -9,7 +9,7 @@
 
 In questo capitolo andremo a installare e configurare \it{OpenVPN server} sulla VPS di OVHCloud.
 
-Supponiamo di partire da una configurazione di base, che contiene quindi solo il server openvpn e un generico client. Come da specifiche il Server deve avere a disposizione un'ip pubblico e il client deve essere il piu' generico possibile, lo supponiamo quindi sotto a un NAT.
+Supponiamo di partire da una configurazione di base, che contiene quindi solo il server openvpn e un generico client. Come da specifiche il Server deve avere a disposizione un'ip pubblico e il client deve essere il più generico possibile, lo supponiamo quindi sotto a un NAT.
 
 Supponiamo inoltre che l'ip pubblico del \it{Server} sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
@@ -37,7 +37,7 @@ Supponiamo inoltre che l'ip pubblico del \it{Server} sia \code{51.178.141.119}, 
     \caption{Configurazione di partenza e di obbiettivo per questo capitolo. \cite{icons}}
 \end{figure}
 
-Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare opportunamente una rete VPN, che risultera' nella configurazione rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
+Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare opportunamente una rete VPN, che risulterà nella configurazione rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
 
 % TODO maybe cut this
 I pacchetti necessari per questo capitolo sono \code{openvpn}, \code{easy-rsa} e un editor di testo, che possono essere installati con:
@@ -86,7 +86,7 @@ easyrsa  openssl-easyrsa.cnf  pki  vars.example  x509-types
 Ora si devono personalizzare le variabili \code{vars}, si può sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
 Andiamo quindi a creare un nuovo file vars:
 
-% TODO e' of lasciare queste?
+% TODO è of lasciare queste?
 \begin{bashcode}{Server CA}{}
 $ vim vars
 set_var EASYRSA_REQ_COUNTRY  "IT"

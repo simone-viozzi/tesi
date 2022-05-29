@@ -68,21 +68,19 @@ vediamo le caratteristiche minime che i componenti dovranno avere:
 
 \subsection{Esse-ti 4G.Router}
 
-Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link})
+Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link}).
 
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=250px]{immagini/4grouter.jpg}
-	\caption{4G.Router}
-
+	\caption{Esse-ti 4G.Router}
 	\label{fig:esse-ti-router-4g}
-
 \end{figure}
 
 Per l'implementazione di questa architettura sono necessarie solo un sub-set delle specifiche:
 
-%TODO e' copiato e incollato va sistemato!
+%TODO è copiato e incollato va sistemato!
 \begin{itemize}
 	\item Access Point wireless per offrire connettività Internet Wi-Fi a dispositivi wireless
 	\item Client Dynamic DNS per consentire all’utente di raggiungere da remoto, tramite Internet, il router stesso e tutti i dispositivi connessi via Wi-Fi o porta LAN
@@ -91,7 +89,7 @@ Per l'implementazione di questa architettura sono necessarie solo un sub-set del
 
 Presenta inoltre come sistema operativo una versione personalizzata di OpenWrt.
 
-La configurazione del dispositivo puo' essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
+La configurazione del dispositivo può essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
 
 \begin{figure}[H]
 
@@ -118,19 +116,20 @@ La configurazione del dispositivo puo' essere fatta sia da terminale, entrando i
 		\includegraphics[totalheight=1.8\tempheight]{immagini/interfacciar4g_status}
 		\caption{Schermata con stato riassuntivo}
 	\end{subfigure}
+	\caption{Interfaccia web Esse-ti 4G.Router}
 
 \end{figure}
 
 % TODO da spostare sopra
-L'interfaccia web e' una versione personalizzata di \href{https://openwrt.org/docs/guide-user/luci/start}{Luci}.
+L'interfaccia web è una versione personalizzata di \href{https://openwrt.org/docs/guide-user/luci/start}{Luci}.
 
-Per semplicita' si fara' riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \it{Router}.
+Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \it{Router}.
 
 \subsection{VPS OVHCloud}
 
-La VPS ha il solo vincolo di dover avere un'ip pubblico e una connessione a internet abbastanza veloce. Dovra' infatti sopportare un traffico simmetrico in upload / download.
+La VPS ha il solo vincolo di dover avere un'ip pubblico e una connessione a internet abbastanza veloce. Dovrà infatti sopportare un traffico simmetrico in upload / download.
 
-Per la realizzazione della topologia e' stata selezionata una macchina VPS del provider OVHCloud, con le seguenti caratteristiche:
+Per la realizzazione della topologia è stata selezionata una macchina VPS del provider OVHCloud, con le seguenti caratteristiche:
 
 \begin{itemize}
 	\item 2 core virtuali
@@ -141,12 +140,12 @@ Per la realizzazione della topologia e' stata selezionata una macchina VPS del p
 	\item Ubuntu 16.04
 \end{itemize}
 
-Per semplicita' si fara' riferimento alla \textit{VPS OVHCloud} come \it{Server}.
+Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \it{Server}.
 
 \subsection{Host domotico}
 
 %TODO don't like
-Per effettuare le varie operazioni di testing e' stato aggiunta \it{raspberry pi} che ha svolto il ruolo di "host domotico". Sono state fatti test con ping e tracepath per testare che tutta la topologia sia stata configurata correttamente.
+Per effettuare le varie operazioni di testing è stato aggiunta \it{raspberry pi} che ha svolto il ruolo di "host domotico". Sono state fatti test con ping e tracepath per testare che tutta la topologia sia stata configurata correttamente.
 
 
 \subsection{Macchina del cliente}
@@ -158,7 +157,7 @@ Necessita di avere il client openvpn installato:
 
 \begin{itemize}
 	\item con sistema operativo Windows si deve scaricare l'eseguibile dal \href{https://openvpn.net/client-connect-vpn-for-windows/}{sito ufficiale}
-	\item su linux e' sufficiente cercare nei repository ufficiali della distribuzione che si sta usando, es. Ubuntu: \code{apt-get install openvpn}.
+	\item su linux è sufficiente cercare nei repository ufficiali della distribuzione che si sta usando, es. Ubuntu: \code{apt-get install openvpn}.
 \end{itemize}
 
 
