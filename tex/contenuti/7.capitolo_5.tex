@@ -39,7 +39,7 @@ Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconf
 % rifare lo screen in modo che prenda solo la parte al centro
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_init}
+    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_init1}
     \caption{Configurazione iniziale del firewall}
     \label{fig:luci-firewall-init}
 \end{figure}
@@ -55,20 +55,19 @@ Possiamo vedere la pagina di configurazione:
 
 % TODO forse è meglio se le 2 figure stanno vicine
 
-% TODO rifare lo screen
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_vpn}
+    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_vpn1}
     \caption{Configurazione del firewall}
     \label{fig:luci-firewall-vpn}
 \end{figure}
 
 Dopo aver salvato, la pagina del firewall sara':
 
-% TODO rifare lo screen
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_end}
+    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_end1}
     \caption{Configurazione finale del firewall}
     \label{fig:luci-firewall-end}
 \end{figure}
@@ -91,14 +90,15 @@ Ciò va fatto da LuCI, nella sezione \it{interfaces}. Si deve quindi aggiungere 
     \centering
     \begin{subfigure}{0.9\linewidth}
         \centering
-        \includegraphics[width=0.7\linewidth]{immagini/LuCI_int_tun0_1}
+        \includegraphics[width=0.9\linewidth]{immagini/LuCI_int_tun0_1}
         \caption{General settings}
         \label{fig:luci-firewall-interfaces}
     \end{subfigure}
+    \medskip
 
     \begin{subfigure}{0.9\linewidth}
         \centering
-        \includegraphics[width=0.7\linewidth]{immagini/LuCI_int_tun0_2}
+        \includegraphics[width=0.9\linewidth]{immagini/LuCI_int_tun0_2}
         \caption{Firewall settings}
         \label{fig:luci-firewall-interfaces1}
     \end{subfigure}
@@ -143,6 +143,8 @@ $ ip route
 \end{bashcode}
 
 \section{Test della configurazione}
+% TODO da scrivere di piu' per i test, sono importanti, forse mettere qualcosa sul troubble shooting... mhhh
+
 
 Per testare la connessione tra \it{client} e \it{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \it{Server} e \it{Router} per vedere il percorso dei pacchetti.
 

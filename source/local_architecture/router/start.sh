@@ -37,6 +37,7 @@ config interface 'tun0'
         option ipaddr '10.8.0.254'
         option netmask '255.255.255.0'
 EOF
+
     service network restart
     service firewall restart
 
@@ -44,8 +45,6 @@ EOF
     sleep 2
     ping -c 2 10.8.0.1 >/dev/null || echo -e "-----------------------\nserver is down\n-----------------------"
     ping -c 2 10.8.0.2 >/dev/null || echo -e "-----------------------\nclient to client is off\n-----------------------"
-
-
 
 }
 
