@@ -13,21 +13,26 @@
 
 
 %%% \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
-% An Internet communication system consists of interconnected packet networks supporting communication among host computers using the Internet protocols.  The networks are interconnected using packet-switching computers called "gateways" or "IP routers" by the Internet community, and "Intermediate Systems" by the OSI world [INTRO:13].
+\begin{comment}
+An Internet communication system consists of interconnected packet networks supporting communication among host computers using the Internet protocols.  The networks are interconnected using packet-switching computers called "gateways" or "IP routers" by the Internet community, and "Intermediate Systems" by the OSI world [INTRO:13].
 
-% After looking at the major milestones in the history of the Internet, let's take a closer look into the current architectural design of the Internet.
+After looking at the major milestones in the history of the Internet, let's take a closer look into the current architectural design of the Internet.
 
-% Connecting hosts running the same applications but located in different types of networks. A computer network is a complex system that is built on top of multiple components. These components can vary in technologies making up different types of networks that offer different types of applications. For example in the figure below, we have two BitTorrent clients that communicate even though they are using very different networks/technologies (Wifi vs Ethernet). So, how do these technologies and components interconnect and come together to meet the needs of each application? The designers of the network protocols provide structure to the network architecture by organizing the protocols into layers.
-%%%
+Connecting hosts running the same applications but located in different types of networks. A computer network is a complex system that is built on top of multiple components. These components can vary in technologies making up different types of networks that offer different types of applications. For example in the figure below, we have two BitTorrent clients that communicate even though they are using very different networks/technologies (Wifi vs Ethernet). So, how do these technologies and components interconnect and come together to meet the needs of each application? The designers of the network protocols provide structure to the network architecture by organizing the protocols into layers.
+\end{comment}
 
-% TODO da riscrivere!!
+% ok
+Internet costituisce la piu' grande rete di comunicazione al mondo, con piu' di 5 miliardi\cite{owidinternet} di dispositivi connessi nello stesso momento. Eppure la sua architettura di base e' relativamente semplice, tutto e' incentrato su un set di protocolli e i dispositivi che li implementano.
 
-Internet è una rete di telecomunicazione ad accesso pubblico reso possibile da una suite di protocolli.
+% nop
+Per mantenere la complessita' bassa i protocolli sono raccolti in 4/8 strati, in base al modello che si sceglie di seguire (ISO/OSI vs TCP/IP).
 
+\begin{comment}
 Un sistema di comunicazione Internet consiste in un interconnessione tra reti di pacchetti, che supportano la comunicazione tra hosts usando una suite di protocolli.
 
 L'obbiettivo di Internet è quello di collegare hosts attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati.
 
+\end{comment}
 
 \subsection{Internet Protocol Suite}
 
