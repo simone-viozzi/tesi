@@ -82,6 +82,7 @@ easyrsa  openssl-easyrsa.cnf  pki  vars.example  x509-types
 Ora si devono personalizzare le variabili \code{vars}, si può sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
 Andiamo quindi a creare un nuovo file vars:
 
+% TODO e' of lasciare queste?
 \begin{bashcode}{Server CA}{}
 $ vim vars
 set_var EASYRSA_REQ_COUNTRY  "IT"
@@ -201,10 +202,12 @@ La chiave \code{server.key} va copiata nell'apposita cartella.
 $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 \end{bashcode}
 
-Il secondo file creato, \code{server.req}, corrisponde a una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. In questo modo ogni client che si fida della CA si fiderà di conseguenza del server OpenVPN %TODO link a web of trust
+Il secondo file creato, \code{server.req}, corrisponde a una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. 
 
-% TODO sta sezione serve davvero?
-% <-- section -->
+% TODO da togliere
+In questo modo ogni client che si fida della CA si fiderà di conseguenza del server OpenVPN 
+
+
 \subsection{Firma del certificato OpenVPN dalla CA}
 \label{sec:sign_openvpn}
 
@@ -278,8 +281,8 @@ $ sudo cp ta.key /etc/openvpn/server
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\linewidth]{immagini/diag-firma_certificato_client}
-    \label{fig:diag-firma_certificato_client}
     \caption{Diagramma per schematizzare la procedura di firma di un certificato client. \cite{icons}}
+    \label{fig:diag-firma_certificato_client}
 \end{figure}
 
 % TODO fare in modo che il testo sotto faccia riferimento al diagramma
@@ -482,7 +485,6 @@ To              Action      From
 
 Ora che la configurazione del server è in una situazione stabile possiamo avviarlo:
 
-% TODO l'output è sbagliato perchè fa riferimento alla topologia net 30
 \begin{bashcode}{Server}{}
 $ sudo systemctl enable openvpn-server@server.service
 $ sudo systemctl start openvpn-server@server.service
@@ -501,12 +503,14 @@ $ sudo systemctl status openvpn-server@server.service
      CGroup: /system.slice/system-openvpn\x2dserver.slice/openvpn-server@server.service
              └─436 /usr/bin/openvpn --status /run/openvpn-server/status-server.log --status-version 2 --suppress-timestamps --config server.conf
 
-Apr 18 13:08:44 server openvpn[436]: /sbin/ip addr add dev tun0 local 10.8.0.1 peer 10.8.0.2
-Apr 18 13:08:44 server openvpn[436]: /sbin/ip route add 10.8.0.0/24 via 10.8.0.2
+Apr 18 13:08:44 server openvpn[436]: TUN/TAP device tun0 opened
+Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Cipher 'AES-256-CTR' initialized with 256 bit key
+Apr 18 13:08:44 server openvpn[436]: Incoming Control Channel Encryption: Using 256 bit message hash 'SHA256' for HMAC authentication
+Apr 18 13:08:44 server openvpn[436]: net_addr_v4_add: 10.8.0.1/24 dev tun0
 Apr 18 13:08:44 server openvpn[436]: UDPv4 link local (bound): [AF_INET][undef]:1194
 Apr 18 13:08:44 server openvpn[436]: UDPv4 link remote: [AF_UNSPEC]
 Apr 18 13:08:44 server openvpn[436]: MULTI: multi_init called, r=256 v=256
-Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL: base=10.8.0.4 size=62, ipv6=0
+Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL IPv4: base=10.8.0.2 size=253
 Apr 18 13:08:44 server openvpn[436]: IFCONFIG POOL LIST
 Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
 \end{bashcode}
