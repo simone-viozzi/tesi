@@ -111,13 +111,13 @@
     ],
     "todo-tree.regex.regex": "((//|#|<!--|;|/\\*|^|%|\\\\)\\s*($TAGS)\\{*|^\\s*- \\[ \\])",
     "todo-tree.regex.regexCaseSensitive": false,
-    "ltex.latex.environments":{
+    "ltex.latex.environments": {
         "lstlisting": "ignore",
         "verbatim": "ignore",
         "bashcode": "ignore",
+        "comment": "ignore",
     },
     "ltex.additionalRules.motherTongue": "it",
     "latex-workshop.latex.recipe.default": "lastUsed",
     "latex-workshop.latex.autoBuild.interval": 5000
-
 }
