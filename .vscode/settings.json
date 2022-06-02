@@ -119,5 +119,8 @@
     },
     "ltex.additionalRules.motherTongue": "it",
     "latex-workshop.latex.recipe.default": "lastUsed",
-    "latex-workshop.latex.autoBuild.interval": 5000
+    "latex-workshop.intellisense.atSuggestion.trigger.latex": "@",
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": true,
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.autoBuild.interval": 1000,
 }

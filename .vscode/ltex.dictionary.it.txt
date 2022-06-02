@@ -99,3 +99,8 @@ interface
 Control
 Version
 Graphs
+pre-shared
+ips
+proxy
+firewalls
+ipsec
