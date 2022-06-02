@@ -105,7 +105,7 @@ Le variabili nel primo blocco determinano i dati che poi verranno registrati nei
 
 Le ultime 2 sono opzioni di sicurezza, in particolare si setta l'algoritmo di cifratura %TODO add info
 
-A questo punti si deve laciare il comando \code{build-ca} per costruire la CA (passaggio 2 fig.\ref{fig:diag-firma_certificato_ca}):
+A questo punti si deve lanciare il comando \code{build-ca} per costruire la CA (passaggio 2 fig.\ref{fig:diag-firma_certificato_ca}):
 
 \begin{bashcode}{Server CA}{}
 $ ./easyrsa build-ca
@@ -197,7 +197,6 @@ Common Name (eg: your user, host, or server name) [server]:
 Keypair and certificate request completed. Your files are:
 req: /home/ubuntu/openvpn-pki/pki/reqs/server.req
 key: /home/ubuntu/openvpn-pki/pki/private/server.key
-    
 \end{bashcode}
 
 La chiave \code{server.key} va copiata nell'apposita cartella.
@@ -456,7 +455,7 @@ Nella modifica del file si deve stare attenti a inserire la nuova regola in cima
 
 \subsection{Configurazione del packet forwarding}
 
-Precedentemente abbiamo abilitato il forwarding nella network stack del server, ora si deve abilitare la corrspondente opzione nel firewall. Si deve quindi cambiare la regola di default per i pacchetti inoltrati da \code{DROP} a \code{ACCEPT}.
+Precedentemente abbiamo abilitato il forwarding nella network stack del server, ora si deve abilitare la corrispondente opzione nel firewall. Si deve quindi cambiare la regola di default per i pacchetti inoltrati da \code{DROP} ad \code{ACCEPT}.
 
 Per farlo si deve modificare il file \code{/etc/default/ufw}:
 
