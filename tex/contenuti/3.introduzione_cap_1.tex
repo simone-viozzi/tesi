@@ -290,14 +290,19 @@ It has the ability to work through most proxy servers (including HTTP) and is go
 OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alternative to IPsec in situations where an ISP may block specific VPN protocols.
 \end{comment}
 
-OpenVPN viene incapsulato dai comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ips blocchi VPN di livello più basso, es ipsec. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
 
+OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ips blocchi VPN di livello più basso, es. ipsec. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
+
+\begin{comment}
 % The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options.
+
+% OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
+\end{comment}
 
 % TODO da riscrivere
 Nella configurazione del server possono essere specificate delle opzioni, "push", per impostare alcune configurazioni di rete nel server o nei client, come ad esempio aggiungere una voce nella tabella di routing dei client.
 
-% OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
+
 
 % TODO da riscrivere
 Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare un tunnel IP di livello 3 (TUN), o Ethernet livello 2 (TAP).
