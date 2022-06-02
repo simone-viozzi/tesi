@@ -290,7 +290,7 @@ It has the ability to work through most proxy servers (including HTTP) and is go
 OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alternative to IPsec in situations where an ISP may block specific VPN protocols.
 \end{comment}
 
-
+% ok
 OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ips blocchi VPN di livello più basso, es. ipsec. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
 
 \begin{comment}
@@ -326,13 +326,13 @@ OpenWrt SNAPSHOT, r19521-46980294f6
 OpenWrt is a highly extensible GNU/Linux distribution for embedded devices (typically wireless routers). Unlike many other distributions for routers, OpenWrt is built from the ground up to be a full-featured, easily modifiable operating system for embedded devices. In practice, this means that you can have all the features you need with none of the bloat, powered by a modern Linux kernel. 
 \end{comment}
 
-OpenWRT è un sistema operativo open-source per sistemi embedded, principalmente usato come firmware alternativo per router domestici.
+% ok
+OpenWRT è un sistema operativo open-source per sistemi embedded, principalmente usato come firmware alternativo per router domestici. Si basa su kernel linux, con specifica attenzione all'ottimizzazione del sistema per renderlo adatto a dispositivi con risorse estremamente limitate.
 
-Si basa su kernel linux, con specifica attenzione all'ottimizzazione del sistema per renderlo adatto a dispositivi con risorse estremamente limitate.
+% ok
+Al contrario di altri sistemi operativi per dispositivi embedded, OpenWRT presenta un filesystem con permessi di scrittura. Questo permette di modificare il funzionamento del sistema senza dover reinstallare l'intero firmware. Per facilitare l'installazione delle funzionalità aggiuntive ha il suo gestore pacchetti (\href{https://openwrt.org/docs/guide-user/additional-software/opkg}{opkg}), ciò lo rende estremamente estensibile e configurabile.
 
-Al contrario di altri sistemi operativi per dispositivi embedding, OpenWRT presenta un filesystem con permessi di scrittura. Questo permette di modificare il funzionamento del sistema senza dover reinstallare l'intero firmware. Per facilitare l'installazione delle funzionalità aggiuntive ha il suo gestore pacchetti (\href{https://openwrt.org/docs/guide-user/additional-software/opkg}{opkg}).
-
-
+% TODO espandere !
 OpenWRT può essere configurato sia tramite shell (\href{https://en.wikipedia.org/wiki/Almquist_shell}{ash}) che tramite interfaccia web (\href{https://openwrt.org/docs/guide-user/luci/start}{LuCI}).
 
 
@@ -344,9 +344,8 @@ The initial reason for this project was the absence of a free, clean, extensible
 Meanwhile LuCI evolved from an MVC-Webframework to a collection of several libraries, applications and user interfaces with general purpose for Lua programmers while the focus still remains on the web user interface which also became an official part of OpenWrt Kamikaze. 
 \end{comment}
 
-Luci è l'interfaccia web ufficiale di \it{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile.
-
-L'installazione e configurazione di Luci è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
+% ok
+Luci è l'interfaccia web ufficiale di \it{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile. L'installazione e configurazione di Luci è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
 
 
 \begin{figure}[H]
@@ -380,5 +379,5 @@ L'installazione e configurazione di Luci è molto semplice, si può infatti segu
 
 L'home page, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \it{DHCP}.
 
-L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \it{DHCP}, i processi in esecuzione, etc.
+L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \it{DHCP}, i processi in esecuzione, etc. Presenta inoltre la possibilità di installare plugins che modificano e/o aggiungono funzionalità non presenti di default nell'interfaccia.
 

@@ -13,3 +13,4 @@
 {"rule":"ST_03_001","sentence":"^\\QIl secondo file creato, server.req, corrisponde ad una Certificate Signing Request (CSR) che va firmata e validata dalla CA.\\E$"}
 {"rule":"MORFOLOGIK_RULE_IT_IT","sentence":"^\\QCiò viene fatto direttamente da luci, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QPer garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati, ad esempio il modello TCP/IP è costituito da 4 strati.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QPresenta inoltre la possibilita' di installare plugins che modificano e aggiungono funzionalità non presenti di default nell'interfaccia.\\E$"}

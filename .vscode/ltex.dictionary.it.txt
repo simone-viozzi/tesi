@@ -104,3 +104,4 @@ ips
 proxy
 firewalls
 ipsec
+plugins
