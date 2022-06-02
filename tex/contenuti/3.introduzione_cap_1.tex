@@ -24,10 +24,10 @@ Connecting hosts running the same applications but located in different types of
 
 
 % ok
-Internet costituisce la piu' grande rete di comunicazione al mondo, con piu' di 5 miliardi \cite{owidinternet} di dispositivi connessi nello stesso momento. Eppure la sua architettura di base e' relativamente semplice, tutto e' incentrato su un set di protocolli e i dispositivi che li implementano.
+Internet costituisce la più grande rete di comunicazione al mondo, con più di 5 miliardi \cite{owidinternet} di dispositivi connessi nello stesso momento. Eppure la sua architettura di base è relativamente semplice, tutto è incentrato su un set di protocolli e i dispositivi che li implementano.
 
 % nop
-Per mantenere la complessita' bassa i protocolli sono raccolti in 4/8 strati, in base al modello che si sceglie di seguire (ISO/OSI vs TCP/IP).
+Per mantenere la complessità bassa i protocolli sono raccolti in 4/8 strati, in base al modello che si sceglie di seguire (ISO/OSI vs TCP/IP).
 
 % TODO finire di sistemare
 
@@ -53,7 +53,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{immagini/diag2-modello_a_strati}
-    \caption{Rappresentazione degli strati del modello TCP/Ip con relativo incapsulamento e dispositivo di dominio}
+    \caption{Rappresentazione degli strati del modello TCP/Ip, con relativo incapsulamento e dispositivo di dominio}
     \label{fig:modello-a-strati}
 \end{figure}
 
@@ -306,7 +306,7 @@ Nella configurazione del server possono essere specificate delle opzioni, "push"
 Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare un tunnel IP di livello 3 (TUN), o Ethernet livello 2 (TAP).
 
 
-\section{Openwrt}
+\section{OpenWrt}
 
 \begin{bashcode}{Login banner di Openwrt}{}
 BusyBox v1.35.0 (2022-04-24 21:09:51 UTC) built-in shell (ash)
@@ -342,7 +342,7 @@ The initial reason for this project was the absence of a free, clean, extensible
 Meanwhile LuCI evolved from an MVC-Webframework to a collection of several libraries, applications and user interfaces with general purpose for Lua programmers while the focus still remains on the web user interface which also became an official part of OpenWrt Kamikaze. 
 \end{comment}
 
-Luci è l'interfaccia web ufficiale di \it{openwrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile.
+Luci è l'interfaccia web ufficiale di \it{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile.
 
 L'installazione e configurazione di Luci è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
 
@@ -376,10 +376,14 @@ L'installazione e configurazione di Luci è molto semplice, si può infatti segu
 \end{figure}
 
 
-L'homepage, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \it{DHCP}.
+L'home page, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \it{DHCP}.
 
 L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \it{DHCP}, i processi in esecuzione, etc.
 
 
 
 
+a'
+e'
+
+u'
