@@ -105,3 +105,6 @@ proxy
 firewalls
 ipsec
 plugins
+testing
+raspberry
+cross-platform

@@ -17,42 +17,41 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{immagini/diag-goal}
-	\caption{Schema concettuale dell'obbiettivo da raggiungere. \cite{icons}}
+	\caption{Schema concettuale dell'obbiettivo da raggiungere.}
 
 	\label{fig:schema_concettuale}
 
 \end{figure}
 
-Data la presenza del CG-NAT si vede subito che non è realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo però non è possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il 4G.Router e il cliente.
+Data la presenza del NAT si vede subito che non è realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo però non è possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il \it{4G.Router} e il cliente.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{immagini/diag-real}
-	\caption{Schema concettuale dell'architettura che si dovrà implementare. \cite{icons}}
+	\caption{Schema concettuale dell'architettura che si dovrà implementare.}
 	\label{fig:schem_architettura_reale}
 \end{figure}
 
-% todo rivedi frase
-In questo modo si può configurare una VPN sul server OVH e connettervi sia il 4G.Router che la macchina del cliente. 
-% TODO ripetizione bad
-In questo modo l'unica configurazione che il cliente dovrà fare è l'installazione di un cliente VPN, ciò è il minimo possibile di configurazione.
+In questo modo si può usare il \it{Server} per configurare una \it{Virtual Private Network} (VPN), a cui saranno connessi sia il \it{4G.Router} che il cliente. Ciò consente la creazione di una topologia virtuale in cui tutti i dispositivi connessi alla VPN sono nella stessa rete locale, quindi possono comunicare tra loro.
+
+Inoltre in questo modo viene minimizzata la configurazione da effettuare sulle macchine dei clienti, infatti sarà sufficiente avere un client OpenVPN.
 
 La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{immagini/diag-virtual}
-	\caption{Topologia virtuale. \cite{icons}}
-
+	\caption{Topologia virtuale vista dal cliente.}
 	\label{fig:schema_architettura_virtuale}
-
 \end{figure}
 
 % <-- section -->
 \section{Specifiche dei componenti}
 
-i componenti necessari sono:
+% TODO da espandere in qualche modo così è veramente brutto!
+
+Per la realizzazione di questa topologia sono necessari i seguenti componenti:
 
 \begin{itemize}
 	\item Esse-ti 4G.Router
@@ -61,8 +60,7 @@ i componenti necessari sono:
 	\item Macchina del cliente
 \end{itemize}
 
-% TODO non ha senso i : qua
-vediamo le caratteristiche minime che i componenti dovranno avere:
+Alcuni di questi componenti necessiteranno di delle caratteristiche specifiche.
 
 \subsection{Esse-ti 4G.Router}
 
@@ -80,12 +78,15 @@ Per l'implementazione di questa architettura sono necessarie solo un sub-set del
 
 %TODO è copiato e incollato va sistemato!
 \begin{itemize}
-	\item Access Point wireless per offrire connettività Internet Wi-Fi a dispositivi wireless
+	\item Access Point wireless per offrire connettività Internet Wi-Fi
+ 
 	\item Client Dynamic DNS per consentire all’utente di raggiungere da remoto, tramite Internet, il router stesso e tutti i dispositivi connessi via Wi-Fi o porta LAN
-	\item Gateway telefonico per consentire l’invio e la ricezione di chiamate attraverso la rete 4G LTE/UMTS/GSM a telefoni fissi, combinatori o altri dispositivi telefonici collegati all’ingresso FXS
+	
+	\item Gateway telefonico per consentire l’invio e la ricezione di chiamate attraverso la rete 4G LTE/UMTS/GSM a telefoni fissi
 \end{itemize}
 
-Presenta inoltre come sistema operativo una versione personalizzata di OpenWrt.
+% TODO nooop
+Ha il sistema operativo \it{Draghino}, una versione personalizzata di OpenWRT, in cui è stata modificata l'interfaccia web... mh no
 
 La configurazione del dispositivo può essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
 
@@ -118,16 +119,13 @@ La configurazione del dispositivo può essere fatta sia da terminale, entrando i
 
 \end{figure}
 
-% TODO da spostare sopra
-L'interfaccia web è una versione personalizzata di \href{https://openwrt.org/docs/guide-user/luci/start}{Luci}.
-
 Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \it{Router}.
 
 \subsection{VPS OVHCloud}
 
 La VPS ha il solo vincolo di dover avere un'ip pubblico e una connessione a internet abbastanza veloce. Dovrà infatti sopportare un traffico simmetrico in upload / download.
 
-Per la realizzazione della topologia è stata selezionata una macchina VPS del provider OVHCloud, con le seguenti caratteristiche:
+Per la realizzazione della topologia è stata selezionata una macchina VPS del provider \it{OVHCloud}, con le seguenti caratteristiche:
 
 \begin{itemize}
 	\item 2 core virtuali
@@ -142,16 +140,13 @@ Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \it{Server}
 
 \subsection{Host domotico}
 
-%TODO don't like
-Per effettuare le varie operazioni di testing è stato aggiunta \it{raspberry pi} che ha svolto il ruolo di "host domotico". Sono state fatti test con ping e tracepath per testare che tutta la topologia sia stata configurata correttamente.
-
+Per simulare un'host domotico ed effettuare le varie operazioni di testing è stata usata una \it{raspberry pi}, con le utility \it{ping} e \it{tracepath}.
 
 \subsection{Macchina del cliente}
 
-%TODO da espandere
-Deve poter essere una qualunque macchina, non ha quindi vincoli di sistema operativo.
+Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica. Data la scelta di usare OpenVPN come provider VPN, e dato che OpenVPN è cross-platform, la macchina del cliente non ha specifiche di sistema operativo. L'unica necessità è di avere il client OpenVPN installato sul sistema, ad esempio:
 
-Necessita di avere il client openvpn installato:
+% TODO don't like forse lo tolgo
 
 \begin{itemize}
 	\item con sistema operativo Windows si deve scaricare l'eseguibile dal \href{https://openvpn.net/client-connect-vpn-for-windows/}{sito ufficiale}
