@@ -148,12 +148,27 @@
 \expandafter\setcounter\expandafter{chapter@last@\@captype}{\value{chapter}}
 }{}{failure}
 
-\makeatother
 
+\let\svthefootnote\thefootnote
+
+\newcommand\blankfootnote[1]{%
+  \let\thefootnote\relax\footnotetext{#1}%
+  \let\thefootnote\svthefootnote%
+}
+\let\svfootnote\footnote
+\renewcommand\footnote[2][?]{%
+  \if\relax#1\relax%
+    \blankfootnote{#2}%
+  \else%
+    \if?#1\svfootnote{#2}\else\svfootnote[#1]{#2}\fi%
+  \fi
+}
+
+\makeatother
 
 \let\it\textit
 \let\bf\textbf
-%\newcommand{\comment}[1]{}
+
 
 
 %***************************************************
