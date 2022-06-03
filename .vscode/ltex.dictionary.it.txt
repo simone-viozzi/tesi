@@ -108,3 +108,5 @@ plugins
 testing
 raspberry
 cross-platform
+Virtual
+Translation

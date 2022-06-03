@@ -34,7 +34,7 @@ L'obbiettivo di Internet è quello di collegare hosts attraverso una rete geogra
 
 Il suo obbiettivo è quello di collegare utenti attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati, ad esempio il modello TCP/IP è costituito da 4 strati. 
 
-
+\newpage
 \subsection{Internet Protocol Suite}
 
 \begin{comment}
@@ -207,6 +207,19 @@ Ad esempio analizzando la cattura in Wireshark, codice.\ref{code:tls-wireshark},
 
 Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati di protocolli che complessivamente hanno aggiunto un minimo di 58 byte di hoverhead.
 
+\subsection{IP Network Address Translator (NAT)}
+
+\begin{comment}
+https://datatracker.ietf.org/doc/html/rfc2663
+https://en.wikipedia.org/wiki/Network_address_translation
+
+Network address translation (NAT) is a method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic routing device.[1] It has become a popular and essential tool in conserving global address space in the face of IPv4 address exhaustion. One Internet-routable IP address of a NAT gateway can be used for an entire private network.[2] 
+
+https://www.rfc-editor.org/rfc/rfc4787
+https://datatracker.ietf.org/doc/html/rfc1631
+\end{comment}
+
+
 
 \section{Openvpn}
 
@@ -335,8 +348,10 @@ Al contrario di altri sistemi operativi per dispositivi embedded, OpenWRT presen
 % TODO espandere !
 OpenWRT può essere configurato sia tramite shell (\href{https://en.wikipedia.org/wiki/Almquist_shell}{ash}) che tramite interfaccia web (\href{https://openwrt.org/docs/guide-user/luci/start}{LuCI}).
 
-
+\newpage
 \subsection{LuCI web interface}
+
+% TODO rimuovere una riga o fare qualcosa dato che sta sezione va a pagina nuova per 1 riga
 
 \begin{comment}
 The initial reason for this project was the absence of a free, clean, extensible and easily maintainable web user interface for embedded devices. While most similar configuration interfaces make heavy use of the shell-scripting language, LuCI uses the Lua programming language and splits up the interface into logical parts like models and views, uses object-oriented libraries and templating. That ensures a higher performance, smaller installation size, faster runtimes and what is even more important: better maintainability.
