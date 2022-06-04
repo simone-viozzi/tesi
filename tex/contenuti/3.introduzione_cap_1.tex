@@ -211,63 +211,27 @@ Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati
 
 \begin{comment}
 https://datatracker.ietf.org/doc/html/rfc2663
-    The need for IP Address translation arises when a network's internal
-    IP addresses cannot be used outside the network either because they
-    are invalid for use outside, or because the internal addressing must
-    be kept private from the external network.
-    Address translation allows (in many cases, except as noted in
-    sections 8 and 9) hosts in a private network to transparently
-    communicate with destinations on an external network and vice versa.
-    Network Address Translation is a method by which IP addresses are
-    mapped from one address realm to another, providing transparent
-    routing to end hosts. There are many variations of address
-    translation that lend themselves to different applications.  
-    However, all flavors of NAT devices should share the following
-    characteristics.
-            a) Transparent Address assignment.
-            b) Transparent routing through address translation.
-                (routing here refers to forwarding packets, and not
-                exchanging routing information)
-            c) ICMP error packet payload translation.
-
-
 https://en.wikipedia.org/wiki/Network_address_translation
-    It has become a popular and essential tool in conserving global address space in the face of IPv4 address exhaustion. 
     \cite{https://en.wikipedia.org/wiki/IPv4_address_exhaustion}
-
 https://www.rfc-editor.org/rfc/rfc4787 ?? 
-
 https://datatracker.ietf.org/doc/html/rfc1631
-    The two most compelling problems facing the IP Internet are IP
-    address depletion and scaling in routing. Long-term and short-term
-    solutions to these problems are being developed. The short-term
-    solution is CIDR (Classless InterDomain Routing). The long-term
-    solutions consist of various proposals for new internet protocols
-    with larger addresses.
-     CIDR solves the scaling problem. The main
-    advantage of NAT is that it can be installed without changes to
-    routers or hosts.
-    This solution has the disadvantage of taking away the end-to-end
-    significance of an IP address, and making up for it with increased
-    state in the network. There are various work-arounds that minimize
-    the potential pitfalls of this. Indeed, connection-oriented protocols
-    are essentially doing address reuse at every hop.
-    NAT may be a good short term solution to the address depletion and
-    scaling problems. This is because it requires very few changes and
-    can be installed incrementally. NAT has several negative
-    characteristics that make it inappropriate as a long term solution,
-    and may make it inappropriate even as a short term solution. Only
-    implementation and experimentation will determine its
-    appropriateness.
+\end{comment}
+
+\begin{comment}
+It has become a popular and essential tool in conserving global address space in the face of IPv4 address exhaustion. 
+
+The two most compelling problems facing the IP Internet are IP address depletion and scaling in routing.
 \end{comment}
 
 Per mitigare il problema della saturazione degli indirizzi IPv4 \cite{ipv4_exhaustion}, è stato introdotto un dispositivo di rete che consente di riusare spazi di indirizzi privati e ridurre il numero di Ipv4 pubblici necessari. 
 
 \begin{comment}
 Network address translation (NAT) is a method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic routing device. One Internet-routable IP address of a NAT gateway can be used for an entire private network.
+
+The main advantage of NAT is that it can be installed without changes to routers or hosts. This solution has the disadvantage of taking away the end-to-end significance of an IP address, and making up for it with increased state in the network.
 \end{comment}
 
-Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi ad un altro, modificando così le informazioni di routing nel pacchetto IP. 
+Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP. La mappatura può essere sia uno-a-uno, \it{Static NAT} e \it{Dynamic NAT}, sia molti-a-molti, \it{Network Address and Port Translation} (NAPT). Nel caso del NAPT il pool di indirizzi privati è molto più grande rispetto al pool di indirizzi pubblici, ciò consente di riutilizzare gli stessi ip pubblici per multipli utenti.
 
 \begin{comment}
 The address reuse solution is to
@@ -280,10 +244,8 @@ unique IP addresses are assigned according to current CIDR address
 allocation schemes.
 \end{comment}
 
-% nop
-Una delle applicazioni principali è inserirlo nel gateway di una rete privata, in questo modo l'intera rete privata usa un solo ip esterno.
 
-
+Una delle applicazioni principali è inserirlo nel gateway di una rete privata domestica, ciò permette di mascherare i dispositivi nella rete privata e inoltre permette di usare un solo ip esterno per l'intera rete privata. Non è però detto che l'ip di uscita di una rete privata domestica sia pubblico, infatti i NAT possono essere usati in cascata, ciò significa che l'ips ha un'altro NAT prima di passare ad uno spazio di indirizzamento pubblico.
 
 \subsubsection{Carrier Grade nat (CG-NAT)}
 \begin{comment}
@@ -293,7 +255,7 @@ https://en.wikipedia.org/wiki/Carrier-grade_NAT
     Carrier-grade NAT is often used for mitigating IPv4 address exhaustion.
 \end{comment}
 
-I cg-nat sono una tpologia di nat che lavorano su larga scala e in generale sono implementati all'interno della rete dell'ips.
+I cg-nat sono una tipologia di nat che lavorano su larga scala e in generale sono implementati all'interno della rete dell'ips.
 Di consequenza gli utenti non hanno controllo sul nat e non possono in nessun modo configurare ad esempio un port forwarding.
 
 

@@ -17,3 +17,6 @@
 {"rule":"GR_04_002","sentence":"^\\QPresenta inoltre la possibilità di installare plugins che modificano e/o aggiungono funzionalità non presenti di default nell'interfaccia.\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qci è stato esposto un progetto che consiste nel:\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QQuesto però non è possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il 4G.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QPer mitigare il problema della saturazione degli indirizzi IPv4 \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, è stato introdotto un dispositivo di rete che consente di riusare spazi di indirizzi privati e ridurre il numero di Ipv4 pubblici necessari.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QIl NAT \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QNel caso del NAPT il pool di indirizzi privati e' molto piu' grande rispetto al pool di indirizzi pubblici, cio' consente di riutilizzare gli stessi ip pubblici per multipli utenti.\\E$"}
