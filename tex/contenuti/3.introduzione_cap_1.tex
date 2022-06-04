@@ -230,16 +230,58 @@ https://datatracker.ietf.org/doc/html/rfc2663
                 exchanging routing information)
             c) ICMP error packet payload translation.
 
-            
+
 https://en.wikipedia.org/wiki/Network_address_translation
-    Network address translation (NAT) is a method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic routing device. It has become a popular and essential tool in conserving global address space in the face of IPv4 address exhaustion. One Internet-routable IP address of a NAT gateway can be used for an entire private network.
+    It has become a popular and essential tool in conserving global address space in the face of IPv4 address exhaustion. 
     \cite{https://en.wikipedia.org/wiki/IPv4_address_exhaustion}
 
-https://www.rfc-editor.org/rfc/rfc4787
+https://www.rfc-editor.org/rfc/rfc4787 ?? 
+
 https://datatracker.ietf.org/doc/html/rfc1631
-
-
+    The two most compelling problems facing the IP Internet are IP
+    address depletion and scaling in routing. Long-term and short-term
+    solutions to these problems are being developed. The short-term
+    solution is CIDR (Classless InterDomain Routing). The long-term
+    solutions consist of various proposals for new internet protocols
+    with larger addresses.
+     CIDR solves the scaling problem. The main
+    advantage of NAT is that it can be installed without changes to
+    routers or hosts.
+    This solution has the disadvantage of taking away the end-to-end
+    significance of an IP address, and making up for it with increased
+    state in the network. There are various work-arounds that minimize
+    the potential pitfalls of this. Indeed, connection-oriented protocols
+    are essentially doing address reuse at every hop.
+    NAT may be a good short term solution to the address depletion and
+    scaling problems. This is because it requires very few changes and
+    can be installed incrementally. NAT has several negative
+    characteristics that make it inappropriate as a long term solution,
+    and may make it inappropriate even as a short term solution. Only
+    implementation and experimentation will determine its
+    appropriateness.
 \end{comment}
+
+Per mitigare il problema della saturazione degli indirizzi IPv4 \cite{ipv4_exhaustion}, è stato introdotto un dispositivo di rete che consente di riusare spazi di indirizzi privati e ridurre il numero di Ipv4 pubblici necessari. 
+
+\begin{comment}
+Network address translation (NAT) is a method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic routing device. One Internet-routable IP address of a NAT gateway can be used for an entire private network.
+\end{comment}
+
+Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi ad un altro, modificando così le informazioni di routing nel pacchetto IP. 
+
+\begin{comment}
+The address reuse solution is to
+place Network Address Translators (NAT) at the borders of stub
+domains. Each NAT box has a table consisting of pairs of local IP
+addresses and globally unique addresses. The IP addresses inside the
+stub domain are not globally unique. They are reused in other
+domains, thus solving the address depletion problem. The globally
+unique IP addresses are assigned according to current CIDR address
+allocation schemes.
+\end{comment}
+
+% nop
+Una delle applicazioni principali è inserirlo nel gateway di una rete privata, in questo modo l'intera rete privata usa un solo ip esterno.
 
 
 
@@ -382,7 +424,7 @@ Al contrario di altri sistemi operativi per dispositivi embedded, OpenWRT presen
 % TODO espandere !
 OpenWRT può essere configurato sia tramite shell (\href{https://en.wikipedia.org/wiki/Almquist_shell}{ash}) che tramite interfaccia web (\href{https://openwrt.org/docs/guide-user/luci/start}{LuCI}).
 
-\newpage
+%\newpage
 \subsection{LuCI web interface}
 
 % TODO rimuovere una riga o fare qualcosa dato che sta sezione va a pagina nuova per 1 riga
