@@ -110,3 +110,4 @@ raspberry
 cross-platform
 Virtual
 Translation
+Translator
