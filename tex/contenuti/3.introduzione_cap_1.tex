@@ -211,14 +211,49 @@ Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati
 
 \begin{comment}
 https://datatracker.ietf.org/doc/html/rfc2663
-https://en.wikipedia.org/wiki/Network_address_translation
+    The need for IP Address translation arises when a network's internal
+    IP addresses cannot be used outside the network either because they
+    are invalid for use outside, or because the internal addressing must
+    be kept private from the external network.
+    Address translation allows (in many cases, except as noted in
+    sections 8 and 9) hosts in a private network to transparently
+    communicate with destinations on an external network and vice versa.
+    Network Address Translation is a method by which IP addresses are
+    mapped from one address realm to another, providing transparent
+    routing to end hosts. There are many variations of address
+    translation that lend themselves to different applications.  
+    However, all flavors of NAT devices should share the following
+    characteristics.
+            a) Transparent Address assignment.
+            b) Transparent routing through address translation.
+                (routing here refers to forwarding packets, and not
+                exchanging routing information)
+            c) ICMP error packet payload translation.
 
-Network address translation (NAT) is a method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic routing device.[1] It has become a popular and essential tool in conserving global address space in the face of IPv4 address exhaustion. One Internet-routable IP address of a NAT gateway can be used for an entire private network.[2] 
+    
+
+https://en.wikipedia.org/wiki/Network_address_translation
+    Network address translation (NAT) is a method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic routing device. It has become a popular and essential tool in conserving global address space in the face of IPv4 address exhaustion. One Internet-routable IP address of a NAT gateway can be used for an entire private network.
+    \cite{https://en.wikipedia.org/wiki/IPv4_address_exhaustion}
 
 https://www.rfc-editor.org/rfc/rfc4787
 https://datatracker.ietf.org/doc/html/rfc1631
+
+
 \end{comment}
 
+
+
+\subsection{Carrier Grade nat (CG-NAT)}
+\begin{comment}
+https://en.wikipedia.org/wiki/Carrier-grade_NAT
+    Carrier-grade NAT (CGN or CGNAT), also known as large-scale NAT (LSN), is a type of Network address translation (NAT) for use in IPv4 network design. With CGNAT, end sites, in particular residential networks, are configured with private network addresses that are translated to public IPv4 addresses by middlebox network address translator devices embedded in the network operator's network, permitting the sharing of small pools of public addresses among many end sites. This shifts the NAT function and configuration thereof from the customer premises to the Internet service provider network (though "conventional" NAT on the customer premises will often be used additionally).
+
+    Carrier-grade NAT is often used for mitigating IPv4 address exhaustion.
+\end{comment}
+
+I cg-nat sono una tpologia di nat che lavorano su larga scala e in generale sono implementati all'interno della rete dell'ips.
+Di consequenza gli utenti non hanno controllo sul nat e non possono in nessun modo configurare ad esempio un port forwarding.
 
 
 \section{Openvpn}
