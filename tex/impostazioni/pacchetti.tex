@@ -154,22 +154,41 @@
 \let\svthefootnote\thefootnote
 
 \newcommand\blankfootnote[1]{%
-  \let\thefootnote\relax\footnotetext{#1}%
-  \let\thefootnote\svthefootnote%
+	\let\thefootnote\relax\footnotetext{#1}%
+	\let\thefootnote\svthefootnote%
 }
 \let\svfootnote\footnote
 \renewcommand\footnote[2][?]{%
-  \if\relax#1\relax%
-    \blankfootnote{#2}%
-  \else%
-    \if?#1\svfootnote{#2}\else\svfootnote[#1]{#2}\fi%
-  \fi
+	\if\relax#1\relax%
+	\blankfootnote{#2}%
+	\else%
+	\if?#1\svfootnote{#2}\else\svfootnote[#1]{#2}\fi%
+	\fi
 }
 
 \makeatother
 
 \let\it\textit
 \let\bf\textbf
+
+\newif\ifdebug
+\debugtrue
+
+\newcommand{\todo}[1][""]{
+	\ifdebug
+		\if #1\relax
+			{\footnotesize \textcolor{red}{\textbf{\textit{TODO}}}}
+		\else
+			{\footnotesize \textcolor{red}{\textbf{\textit{TODO:}} #1}}
+		\fi
+	\fi
+}
+
+\newcommand{\workinprogress}{
+	\ifdebug
+		{\footnotesize \textcolor{blue}{\textbf{work-in-progress}}}
+	\fi
+}	
 
 
 
