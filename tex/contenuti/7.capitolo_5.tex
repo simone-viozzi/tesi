@@ -1,5 +1,6 @@
 
 \chapter{Connessione degli host domotici alla VPN}
+\label{ch:connessione-host-domotici}
 
 \section{Overview della configurazione}
 
@@ -28,6 +29,7 @@ Per simulare gli host domotici è stata usata una \it{raspberry pi}.
         \caption{Diagramma finale}
         \label{fig:diag2-host1}
     \end{subfigure}
+    \caption{Schemi concettuali della configurazione iniziale e finale per il capitolo \ref{ch:connessione-host-domotici}}
 \end{figure}
 
 \section{Creazione della firewall zone per la VPN} 
@@ -36,7 +38,7 @@ Per rendere possibile la comunicazione tra la rete \it{lan} del \it{Router} e la
 
 Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \ref{fig:luci-firewall-init}.
 
-% rifare lo screen in modo che prenda solo la parte al centro
+% TODO cambiare caption
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_init1}
@@ -65,6 +67,7 @@ Possiamo vedere la pagina di configurazione:
 
 Dopo aver salvato, la pagina del firewall sarà:
 
+% TODO cambiare caption
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_end1}
@@ -102,6 +105,7 @@ Ciò va fatto da LuCI, nella sezione \it{interfaces}. Si deve quindi aggiungere 
         \caption{Firewall settings}
         \label{fig:luci-firewall-interfaces1}
     \end{subfigure}
+    \caption{Assegnazione interfaccia \it{tun0} alla zona firewall \it{vpn} tramite interfaccia LuCI}
 \end{figure}
 
 
@@ -143,7 +147,7 @@ $ ip route
 \end{bashcode}
 
 \section{Test della configurazione}
-% TODO da scrivere di più per i test, sono importanti, forse mettere qualcosa sul troubble shooting... mhhh
+\todo[da scrivere di più per i test, sono importanti, forse mettere qualcosa sul troubble shooting... mhhh]
 
 
 Per testare la connessione tra \it{client} e \it{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \it{Server} e \it{Router} per vedere il percorso dei pacchetti.

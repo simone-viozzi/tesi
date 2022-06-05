@@ -1,11 +1,11 @@
 
 \chapter{Configurazione Router}
+\label{ch:configurazione-router}
 
 \section{Overview della configurazione}
 
 In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VPN.
 
- % TODO mancano captions
 
 \newsavebox{\myimagea}
 \begin{figure}[H]
@@ -28,6 +28,7 @@ In questo capitolo andremo a configurare il \it{router 4g} e connetterlo alla VP
         \caption{Configurazione da raggiungere}
         \label{fig:diag-router1}
     \end{subfigure}
+    \caption{Schemi delle configurazioni iniziali e finali per il capitolo \ref{ch:configurazione-router}}
 \end{figure}
 
 
@@ -78,15 +79,15 @@ $ vim /etc/config/openvpn
 
 Ora possiamo abilitarla usando luci:
 
-% TODO da rifare lo screen in modo che prenda solo la parte importante
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{immagini/LuCI_vpn1}
-    \caption{Configurazione della VPN tramite LuCI}
+    \caption{Configurazione della VPN tramite LuCI.}
     \label{fig:luci-vpn}
 \end{figure}
 
-alla riga "custom\_config" Si deve mettere il check su \it{enabled} e premere start, per poi salvare le modifiche. In questo modo il router si connetterà automaticamente alla VPN anche se venisse riavviato.
+Alla riga "custom\_config" Si deve mettere il check su \it{enabled} e premere start, per poi salvare le modifiche. In questo modo il router si connetterà automaticamente alla VPN anche se venisse riavviato.
 
 
 % <-- section -->

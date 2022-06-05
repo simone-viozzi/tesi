@@ -35,7 +35,7 @@ Supponiamo inoltre che l'ip pubblico del \it{Server} sia \code{51.178.141.119}, 
         \caption{Configurazione virtuale da raggiungere per questo capitolo.}
         \label{fig:diag-simple_ips_vpn}
     \end{subfigure}%
-    \caption{Configurazione di partenza e di obbiettivo per questo capitolo. \cite{icons}}
+    \caption{Configurazione di partenza e di obbiettivo per il capitolo \ref{ch:server}.}
 \end{figure}
 
 Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare opportunamente una rete VPN, che risulterà nella configurazione rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
@@ -56,6 +56,8 @@ Per la gestione dell'autenticazione dei client alla VPN è necessario creare una
 
 La gestione della PKI viene fatta usando l'utility \it{easy-rsa}, possiamo riassumere i comandi principali della sua creazione nel seguente schema:
 
+
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{immagini/diag-firma_certificato_ca}
@@ -63,7 +65,7 @@ La gestione della PKI viene fatta usando l'utility \it{easy-rsa}, possiamo riass
     \label{fig:diag-firma_certificato_ca}
 \end{figure}
 
-% TODO fare in modo che sotto fa riferimento al diagramma
+\todo[fare in modo che sotto fa riferimento al diagramma]
 \subsection{Creazione della CA}
 
 % TODO !
@@ -285,7 +287,7 @@ $ sudo cp ta.key /etc/openvpn/server
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\linewidth]{immagini/diag-firma_certificato_client}
-    \caption{Diagramma per schematizzare la procedura di firma di un certificato client. \cite{icons}}
+    \caption{Diagramma per schematizzare la procedura di firma di un certificato client.}
     \label{fig:diag-firma_certificato_client}
 \end{figure}
 
