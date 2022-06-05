@@ -320,13 +320,7 @@ OpenVPN has several ways to authenticate peers with each other. OpenVPN offers p
 \end{comment}
 
 % ok
-L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti.
-
-% ok
-Il metodo più sicuro è quello basato sui certificati, che sfrutta una \it{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici.
-
-% ok
-Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette a quello specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento, facendo così perdere l'accesso all'utente che lo stava usando. 
+L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \it{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette a quello specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento, facendo così perdere l'accesso all'utente che lo stava usando. 
 
 % ok
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
@@ -342,7 +336,7 @@ OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alt
 \end{comment}
 
 % ok
-OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ips blocchi VPN di livello più basso, es. ipsec. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
+OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ips blocchi VPN di livello più basso, es. \href{https://en.wikipedia.org/wiki/IPsec}{ipsec}. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
 
 \begin{comment}
 % The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options.
@@ -350,10 +344,8 @@ OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), c
 % OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
 \end{comment}
 
-% TODO da riscrivere
-Nella configurazione del server possono essere specificate delle opzioni, "push", per impostare alcune configurazioni di rete nel server o nei client, come ad esempio aggiungere una voce nella tabella di routing dei client.
 
-
+La configurazione del server permette di impostare opzioni che modificano la configurazione di rete del server o dei client, ciò permette ad esempio di aggiungere una rotta alla tabella di routing dei client nel momento in cui si connettono alla VPN.
 
 % TODO da riscrivere
 Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare un tunnel IP di livello 3 (TUN), o Ethernet livello 2 (TAP).
@@ -378,10 +370,10 @@ OpenWrt is a highly extensible GNU/Linux distribution for embedded devices (typi
 \end{comment}
 
 % ok
-OpenWRT è un sistema operativo open-source per sistemi embedded, principalmente usato come firmware alternativo per router domestici. Si basa su kernel linux, con specifica attenzione all'ottimizzazione del sistema per renderlo adatto a dispositivi con risorse estremamente limitate.
+OpenWRT è un sistema operativo open-source per sistemi embedded, principalmente usato come firmware alternativo per router domestici. Si basa su kernel linux, con specifica attenzione all'ottimizzazione per renderlo adatto a dispositivi con risorse estremamente limitate.
 
 % ok
-Al contrario di altri sistemi operativi per dispositivi embedded, OpenWRT presenta un filesystem con permessi di scrittura. Questo permette di modificare il funzionamento del sistema senza dover reinstallare l'intero firmware. Per facilitare l'installazione delle funzionalità aggiuntive ha il suo gestore pacchetti (\href{https://openwrt.org/docs/guide-user/additional-software/opkg}{opkg}), ciò lo rende estremamente estensibile e configurabile.
+Al contrario di altri sistemi operativi per dispositivi embedded, OpenWRT presenta un filesystem con permessi di scrittura. Questo permette di modificare il funzionamento del sistema senza dover reinstallare l'intero firmware a ogni modifica. Per facilitare l'installazione delle funzionalità aggiuntive ha il suo gestore pacchetti (\href{https://openwrt.org/docs/guide-user/additional-software/opkg}{opkg}), ciò lo rende estremamente estensibile e configurabile.
 
 % TODO espandere !
 OpenWRT può essere configurato sia tramite shell (\href{https://en.wikipedia.org/wiki/Almquist_shell}{ash}) che tramite interfaccia web (\href{https://openwrt.org/docs/guide-user/luci/start}{LuCI}).
@@ -398,7 +390,7 @@ Meanwhile LuCI evolved from an MVC-Webframework to a collection of several libra
 \end{comment}
 
 % ok
-Luci è l'interfaccia web ufficiale di \it{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile. L'installazione e configurazione di Luci è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
+LuCI è l'interfaccia web ufficiale di \it{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile. L'installazione e configurazione di LuCI è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
 
 
 \begin{figure}[H]
