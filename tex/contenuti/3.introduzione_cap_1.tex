@@ -365,6 +365,34 @@ In figura \ref{fig:incapsulamento-openvpn} possiamo vedere l'incapsulamento del 
     \label{fig:incapsulamento-openvpn}
 \end{figure}
 
+\begin{comment}
+\begin{bashcode}
+Frame 1: 84 bytes on wire (672 bits), 84 bytes captured (672 bits) on interface tun0, id 0
+Raw packet data
+Internet Protocol Version 4, Src: 10.8.0.2, Dst: 10.8.0.1
+Internet Control Message Protocol
+    Type: 8 (Echo (ping) request)
+    Code: 0
+    Checksum: 0xb1f5 [correct]
+    [Checksum Status: Good]
+    Identifier (BE): 3 (0x0003)
+    Identifier (LE): 768 (0x0300)
+    Sequence Number (BE): 608 (0x0260)
+    Sequence Number (LE): 24578 (0x6002)
+    [Response frame: 2]
+    Timestamp from icmp data: Jun  6, 2022 18:08:46.000000000 CEST
+    [Timestamp from icmp data (relative): 0.871410467 seconds]
+    Data (48 bytes)
+
+
+Frame 1: 84 bytes on wire (672 bits), 84 bytes captured (672 bits) on interface tun0, id 0
+Raw packet data
+Internet Protocol Version 4, Src: 10.8.0.2, Dst: 10.8.0.1
+Internet Control Message Protocol
+
+\end{bashcode}
+\end{comment}
+
 
 \section{OpenWrt}
 
