@@ -24,3 +24,4 @@
 {"rule":"GR_04_002","sentence":"^\\QNell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QLe informazioni principali contenute nell'header sono la porta sorgente e destinazione, ciò permette di individuare a quale applicazione è destinato il pacchetto.\\E$"}
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QOpenWrt .\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QCiò consente di mappare un grande numero di indirizzi privati in relativamente pochi indirizzi pubblici.\\E$"}
