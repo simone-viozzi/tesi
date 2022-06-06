@@ -248,8 +248,7 @@ unique IP addresses are assigned according to current CIDR address
 allocation schemes.
 \end{comment}
 
-% TODO forse posso tagliarla un pò non è poi così necessaria
-Una delle applicazioni principali è inserirlo nel gateway di una rete privata domestica, ciò permette di mascherare i dispositivi nella rete privata e inoltre permette di usare un solo ip esterno per l'intera rete privata. Non è però detto che l'ip di uscita di una rete privata domestica sia pubblico, infatti i NAT possono essere usati in cascata, ciò significa che l'ips ha un'altro NAT prima di passare ad uno spazio di indirizzamento pubblico.
+Una delle applicazioni più comuni è inserirlo nel gateway di una rete privata domestica, ciò permette di mascherare i dispositivi nella rete privata e far si che la rete esterna veda tutto il traffico attraverso un solo dispositivo, il router. 
 
 \subsubsection{Carrier Grade nat (CG-NAT)}
 \begin{comment}
@@ -259,8 +258,8 @@ https://en.wikipedia.org/wiki/Carrier-grade_NAT
     Carrier-grade NAT is often used for mitigating IPv4 address exhaustion.
 \end{comment}
 
-I cg-nat sono una tipologia di NAT che lavorano su larga scala e in generale sono implementati all'interno della rete dell'ips.
-Di conseguenza gli utenti non hanno controllo sul NAT e non possono in nessun modo modificare la sua configurazione.
+I CG-NAT sono una tipologia di NAT che lavorano su larga scala e in generale sono implementati all'interno della rete dell'ISP. Sono usati per mappare un grande numero di utenti in relativi pochi indirizzi pubblici.
+Dato che sono gestiti dall'ISP, gli utenti non hanno nessun controllo sulla sua configurazione.
 
 
 \section{Openvpn}
@@ -394,7 +393,7 @@ Internet Control Message Protocol
 \end{comment}
 
 
-\section{OpenWrt}
+\section{OpenWrt \ok}
 
 \begin{bashcode}{Login banner di Openwrt}{}
 BusyBox v1.35.0 (2022-04-24 21:09:51 UTC) built-in shell (ash)

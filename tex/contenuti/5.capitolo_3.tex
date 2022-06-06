@@ -11,7 +11,7 @@ In questo capitolo andremo a installare e configurare \textit{OpenVPN server} su
 
 Per facilitare la configurazione e il testing, supponiamo di partire da una topologia che contiene solo il server openvpn e un generico client. Come da specifiche il Server deve avere a disposizione un'ip pubblico e il client deve essere il più generico possibile, lo supponiamo quindi sotto a un NAT.
 
-Supponiamo inoltre che l'ip pubblico del \textit{Server} sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
+Supponiamo inoltre che l'ip pubblico del Server sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
 
 \newsavebox{\myimage}
@@ -44,15 +44,11 @@ Per instaurare una comunicazione bidirezionale tra il server e il client, si dov
 \label{sec:pki_ca}
 \workinprogress
 
-Per la gestione dell'autenticazione dei client alla VPN è necessario creare una \textit{PKI}, come descritto nella sezione \ref{subsec:auth}. Inoltre, per una maggiore sicurezza è indicato separare la \textit{Certificate Authority} dal \textit{Server OpenVPN} \cite{openvpn-as-ca}, supponiamo quindi di usare un secondo server chiamato \textit{Server CA}. 
+Per la gestione dell'autenticazione dei client alla VPN è necessario creare una \textit{Public key infrastructure} (PKI), come descritto nella sezione \ref{subsec:auth}. Inoltre, per una maggiore sicurezza è indicato separare la \textit{Certificate Authority} dal \textit{Server OpenVPN} \cite{openvpn-as-ca}, supponiamo quindi di usare un secondo server chiamato \textit{Server CA}. 
 
-% non mi piace molto!
 Il \it{Server CA} verrà usato in fase di configurazione del server e di creazione dei certificati per i client, dopodiché non sarà più necessario.
 
-% TODO non mi piace!
-Data la complessità della procedura, e lo scambio di file tra i 2 server, è stato realizzato il seguente diagramma, in cui sono riportati i comandi principali e i file necessari:
-
-
+\todo[va bene senza mettere nessuna spiegazione per  lo schema??]
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{immagini/diag-firma_certificato_ca}
@@ -77,18 +73,25 @@ ln è un comando dei sistemi operativi Unix e Unix-like, e più in generale dei 
 \end{comment}
 
 % nooop
-Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, quindi per usarla con un utente non privilegiato la si deve spostare / linkare da un'altra parte. Ad esempio nella home:
+Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, ma è sconsigliato usarlo per motivi di sicurezza. Quindi si deve spostare/collegare questo percorso in una cartella di un'utente non privilegiato, andiamo quindi a crearne un collegamento nella home:
 
-\begin{bashcode}{Server CA}{}
+\begin{bashcode}{Server CA}{init-easyrsa}
 $ mkdir ~/openvpn-ca
-$ ln -s /usr/share/easy-rsa/* ~/openvpn-ca/
-$ chmod 700 /home/ubuntu/openvpn-ca/
+$ ln -s /usr/share/easy-rsa/* ~/openvpn-ca/ # soft link di easy-rsa nella home
+$ chmod 700 /home/ubuntu/openvpn-ca/        # cambio i permessi in modo che solo l'utente
+                                            #  corrente possa leggere il contenuto
 \end{bashcode}
 
-In questa struttura di cartelle verranno creati i vari file necessari per la gestione della PKI. In base ai comandi si creerà una struttura differente nella cartella pki.
+A questo punto possiamo usare lo script \code{easyrsa} presente nella cartella per creare la PKI.
 
-\todo[va bene???? no....]
-
+\begin{bashcode}{Server CA}{}
+$ tree
+.
+|-- easyrsa -> /usr/share/easy-rsa/easyrsa
+|-- openssl-easyrsa.cnf -> /usr/share/easy-rsa/openssl-easyrsa.cnf
+|-- vars.example -> /usr/share/easy-rsa/vars.example
+`-- x509-types -> /usr/share/easy-rsa/x509-types
+\end{bashcode}
 
 
 
@@ -219,9 +222,9 @@ tree
 
 \subsection{Creazione della CA} % step 1, 2
 
+Il primo step è la creazione della \it{Certificate Authority}, passaggio 1 fig.\ref{fig:diag-firma_certificato_ca}. 
 
-
-Andiamo quindi a crearla, nella home ad esempio (passaggio 1 fig.\ref{fig:diag-firma_certificato_ca}):
+Andiamo quindi a usare l'albero di cartelle creato in code:~\ref{code:init-easyrsa} e diamo il comando \\\code{easyrsa init-pki}, ciò creerà i file e le cartelle necessarie alla gestione della PKI.
 
 \begin{bashcode}{Server CA}{}
 $ cd openvpn-ca/
@@ -231,7 +234,8 @@ Your newly created PKI dir is: /home/ubuntu/openvpn-ca/pki
 \end{bashcode}
 
 Ora si devono personalizzare le variabili \code{vars}, si può sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
-Andiamo quindi a creare un nuovo file vars:
+
+Andiamo quindi a creare un nuovo file \code{vars}:
 
 % TODO è ok lasciare queste?
 \begin{bashcode}{Server CA}{}
@@ -248,9 +252,9 @@ set_var EASYRSA_ALGO         "ec"
 set_var EASYRSA_DIGEST       "sha512"
 \end{bashcode}
 
-Le variabili nel primo blocco determinano i dati che poi verranno registrati nei certificati.
+\workinprogress
 
-Le ultime 2 sono opzioni di sicurezza, in particolare si setta l'algoritmo di cifratura %TODO add info
+Le variabili nel primo blocco determinano i dati che poi verranno registrati nei certificati. Le ultime 2 sono opzioni di sicurezza, in particolare si setta il tipo di algoritmo di cifratura ad \it{Elliptic Curve}
 
 A questo punti si deve lanciare il comando \code{build-ca} per costruire la CA (passaggio 2 fig.\ref{fig:diag-firma_certificato_ca}):
 

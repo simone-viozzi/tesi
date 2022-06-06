@@ -116,3 +116,7 @@ wrapper
 easy-rsa
 usr
 share
+vars
+example
+easyrsa
+init-pki

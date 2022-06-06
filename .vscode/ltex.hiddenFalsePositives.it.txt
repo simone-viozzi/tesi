@@ -23,3 +23,4 @@
 {"rule":"GR_04_002","sentence":"^\\QNell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare a quale host è l'interfaccia fisica di destinazione.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QNell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QLe informazioni principali contenute nell'header sono la porta sorgente e destinazione, ciò permette di individuare a quale applicazione è destinato il pacchetto.\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QOpenWrt .\\E$"}
