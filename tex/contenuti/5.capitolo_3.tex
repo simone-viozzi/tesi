@@ -40,20 +40,14 @@ Supponiamo inoltre che l'ip pubblico del \textit{Server} sia \code{51.178.141.11
 
 Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare opportunamente una rete VPN, che risulterà nella configurazione rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
 
-% TODO maybe cut this
-I pacchetti necessari per questo capitolo sono \code{openvpn}, \code{easy-rsa} e un editor di testo, che possono essere installati con:
-
-\begin{bashcode}{Server}{}
-$ sudo apt-get update
-$ sudo apt-get install -y openvpn easy-rsa vim
-\end{bashcode}
-
-
 \section{Creazione della Public key infrastructure}
 \label{sec:pki_ca}
 \workinprogress
 
-Per la gestione dell'autenticazione dei client alla VPN è necessario creare una \textit{PKI}, come descritto nella sezione \ref{subsec:auth}. Inoltre, per una maggiore sicurezza è indicato separare la \textit{Certificate Authority} dal \textit{Server OpenVPN} \cite{openvpn-as-ca}, supponiamo quindi di usare un secondo server chiamato \textit{Server CA}. Il \it{Server CA} verrà usato in fase di configurazione e di creazione dei certificati per i client, dopodiché non sarà più necessario.
+Per la gestione dell'autenticazione dei client alla VPN è necessario creare una \textit{PKI}, come descritto nella sezione \ref{subsec:auth}. Inoltre, per una maggiore sicurezza è indicato separare la \textit{Certificate Authority} dal \textit{Server OpenVPN} \cite{openvpn-as-ca}, supponiamo quindi di usare un secondo server chiamato \textit{Server CA}. 
+
+% non mi piace molto!
+Il \it{Server CA} verrà usato in fase di configurazione del server e di creazione dei certificati per i client, dopodiché non sarà più necessario.
 
 % TODO non mi piace!
 Data la complessità della procedura, e lo scambio di file tra i 2 server, è stato realizzato il seguente diagramma, in cui sono riportati i comandi principali e i file necessari:
@@ -69,7 +63,23 @@ Data la complessità della procedura, e lo scambio di file tra i 2 server, è st
 
 \subsection{Creazione della struttura di cartelle necessaria per ospitare la PKI}
 
-Per la gestione della PKI verrà usato il tool \code{easy-rsa}, 
+\begin{comment}
+easy-rsa is a CLI utility to build and manage a PKI CA. In laymen's terms, this means to create a root certificate authority, and request and sign certificates, including intermediate CAs and certificate revocation lists (CRL).
+\end{comment}
+
+Per la gestione della PKI verrà usato il tool \href{https://github.com/OpenVPN/easy-rsa}{\it{easy-rsa}}, che fornisce un wrapper intorno alle funzionalità di \it{OpenSSL} facilitandone l'utilizzo.
+
+Il pacchetto \it{easy-rsa} è presente nei repository ufficiali di ubuntu e può essere installato con il comando \code{sudo apt-get install easy-rsa}.
+
+% nooop
+Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, quindi per usarla con un utente non privilegiato la si deve spostare / linkare da un'altra parte. Ad esempio nella home:
+
+\begin{bashcode}{Server CA}{}
+$ mkdir ~/openvpn-ca
+$ ln -s /usr/share/easy-rsa/* ~/openvpn-ca/
+$ chmod 700 /home/ubuntu/openvpn-ca/
+\end{bashcode}
+
 
 
 \subsection{Creazione della CA} % step 1, 2
@@ -78,21 +88,16 @@ Per la gestione della PKI verrà usato il tool \code{easy-rsa},
 Andiamo quindi a crearla, nella home ad esempio (passaggio 1 fig.\ref{fig:diag-firma_certificato_ca}):
 
 \begin{bashcode}{Server CA}{}
-$ mkdir ~/openvpn-ca
-$ ln -s /usr/share/easy-rsa/* ~/openvpn-ca/
-$ chmod 700 /home/ubuntu/openvpn-ca/
 $ cd openvpn-ca/
 $ ./easyrsa init-pki
 init-pki complete; you may now create a CA or requests.
 Your newly created PKI dir is: /home/ubuntu/openvpn-ca/pki
-$ la
-easyrsa  openssl-easyrsa.cnf  pki  vars.example  x509-types
 \end{bashcode}
 
 Ora si devono personalizzare le variabili \code{vars}, si può sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
 Andiamo quindi a creare un nuovo file vars:
 
-% TODO è of lasciare queste?
+% TODO è ok lasciare queste?
 \begin{bashcode}{Server CA}{}
 $ vim vars
 set_var EASYRSA_REQ_COUNTRY  "IT"

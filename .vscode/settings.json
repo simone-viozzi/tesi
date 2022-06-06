@@ -116,6 +116,7 @@
         "verbatim": "ignore",
         "bashcode": "ignore",
         "comment": "ignore",
+        "code": "ignore",
     },
     "ltex.additionalRules.motherTongue": "it",
     "latex-workshop.latex.recipe.default": "lastUsed",
