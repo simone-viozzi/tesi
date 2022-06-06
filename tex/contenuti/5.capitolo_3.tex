@@ -71,6 +71,11 @@ Per la gestione della PKI verrà usato il tool \href{https://github.com/OpenVPN/
 
 Il pacchetto \it{easy-rsa} è presente nei repository ufficiali di ubuntu e può essere installato con il comando \code{sudo apt-get install easy-rsa}.
 
+
+\begin{comment}
+ln è un comando dei sistemi operativi Unix e Unix-like, e più in generale dei sistemi POSIX[1], che crea collegamenti simbolici e collegamenti fisici a file e directory. Se non diversamente specificato, crea collegamenti fisici. 
+\end{comment}
+
 % nooop
 Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, quindi per usarla con un utente non privilegiato la si deve spostare / linkare da un'altra parte. Ad esempio nella home:
 
@@ -80,9 +85,140 @@ $ ln -s /usr/share/easy-rsa/* ~/openvpn-ca/
 $ chmod 700 /home/ubuntu/openvpn-ca/
 \end{bashcode}
 
+In questa struttura di cartelle verranno creati i vari file necessari per la gestione della PKI. In base ai comandi si creerà una struttura differente nella cartella pki.
+
+\todo[va bene???? no....]
+
+
+
+
+\begin{comment}
+
+solo init-pki
+\begin{bashcode}{Server CA}{}
+tree
+.
+|-- easyrsa -> /usr/share/easy-rsa/easyrsa
+|-- openssl-easyrsa.cnf -> /usr/share/easy-rsa/openssl-easyrsa.cnf
+|-- vars.example -> /usr/share/easy-rsa/vars.example
+`-- x509-types -> /usr/share/easy-rsa/x509-types
+
+1 directory, 3 files
+\end{bashcode}
+
+build-ca
+\begin{bashcode}{Server CA}{}
+tree
+.
+|-- easyrsa -> /usr/share/easy-rsa/easyrsa
+|-- openssl-easyrsa.cnf -> /usr/share/easy-rsa/openssl-easyrsa.cnf
+|-- pki
+|   |-- certs_by_serial
+|   |-- index.txt
+|   |-- index.txt.attr
+|   |-- issued
+|   |-- openssl-easyrsa.cnf
+|   |-- private
+|   |-- renewed
+|   |   |-- certs_by_serial
+|   |   |-- private_by_serial
+|   |   `-- reqs_by_serial
+|   |-- reqs
+|   |-- revoked
+|   |   |-- certs_by_serial
+|   |   |-- private_by_serial
+|   |   `-- reqs_by_serial
+|   |-- safessl-easyrsa.cnf
+|   `-- serial
+|-- vars
+|-- vars.example -> /usr/share/easy-rsa/vars.example
+`-- x509-types -> /usr/share/easy-rsa/x509-types
+
+14 directories, 9 files
+\end{bashcode}
+
+finale conf
+\begin{bashcode}{Server CA}{}
+$ tree
+    .
+    |-- easyrsa -> /usr/share/easy-rsa/easyrsa
+    |-- openssl-easyrsa.cnf -> /usr/share/easy-rsa/openssl-easyrsa.cnf
+    |-- pki
+    |   |-- ca.crt
+    |   |-- certs_by_serial
+    |   |-- index.txt
+    |   |-- index.txt.attr
+    |   |-- issued
+    |   |-- openssl-easyrsa.cnf
+    |   |-- private
+    |   |   `-- ca.key
+    |   |-- renewed
+    |   |   |-- certs_by_serial
+    |   |   |-- private_by_serial
+    |   |   `-- reqs_by_serial
+    |   |-- reqs
+    |   |-- revoked
+    |   |   |-- certs_by_serial
+    |   |   |-- private_by_serial
+    |   |   `-- reqs_by_serial
+    |   |-- safessl-easyrsa.cnf
+    |   `-- serial
+    |-- vars
+    |-- vars.example -> /usr/share/easy-rsa/vars.example
+    `-- x509-types -> /usr/share/easy-rsa/x509-types
+    
+    14 directories, 11 files
+\end{bashcode}
+
+finale totale
+\begin{bashcode}{Server CA}{}
+tree
+.
+|-- easyrsa -> /usr/share/easy-rsa/easyrsa
+|-- openssl-easyrsa.cnf -> /usr/share/easy-rsa/openssl-easyrsa.cnf
+|-- pki
+|   |-- ca.crt
+|   |-- certs_by_serial
+|   |   |-- 7C4687A21AB7AF03EFD93FFC7D173C79.pem
+|   |   |-- 8815692DCE6D78E99B25A6210DAEDBCB.pem
+|   |   `-- FA98C8E3C0281617842ECEE92C2B13E7.pem
+|   |-- index.txt
+|   |-- index.txt.attr
+|   |-- index.txt.attr.old
+|   |-- index.txt.old
+|   |-- issued
+|   |   |-- client1.crt
+|   |   |-- router1.crt
+|   |   `-- server.crt
+|   |-- openssl-easyrsa.cnf
+|   |-- private
+|   |   `-- ca.key
+|   |-- renewed
+|   |   |-- certs_by_serial
+|   |   |-- private_by_serial
+|   |   `-- reqs_by_serial
+|   |-- reqs
+|   |   |-- client1.req
+|   |   |-- router1.req
+|   |   `-- server.req
+|   |-- revoked
+|   |   |-- certs_by_serial
+|   |   |-- private_by_serial
+|   |   `-- reqs_by_serial
+|   |-- safessl-easyrsa.cnf
+|   |-- serial
+|   `-- serial.old
+|-- vars
+|-- vars.example -> /usr/share/easy-rsa/vars.example
+`-- x509-types -> /usr/share/easy-rsa/x509-types
+
+14 directories, 23 files
+\end{bashcode}
+\end{comment}
 
 
 \subsection{Creazione della CA} % step 1, 2
+
 
 
 Andiamo quindi a crearla, nella home ad esempio (passaggio 1 fig.\ref{fig:diag-firma_certificato_ca}):
@@ -260,6 +396,30 @@ Possiamo quindi tornare sul \textit{server OpenVPN} e copiare i 2 file da \code{
 $ sudo cp /tmp/server.crt /etc/openvpn/server
 $ sudo cp /tmp/ca.crt /etc/openvpn/server
 \end{bashcode}
+
+\begin{comment}
+finale
+
+tree
+.
+|-- easyrsa -> /usr/share/easy-rsa/easyrsa
+|-- openssl-easyrsa.cnf -> /usr/share/easy-rsa/openssl-easyrsa.cnf
+|-- pki
+|   |-- openssl-easyrsa.cnf
+|   |-- private
+|   |   |-- client1.key
+|   |   `-- server.key
+|   |-- reqs
+|   |   |-- client1.req
+|   |   `-- server.req
+|   `-- safessl-easyrsa.cnf
+|-- ta.key
+|-- vars
+|-- vars.example -> /usr/share/easy-rsa/vars.example
+`-- x509-types -> /usr/share/easy-rsa/x509-types
+
+4 directories, 13 files
+\end{comment}
 
 
 

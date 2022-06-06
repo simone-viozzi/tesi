@@ -112,3 +112,7 @@ Virtual
 Translation
 Translator
 tool
+wrapper
+easy-rsa
+usr
+share

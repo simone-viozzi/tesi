@@ -186,24 +186,29 @@ Encrypted Application Data: 389bf9516cce567d0d90ef62ba2a87376091fedb7f66f3b9e60e
 \end{bashcode}
 
 
-\todo[da sistemare, non so se è l'approccio giusto, penso che ci sia da cercare ancora sull'incapsulamento]
-
 Quindi andando ad analizzare lo stack di protocolli si vede:
 
 \begin{itemize}
     \item \textbf{Transport Layer Security}\cite{RFC_8446}: È il dato effettivo che è stato trasmesso in rete. In questo caso consiste in un pacchetto http cifrato con il protocollo TLS.
 
-    \item \textbf{Transmission Control Protocol}\cite{RFC_0793}: incapsula il layer applicazione in un layer di trasporto usando il protocollo TCP. 
-    % devo di cazzo ci sta dentro?
+    \item \textbf{Transmission Control Protocol}\cite{RFC_0793}: incapsula il layer applicazione in un layer di trasporto usando il protocollo TCP. Le informazioni principali contenute nell'header sono la porta sorgente e destinazione, ciò permette di individuare a quale applicazione è destinato il pacchetto.
     
-    Aggiunge un minimo di 20 byte di header. \todo
+    \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: incapsula il layer di trasporto in un pacchetto IP. Nell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.
     
-    \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: incapsula il layer di trasporto in un pacchetto IP. Aggiunge un minimo di 20 byte di header
-    
-    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico è una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Questo aggiunge 14 byte di header e 4 byte di trailer.
+    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico è una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare a quale host è l'intefaccia fisica di destinazione.
 \end{itemize}
 
-Si vede come il dato che si voleva trasmettere sia stato incapsulato da 4 strati di protocolli che complessivamente hanno aggiunto un minimo di 58 byte di hoverhead.
+Possiamo vedere graficamente il pacchetto descritto in \ref{code:tls-wireshark} e le informazioni principali di ogni header:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{immagini/diag2-incapsulamento}
+    \caption{Incapsulamento}
+    \label{fig:incapsulamento}
+\end{figure}
+
+
+
 
 \subsection{IP Network Address Translator (NAT)}
 \workinprogress
@@ -290,8 +295,8 @@ Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su U
 
 \begin{bashcode}{Wireshark}{}
 > Frame 90: 82 bytes on wire (656 bits), 82 bytes captured (656 bits) on interface br-08876ccdf1f5, id 0
-> Ethernet II, Src: 02:42:0a:00:04:03 (02:42:0a:00:04:03), Dst: 02:42:0a:00:04:02 (02:42:0a:00:04:02)
-> Internet Protocol Version 4, Src: 10.0.4.3, Dst: 10.0.4.2
+> Ethernet II, Src: cc:d9:ac:eb:91:5f (cc:d9:ac:eb:91:5f), Dst: 0c:e4:a0:27:a9:24 (0c:e4:a0:27:a9:24)
+> Internet Protocol Version 4, Src: 192.168.1.20, Dst: 51.178.141.119
 > User Datagram Protocol, Src Port: 47007, Dst Port: 1194
 > OpenVPN Protocol
 Type: 0x48 [opcode/key_id]
@@ -339,9 +344,9 @@ OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alt
 OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ips blocchi VPN di livello più basso, es. \href{https://en.wikipedia.org/wiki/IPsec}{ipsec}. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
 
 \begin{comment}
-% The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options.
+The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options.
 
-% OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
+OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP driver. It can create either a layer-3 based IP tunnel (TUN), or a layer-2 based Ethernet TAP that can carry any type of Ethernet traffic. OpenVPN can optionally use the LZO compression library to compress the data stream. Port 1194 is the official IANA assigned port number for OpenVPN. Newer versions of the program now default to that port. A feature in the 2.0 version allows for one process to manage several simultaneous tunnels, as opposed to the original "one tunnel per process" restriction on the 1.x series.
 \end{comment}
 
 
@@ -349,6 +354,13 @@ La configurazione del server permette di impostare opzioni che modificano la con
 
 % TODO da riscrivere
 Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare un tunnel IP di livello 3 (TUN), o Ethernet livello 2 (TAP).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{immagini/diag2-incapsulamento_openvpn}
+    \caption{Incapsulamento}
+    \label{fig:incapsulamento-openvpn}
+\end{figure}
 
 
 \section{OpenWrt}

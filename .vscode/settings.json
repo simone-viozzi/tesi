@@ -124,4 +124,5 @@
     "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": true,
     "latex-workshop.latex.autoBuild.run": "onSave",
     "latex-workshop.latex.autoBuild.interval": 1000,
+    "latex-workshop.synctex.afterBuild.enabled": true,
 }
