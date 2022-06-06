@@ -25,7 +25,7 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 
 \end{figure}
 
-Data la presenza del NAT si vede subito che non è realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo però non è possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il \it{4G.Router} e il cliente.
+Data la presenza del NAT si vede subito che non è realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo però non è possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il \textit{4G.Router} e il cliente.
 
 
 \begin{figure}[H]
@@ -35,7 +35,7 @@ Data la presenza del NAT si vede subito che non è realizzabile a meno che il cl
 	\label{fig:schem_architettura_reale}
 \end{figure}
 
-In questo modo si può usare il \it{Server} per configurare una \it{Virtual Private Network} (VPN), a cui saranno connessi sia il \it{4G.Router} che il cliente. Ciò consente la creazione di una topologia virtuale in cui tutti i dispositivi connessi alla VPN sono nella stessa rete locale, quindi possono comunicare tra loro.
+In questo modo si può usare il \textit{Server} per configurare una \textit{Virtual Private Network} (VPN), a cui saranno connessi sia il \textit{4G.Router} che il cliente. Ciò consente la creazione di una topologia virtuale in cui tutti i dispositivi connessi alla VPN sono nella stessa rete locale, quindi possono comunicare tra loro.
 
 Inoltre in questo modo viene minimizzata la configurazione da effettuare sulle macchine dei clienti, infatti sarà sufficiente avere un client OpenVPN.
 
@@ -88,7 +88,7 @@ Per l'implementazione di questa architettura sono necessarie solo un sub-set del
 \end{itemize}
 
 % TODO nooop
-Ha il sistema operativo \it{Draghino}, una versione personalizzata di OpenWRT, in cui è stata modificata l'interfaccia web... mh no
+Ha il sistema operativo \textit{Draghino}, una versione personalizzata di OpenWRT, in cui è stata modificata l'interfaccia web... mh no
 
 La configurazione del dispositivo può essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
 
@@ -121,13 +121,13 @@ La configurazione del dispositivo può essere fatta sia da terminale, entrando i
 
 \end{figure}
 
-Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \it{Router}.
+Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \textit{Router}.
 
 \subsection{VPS OVHCloud}
 
 La VPS ha il solo vincolo di dover avere un'ip pubblico e una connessione a internet abbastanza veloce. Dovrà infatti sopportare un traffico simmetrico in upload / download.
 
-Per la realizzazione della topologia è stata selezionata una macchina VPS del provider \it{OVHCloud}, con le seguenti caratteristiche:
+Per la realizzazione della topologia è stata selezionata una macchina VPS del provider \textit{OVHCloud}, con le seguenti caratteristiche:
 
 \begin{itemize}
 	\item 2 core virtuali
@@ -138,11 +138,11 @@ Per la realizzazione della topologia è stata selezionata una macchina VPS del p
 	\item Ubuntu 16.04
 \end{itemize}
 
-Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \it{Server}.
+Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \textit{Server}.
 
 \subsection{Host domotico}
 
-Per simulare un'host domotico ed effettuare le varie operazioni di testing è stata usata una \it{raspberry pi}, con le utility \it{ping} e \it{tracepath}.
+Per simulare un'host domotico ed effettuare le varie operazioni di testing è stata usata una \textit{raspberry pi}, con le utility \textit{ping} e \textit{tracepath}.
 
 \subsection{Macchina del cliente}
 

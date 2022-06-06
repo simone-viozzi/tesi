@@ -46,7 +46,7 @@ from each layer.
 \end{comment}
 
 % ok
-Per comunicare su Internet, gli Host devono implementare un set di protocolli che costituiscono l'\it{Internet protocol suite} \cite{RFC_1122}. I protocolli si suddividono in strati logici che li raggruppano in 4 categorie, ogni Host deve implementare almeno un protocollo per ogni strato.
+Per comunicare su Internet, gli Host devono implementare un set di protocolli che costituiscono l'\textit{Internet protocol suite} \cite{RFC_1122}. I protocolli si suddividono in strati logici che li raggruppano in 4 categorie, ogni Host deve implementare almeno un protocollo per ogni strato.
 
 \begin{figure}[H]
     \centering
@@ -59,7 +59,7 @@ Per comunicare su Internet, gli Host devono implementare un set di protocolli ch
 Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 \begin{enumerate} % \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
-    \item[layer 4:] \textbf{Application}: Il livello applicazione è il layer pi\`u alto dell'\it{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
+    \item[layer 4:] \textbf{Application}: Il livello applicazione è il layer pi\`u alto dell'\textit{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
         I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. Mentre i protocolli di supporto non sono direttamente usati dagli utenti ma sono comunque necessari per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
 
         \begin{comment}
@@ -169,7 +169,7 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vedere una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
 
 
-Possiamo vedere l'incapsulamento in azione catturando un pacchetto con il programma \it{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web https:
+Possiamo vedere l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web https:
 
 \begin{bashcode}{Wireshark}{code:tls-wireshark}
 1 > Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
@@ -231,7 +231,7 @@ Network address translation (NAT) is a method of mapping an IP address space int
 The main advantage of NAT is that it can be installed without changes to routers or hosts. This solution has the disadvantage of taking away the end-to-end significance of an IP address, and making up for it with increased state in the network.
 \end{comment}
 
-Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP. La mappatura può essere sia uno-a-uno, nel caso di \it{Static NAT} e \it{Dynamic NAT}; sia molti-a-molti, nel caso di \it{Network Address and Port Translation} (NAPT), in cui oltre all'IP viene modificata anche la porta del protocollo di trasporto. Ciò consente di mappare un grande numero di indirizzi privati in relativamente pochi indirizzi pubblici. 
+Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP. La mappatura può essere sia uno-a-uno, nel caso di \textit{Static NAT} e \textit{Dynamic NAT}; sia molti-a-molti, nel caso di \textit{Network Address and Port Translation} (NAPT), in cui oltre all'IP viene modificata anche la porta del protocollo di trasporto. Ciò consente di mappare un grande numero di indirizzi privati in relativamente pochi indirizzi pubblici. 
 
 \begin{comment}
 The address reuse solution is to
@@ -320,7 +320,7 @@ OpenVPN has several ways to authenticate peers with each other. OpenVPN offers p
 \end{comment}
 
 % ok
-L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \it{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette a quello specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento, facendo così perdere l'accesso all'utente che lo stava usando. 
+L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \textit{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette a quello specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento, facendo così perdere l'accesso all'utente che lo stava usando. 
 
 % ok
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
@@ -390,7 +390,7 @@ Meanwhile LuCI evolved from an MVC-Webframework to a collection of several libra
 \end{comment}
 
 % ok
-LuCI è l'interfaccia web ufficiale di \it{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile. L'installazione e configurazione di LuCI è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
+LuCI è l'interfaccia web ufficiale di \textit{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile. L'installazione e configurazione di LuCI è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
 
 
 \begin{figure}[H]
@@ -422,7 +422,7 @@ LuCI è l'interfaccia web ufficiale di \it{OpenWrt}, è un progetto open-source 
 \end{figure}
 
 
-L'home page, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \it{DHCP}.
+L'home page, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \textit{DHCP}.
 
-L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \it{DHCP}, i processi in esecuzione, etc. Presenta inoltre la possibilità di installare plugins che modificano e/o aggiungono funzionalità non presenti di default nell'interfaccia.
+L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \textit{DHCP}, i processi in esecuzione, etc. Presenta inoltre la possibilità di installare plugins che modificano e/o aggiungono funzionalità non presenti di default nell'interfaccia.
 

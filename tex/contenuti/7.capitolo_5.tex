@@ -5,9 +5,9 @@
 \section{Overview della configurazione}
 
 % TODO aggiungi descrizione
-L'ultima parte della configurazione consiste nel rendere disponibile nella VPN la rete locale del \it{router 4g}, consentendo quindi lo scambio di dati tra gli host domotici e i client della vpn
+L'ultima parte della configurazione consiste nel rendere disponibile nella VPN la rete locale del \textit{router 4g}, consentendo quindi lo scambio di dati tra gli host domotici e i client della vpn
 
-Per simulare gli host domotici è stata usata una \it{raspberry pi}.
+Per simulare gli host domotici è stata usata una \textit{raspberry pi}.
 
 \begin{figure}[H]
     \centering
@@ -34,7 +34,7 @@ Per simulare gli host domotici è stata usata una \it{raspberry pi}.
 
 \section{Creazione della firewall zone per la VPN} 
 
-Per rendere possibile la comunicazione tra la rete \it{lan} del \it{Router} e la VPN è necessario configurare opportunamente il firewall.
+Per rendere possibile la comunicazione tra la rete \textit{lan} del \textit{Router} e la VPN è necessario configurare opportunamente il firewall.
 
 Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \ref{fig:luci-firewall-init}.
 
@@ -79,7 +79,7 @@ Dopo aver salvato, la pagina del firewall sarà:
 
 Per rendere attiva la zona firewall appena creata gli si deve assegnare almeno un'interfaccia, in questo caso gli si deve assegnare l'interfaccia tun0.
 
-Ciò va fatto da LuCI, nella sezione \it{interfaces}. Si deve quindi aggiungere una nuova interfaccia con le seguenti opzioni:
+Ciò va fatto da LuCI, nella sezione \textit{interfaces}. Si deve quindi aggiungere una nuova interfaccia con le seguenti opzioni:
 \begin{itemize}
     \item Name: tun0
     \item Proto: static
@@ -105,17 +105,17 @@ Ciò va fatto da LuCI, nella sezione \it{interfaces}. Si deve quindi aggiungere 
         \caption{Firewall settings}
         \label{fig:luci-firewall-interfaces1}
     \end{subfigure}
-    \caption{Assegnazione interfaccia \it{tun0} alla zona firewall \it{vpn} tramite interfaccia LuCI}
+    \caption{Assegnazione interfaccia \textit{tun0} alla zona firewall \textit{vpn} tramite interfaccia LuCI}
 \end{figure}
 
 
 \section{Modifiche alla configurazione OpenVPN del server}
 
-Per instaurare una comunicazione bidirezionale tra \it{host-domotico} e \it{client} è necessario che:
+Per instaurare una comunicazione bidirezionale tra \textit{host-domotico} e \textit{client} è necessario che:
 
 \begin{enumerate}
-    \item il server vpn sia consapevole che il \it{router} vuole esporre una sua sottorete verso la vpn
-    \item il client abbia l'opportuna rotta per raggiungere la sottorete dove si trova l'\it{host-domotico}
+    \item il server vpn sia consapevole che il \textit{router} vuole esporre una sua sottorete verso la vpn
+    \item il client abbia l'opportuna rotta per raggiungere la sottorete dove si trova l'\textit{host-domotico}
 \end{enumerate}
 
 Per il punto 1 è necessario aggiungere la seguente riga nel file \\\code{/etc/openvpn/server/ccd/router}:
@@ -128,7 +128,7 @@ $ vim /etc/openvpn/server/server.conf
 169 route 192.168.130.0 255.255.255.0  # aggiungo la rotta nel server
 \end{bashcode}
 
-Per il punto 2 è necessario aggiungere la seguente riga alla configurazione OpenVPN nel \it{Server}:
+Per il punto 2 è necessario aggiungere la seguente riga alla configurazione OpenVPN nel \textit{Server}:
 
 \begin{bashcode}{Server}{}
 $ vim /etc/openvpn/server/server.conf
@@ -150,9 +150,9 @@ $ ip route
 \todo[da scrivere di più per i test, sono importanti, forse mettere qualcosa sul troubble shooting... mhhh]
 
 
-Per testare la connessione tra \it{client} e \it{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \it{Server} e \it{Router} per vedere il percorso dei pacchetti.
+Per testare la connessione tra \textit{client} e \textit{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \textit{Server} e \textit{Router} per vedere il percorso dei pacchetti.
 
-Vediamo quindi un ping dal client verso l'\it{host-domotico}, con server e router in ascolto sull'interfaccia tun0:
+Vediamo quindi un ping dal client verso l'\textit{host-domotico}, con server e router in ascolto sull'interfaccia tun0:
 
 \begin{bashcode}{Client}{}
 $ ping -c 1 192.168.130.3
