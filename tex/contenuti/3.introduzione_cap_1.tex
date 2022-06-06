@@ -171,7 +171,7 @@ Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il p
 
 Possiamo vedere l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web https:
 
-\begin{bashcode}{Wireshark}{code:tls-wireshark}
+\begin{bashcode}{Wireshark}{tls-wireshark}
 1 > Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
 1 > Ethernet II, Src: IntelCor_eb:91:5f (cc:d9:ac:eb:91:5f), Dst: HuaweiDe_27:a9:24 (0c:e4:a0:27:a9:24)
 2 > Internet Protocol Version 4, Src: 192.168.8.119, Dst: 142.250.180.174
@@ -185,6 +185,7 @@ Encrypted Application Data: 389bf9516cce567d0d90ef62ba2a87376091fedb7f66f3b9e60e
     [Application Data Protocol: http-over-tls]
 \end{bashcode}
 
+\todo[da perfezionare]
 
 Quindi andando ad analizzare lo stack di protocolli si vede:
 
@@ -195,10 +196,10 @@ Quindi andando ad analizzare lo stack di protocolli si vede:
     
     \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: incapsula il layer di trasporto in un pacchetto IP. Nell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.
     
-    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico è una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare a quale host è l'intefaccia fisica di destinazione.
+    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico è una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare a quale host è l'interfaccia fisica di destinazione.
 \end{itemize}
 
-Possiamo vedere graficamente il pacchetto descritto in \ref{code:tls-wireshark} e le informazioni principali di ogni header:
+Possiamo vedere graficamente il pacchetto descritto in code:\ref{code:tls-wireshark} e le informazioni principali di ogni header:
 
 \begin{figure}[H]
     \centering
@@ -206,8 +207,6 @@ Possiamo vedere graficamente il pacchetto descritto in \ref{code:tls-wireshark} 
     \caption{Incapsulamento}
     \label{fig:incapsulamento}
 \end{figure}
-
-
 
 
 \subsection{IP Network Address Translator (NAT)}
@@ -293,7 +292,7 @@ OpenVPN è un applicativo open source che ha l' obbiettivo di fornire una VPN ch
 
 Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su UDP e porta 1194:
 
-\begin{bashcode}{Wireshark}{}
+\begin{bashcode}{Wireshark}{openvpn-wireshark}
 > Frame 90: 82 bytes on wire (656 bits), 82 bytes captured (656 bits) on interface br-08876ccdf1f5, id 0
 > Ethernet II, Src: cc:d9:ac:eb:91:5f (cc:d9:ac:eb:91:5f), Dst: 0c:e4:a0:27:a9:24 (0c:e4:a0:27:a9:24)
 > Internet Protocol Version 4, Src: 192.168.1.20, Dst: 51.178.141.119
@@ -355,7 +354,11 @@ La configurazione del server permette di impostare opzioni che modificano la con
 % TODO da riscrivere
 Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare un tunnel IP di livello 3 (TUN), o Ethernet livello 2 (TAP).
 
-\begin{figure}[H]
+\todo[da rivedere!]
+
+In figura \ref{fig:incapsulamento-openvpn} possiamo vedere l'incapsulamento del pacchetto OpenVPN descritto in code~\ref{code:openvpn-wireshark}. Si vede inoltre come il contenuto del campo data del pacchetto OpenVPN contenga al suo interno un pacchetto IP, ciò non è visibile dall'esterno perchè il tutto è opportunamente cifrato.
+
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{immagini/diag2-incapsulamento_openvpn}
     \caption{Incapsulamento}
@@ -434,7 +437,5 @@ LuCI è l'interfaccia web ufficiale di \textit{OpenWrt}, è un progetto open-sou
 \end{figure}
 
 
-L'home page, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \textit{DHCP}.
-
-L'interfaccia è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \textit{DHCP}, i processi in esecuzione, etc. Presenta inoltre la possibilità di installare plugins che modificano e/o aggiungono funzionalità non presenti di default nell'interfaccia.
+L'home page, fig. \ref{fig:luci-status}, mostra un riepilogo dello stato del router, ad esempio sono presenti: informazioni sull'hardware, informazioni sulla memoria e storage, sono presenti inoltre informazioni riassuntive sulle interfacce di rete e sul \textit{DHCP}. L'interfaccia LuCI è estensiva e permette di configurare quasi ogni aspetto del funzionamento del router, compreso il firewall, il \textit{DHCP}, i processi in esecuzione, etc. Presenta inoltre la possibilità di installare plugins che modificano e/o aggiungono funzionalità non presenti di default nell'interfaccia.
 

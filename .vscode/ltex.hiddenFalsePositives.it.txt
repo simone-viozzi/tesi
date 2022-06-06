@@ -20,3 +20,6 @@
 {"rule":"GR_04_002","sentence":"^\\QPer mitigare il problema della saturazione degli indirizzi IPv4 \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, è stato introdotto un dispositivo di rete che consente di riusare spazi di indirizzi privati e ridurre il numero di Ipv4 pubblici necessari.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QIl NAT \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QNel caso del NAPT il pool di indirizzi privati e' molto piu' grande rispetto al pool di indirizzi pubblici, cio' consente di riutilizzare gli stessi ip pubblici per multipli utenti.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QNell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare a quale host è l'interfaccia fisica di destinazione.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QNell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QLe informazioni principali contenute nell'header sono la porta sorgente e destinazione, ciò permette di individuare a quale applicazione è destinato il pacchetto.\\E$"}
