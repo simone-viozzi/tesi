@@ -2,8 +2,6 @@
 \chapter{Configurazione del server}
 \label{ch:server}
 
-
-% <-- section -->
 \section{Overview della configurazione e prerequisiti}
 \label{sec:overview_server}
 
@@ -40,7 +38,7 @@ Supponiamo inoltre che l'ip pubblico del Server sia \code{51.178.141.119}, si av
 
 Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare opportunamente una rete VPN, che risulterà nella configurazione rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
 
-\section{Creazione della Public key infrastructure}
+\section{Creazione della \textit{Public key infrastructure}}
 \label{sec:pki_ca}
 \workinprogress
 
@@ -396,8 +394,6 @@ tree
 4 directories, 13 files
 \end{comment}
 
-
-
 \section{Generazione della \textit{tls-crypt pre-shared key}}
 \label{sec:tls-crypt}
 
@@ -411,12 +407,10 @@ $ openvpn --genkey --secret ta.key
 $ sudo cp ta.key /etc/openvpn/server
 \end{bashcode}
 
-
-% <-- section -->
 \section{Generazione dei certificati per i \textit{clients}}
 \label{sec:client_keys}
 
-La generazione dei certificati per i \it{clients} consiste in una procedura molto simile alla creazione del certificato del server, sezione \ref{sec:pki_openvpn} e \ref{sec:sign_openvpn}.
+La generazione dei certificati per i \it{clients} consiste in una procedura molto simile alla creazione del certificato del server, sezione \ref{sec:pki_openvpn} e \ref{subsec:sign_openvpn}.
 
 \begin{figure}[H]
     \centering
@@ -424,8 +418,6 @@ La generazione dei certificati per i \it{clients} consiste in una procedura molt
     \caption{Diagramma per schematizzare la procedura di firma di un certificato client.}
     \label{fig:diag-firma_certificato_client}
 \end{figure}
-
-% TODO fare in modo che il testo sotto faccia riferimento al diagramma
 
 Per ospitare i certificati dei client e le loro chiavi, creiamo una cartella nella home. Successivamente verrà usata per automatizzare la creazione dei file di configurazione OpenVPN che verranno usati dai clients per connettersi alla VPN.
 
@@ -535,19 +527,18 @@ e la \textit{preshared key}, \code{ta.key}.
 
 Il tutto viene scritto in un file che ha lo stesso nome del \it{Common Name} del \it{client} per cui si sta creando la configurazione ma con estensione \code{.ovpn}.
 
-Quindi per creare la configurazione di \textit{client1}:
+Quindi per creare la configurazione di \textit{client1} (passaggio 4 fig.\ref{fig:diag-firma_certificato_client}):
 
 \begin{bashcode}{Server}{}
 $ ./make_config.sh client1
 \end{bashcode}
 
-Ciò creerà il file di configurazione per \it{client1} scrivendolo in \\\code{client-configs/files/client1.ovpn}.
+Ciò creerà il file di configurazione per \it{client1} scrivendolo in \\\code{client-configs/files/client1.ovpn}, successivamente sarà necessario copiare questo file nella macchina del client.
 
-
-\section{Creazione del file di configurazione del server OpenVPN}
+\section{Creazione del file di configurazione del Server OpenVPN}
 \label{sec:server_config}
 
-Il server openvpn viene configurato attraverso \code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si può usare la configurazione di esempio offerta da openvpn:
+Il server openvpn viene configurato attraverso il file di configurazione \\\code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si può usare la configurazione di esempio offerta da openvpn:
 
 \begin{bashcode}{Server}{}
 $ cd /etc/openvpn/server/
@@ -555,14 +546,14 @@ $ sudo wget "https://raw.githubusercontent.com/OpenVPN/openvpn/\
                 master/sample/sample-config-files/server.conf"
 \end{bashcode}
 
-Dobbiamo quindi modificare il file e cambiare alcune configurazioni, per facilitare la lettura sarà incluso il numero riga modificato:
+A questo punto andiamo a modificare il file di esempio personalizzandolo per le nostre necessità, per facilitare la riproduzione di questa configurazione è stato aggiunto il numero della riga che è stata modificata:
 
 % TODO da controllare se sono tutte le modifiche
 \begin{bashcode}{Server}{}
 $ sudo vim server.conf
-85  dh none             # non sonos stati usati i parametri Diffie-Hellman
+85  dh none             # non sono stati usati i parametri Diffie-Hellman
 92  topology subnet     # topologia raccomandata
-244 ;tls-auth ta.key 0 # This file is secret
+244 ;tls-auth ta.key 0  # questa riga va commentata
 245 tls-crypt ta.key    # selezione della preshared key
 253 cipher AES-256-GCM  # selezione della cifratura scelta
 275 user nobody         # utente che eseguirà il server openvpn, in modo da 
@@ -571,10 +562,12 @@ $ sudo vim server.conf
 318 auth sha256         # selezione del metodo di autenticazione
 \end{bashcode}
 
+\begin{comment}
+% TODO fa veramente pena. da mettere solo se strettamente necessario
+Questa è la configurazione necessaria per questo capitolo, nei successivi capitoli saranno aggiunte delle opzioni quando necessarie.
+\end{comment}
 
-% <-- section -->
-
-\section{Configurazioni sulla network stack del server openvpn}
+\section{Configurazioni sulla network stack del Server}
 \label{sec:network_stack}
 
 Per abilitare l'\textit{ip forwarding} si dovrà modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a ricaricare le configurazioni dai file:
@@ -586,8 +579,6 @@ $ sudo sysctl -p
 net.ipv4.ip_forward = 1
 \end{bashcode}
 
-
-% <-- section -->
 
 \section{Configurazione del firewall}
 \label{sec:firewall}
@@ -683,7 +674,7 @@ To              Action      From
 
 % <-- section -->
 
-\section{Avvio del server OpenVPN}
+\section{Avvio del Server OpenVPN}
 \label{sec:start_server}
 
 Ora che la configurazione del server è in una situazione stabile possiamo avviarlo:
