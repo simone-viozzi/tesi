@@ -1,5 +1,5 @@
 % <-- chapter -->
-\chapter{Configurazione del server}
+\chapter{Configurazione del \textit{Server}}
 \label{ch:server}
 
 \section{Overview della configurazione e prerequisiti}
@@ -218,7 +218,7 @@ tree
 \end{comment}
 
 
-\subsection{Creazione della CA} % step 1, 2
+\subsection{Creazione della \textit{Certificate Authority} CA \workinprogress} % step 1, 2
 
 Il primo step è la creazione della \it{Certificate Authority}, passaggio 1 fig.\ref{fig:diag-firma_certificato_ca}. 
 
@@ -249,8 +249,6 @@ set_var EASYRSA_REQ_CN       "openvpn-ca"
 set_var EASYRSA_ALGO         "ec"
 set_var EASYRSA_DIGEST       "sha512"
 \end{bashcode}
-
-\workinprogress
 
 Le variabili nel primo blocco determinano i dati che poi verranno registrati nei certificati. Le ultime 2 sono opzioni di sicurezza. In particolare si setta il tipo di algoritmo di cifratura per usare la crittografia a chiave ellittica (\href{https://en.wikipedia.org/wiki/Elliptic-curve_cryptography}{Elliptic-Curve Cryptography}); L'ultima opzione setta l'algoritmo di hashing da usare nella firma dei certificati.
 

@@ -1,5 +1,5 @@
 
-\chapter{Configurazione Router}
+\chapter{Configurazione del \textit{Router}}
 \label{ch:configurazione-router}
 
 \section{Overview della configurazione}
@@ -39,13 +39,12 @@ Di default non è presente \textit{OpenVPN} nel \textit{Router 4g}, lo si può i
 
 \begin{bashcode}{Router 4g}{}
 $ opkg update
-$ opkg install openvpn
-$ opkg install luci-app-openvpn
+$ opkg install openvpn luci-app-openvpn
 \end{bashcode}
 
 \section{Creazione della configurazione OpenVPN per il \textit{Router}}
 
-Per creare il file di configurazione OpenVPN per il \it{Router} si devono seguire gli step descritti in fig. \ref{fig:diag-firma_certificato_client}. Supponiamo di usare come \it{Common Name} \code{router}, quindi dopo aver firmato il certificato e ottenuto il file \code{router.ctr} dal \it{Server CA} possiamo procedere con la creazione della configurazione OpenVPN usando l'apposito script:
+Per creare il file di configurazione OpenVPN per il \it{Router} si devono seguire gli step descritti in fig.~\ref{fig:diag-firma_certificato_client}. Supponiamo di usare come \it{Common Name} \code{router}, quindi dopo aver firmato il certificato e ottenuto il file \code{router.crt} dal \it{Server CA} possiamo procedere con la creazione della configurazione OpenVPN usando l'apposito script:
 
 \begin{bashcode}{Server}{}
 $ ./make_config.sh router
