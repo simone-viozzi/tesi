@@ -527,30 +527,23 @@ cat ${BASE_CONFIG} \
 $ chmod 700 make_config.sh
 \end{bashcode}
 
-Questo script permette di aggiungere in modo \it{inline} i file necessari all'autenticazione di un client alla VPN, % TODO da riscrivere fa pena
-ciò è molto comodo dato che sarà sufficiente mandare ai client un solo file invece di 5 file separati.
+Questo script permette di aggiungere in modo \it{inline} i file necessari all'autenticazione di un client alla VPN, ha il vantaggio di poter inviare al cliente un solo file invece di 5.
 
-Quindi lo script userà: il certificato della CA, \code{ca.crt}; 
-il certificato e chiave relativi al client per cui si sta creando la configurazione, il nome della configurazione deve essere lo stesso del \it{Common Name} del certificato; 
-la \textit{preshared key}, \code{ta.key}.
+Quindi, in base al \it{Common Name} passato come argomento, lo script userà: il certificato della CA, \code{ca.crt}; 
+il certificato e chiave relativi al client per cui si sta creando la configurazione, usando il \it{Common Name} passato come argomento; 
+e la \textit{preshared key}, \code{ta.key}.
 
+Il tutto viene scritto in un file che ha lo stesso nome del \it{Common Name} del \it{client} per cui si sta creando la configurazione ma con estensione \code{.ovpn}.
 
-Lo scopo di questo script è di aggiungere in modo \it{inline} al file \code{base.conf}
-il certificato della CA, \code{ca.crt}, 
-il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, 
-e la \textit{preshared key}. 
-
-Il tutto viene scritto in un file che ha lo stesso nome del \textit{client} per cui si sta creando la configurazione ma \code{.ovpn}.
-
-Quindi per creare la configurazione di \textit{client 1}:
+Quindi per creare la configurazione di \textit{client1}:
 
 \begin{bashcode}{Server}{}
 $ ./make_config.sh client1
 \end{bashcode}
 
-Nella cartella \code{client-configs/files/} si troverà il file di configurazione per il client \\\code{client1.ovpn}.
+Ciò creerà il file di configurazione per \it{client1} scrivendolo in \\\code{client-configs/files/client1.ovpn}.
 
-% <-- section -->
+
 \section{Creazione del file di configurazione del server OpenVPN}
 \label{sec:server_config}
 
@@ -580,6 +573,7 @@ $ sudo vim server.conf
 
 
 % <-- section -->
+
 \section{Configurazioni sulla network stack del server openvpn}
 \label{sec:network_stack}
 
@@ -594,6 +588,7 @@ net.ipv4.ip_forward = 1
 
 
 % <-- section -->
+
 \section{Configurazione del firewall}
 \label{sec:firewall}
 
@@ -687,6 +682,7 @@ To              Action      From
 
 
 % <-- section -->
+
 \section{Avvio del server OpenVPN}
 \label{sec:start_server}
 
@@ -725,7 +721,6 @@ Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
 Il comando \code{systemctl enable} abilita il servizio per essere avviato all'avvio della macchina, mentre \code{systemctl start} lo avvia immediatamente. Con il comando \code{systemctl status} si può verificare lo stato del servizio, si vede che il servizio è \textit{active (running)}.
 
 % <-- section -->
-
 
 \section{Test della configurazione}
 \label{sec:test_config_server}
@@ -779,3 +774,5 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 \end{bashcode}
 
 Si vede quindi che è possibile una comunicazione bidirezionale tra \textit{client}, \code{10.8.0.2}, e \textit{server}, \code{10.8.0.1}.
+
+
