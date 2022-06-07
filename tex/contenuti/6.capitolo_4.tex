@@ -4,8 +4,9 @@
 
 \section{Overview della configurazione}
 
-In questo capitolo andremo a configurare il \textit{router 4g} e connetterlo alla VPN.
+In questo capitolo andremo a configurare il \textit{Router 4g} e connetterlo alla VPN.
 
+Continuando a seguire un approccio incrementale, ignoriamo per ora gli \it{host-domotici} e aggiungiamo alla topologia solo il \it{Router 4G}. Quindi la configurazione di partenza è descritta in fig.\ref{fig:diag-router}.
 
 \newsavebox{\myimagea}
 \begin{figure}[H]
@@ -31,8 +32,9 @@ In questo capitolo andremo a configurare il \textit{router 4g} e connetterlo all
     \caption{Schemi delle configurazioni iniziali e finali per il capitolo \ref{ch:configurazione-router}}
 \end{figure}
 
+L'obbiettivo di questo capitolo è di configurare il \it{Router 4G} e il \it{Server} in modo da poter instaurare un canale di comunicazione tra \it{Router} e \it{Client}.
 
-% <-- section -->
+
 \section{Creazione della configurazione Openvpn}
 
 % TODO da riscrivere
@@ -152,9 +154,9 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \end{bashcode}
 
 
-\section{Assegnazione ip statico al Router}
+\section{Assegnazione IP statico al Router}
 
-Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale ip viene assegnato al router è necessario assegnargliene uno statico.
+Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale IP viene assegnato al router è necessario assegnargliene uno statico.
 
 % TODO aggiungi per che serve la ccd
 Questo viene fatto usando la \code{cleint-config-dir}.

@@ -7,9 +7,9 @@
 
 In questo capitolo andremo a installare e configurare \textit{OpenVPN server} sulla VPS di OVHCloud.
 
-Per facilitare la configurazione e il testing, supponiamo di partire da una topologia che contiene solo il server OpenVPN e un generico client. Come da specifiche il Server deve avere a disposizione un'ip pubblico e il client deve essere il più generico possibile, lo supponiamo quindi sotto a un NAT.
+Per facilitare la configurazione e il testing, supponiamo di partire da una topologia che contiene solo il server OpenVPN e un generico client. Come da specifiche il Server deve avere a disposizione un'IP pubblico e il client deve essere il più generico possibile, lo supponiamo quindi sotto a un NAT.
 
-Supponiamo inoltre che l'ip pubblico del Server sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
+Supponiamo inoltre che l'IP pubblico del Server sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
 
 \newsavebox{\myimage}
@@ -480,7 +480,7 @@ $ wget "https://raw.githubusercontent.com/OpenVPN/openvpn\
             /master/sample/sample-config-files/client.conf" \
                 -O base.conf
 $ vim base.conf
-42   remote 51.178.141.119 1194     # va messo l'ip e la porta del server OpenVPN
+42   remote 51.178.141.119 1194     # va messo l'IP e la porta del server OpenVPN
 88   ;ca ca.crt                     # non useremo i file esterni ma ingloberemo 
 89   ;cert client.crt               #   questi file direttamente nella
 90   ;key client.key                #   configurazione del client
@@ -752,9 +752,9 @@ $ ip addr
        valid_lft forever preferred_lft forever
 \end{bashcode}
 
-Si può vedere come l'ip assegnato al \textit{Client} dalla VPN è \code{10.8.0.2}.
+Si può vedere come l'IP assegnato al \textit{Client} dalla VPN è \code{10.8.0.2}.
 
-Per testare che la connessione sia instaurata correttamente si può usare la utility \code{ping}, ad esempio possiamo fare il ping dal \textit{Client} verso l'ip interno alla VPN del \textit{Server}:
+Per testare che la connessione sia instaurata correttamente si può usare la utility \code{ping}, ad esempio possiamo fare il ping dal \textit{Client} verso l'IP interno alla VPN del \textit{Server}:
 
 \begin{bashcode}{Client}{}
 $ ping -c1 10.8.0.1
