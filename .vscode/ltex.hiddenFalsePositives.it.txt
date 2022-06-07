@@ -25,3 +25,4 @@
 {"rule":"GR_04_002","sentence":"^\\QLe informazioni principali contenute nell'header sono la porta sorgente e destinazione, ciò permette di individuare a quale applicazione è destinato il pacchetto.\\E$"}
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QOpenWrt .\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QCiò consente di mappare un grande numero di indirizzi privati in relativamente pochi indirizzi pubblici.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QEseguendo il comando verrà chiesto di inserire una passshare, che verrà usata per criptare la chiave privata appena generata.\\E$"}

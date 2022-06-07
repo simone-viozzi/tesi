@@ -127,3 +127,8 @@ Port
 Dynamic
 Carrier
 Grade
+step
+hashing
+build-ca
+passphrase
+Common
