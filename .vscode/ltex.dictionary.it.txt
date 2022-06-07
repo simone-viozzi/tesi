@@ -140,3 +140,6 @@ forwarding
 sysctl
 packet
 inline
+config
+configs
+cleint-config-dir

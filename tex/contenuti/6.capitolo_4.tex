@@ -6,7 +6,7 @@
 
 In questo capitolo andremo a configurare il \textit{Router 4g} e connetterlo alla VPN.
 
-Continuando a seguire un approccio incrementale, ignoriamo per ora gli \it{host-domotici} e aggiungiamo alla topologia solo il \it{Router 4G}. Quindi la configurazione di partenza è descritta in fig.\ref{fig:diag-router}.
+Continuando a seguire un approccio incrementale, ignoriamo per ora gli \it{host-domotici} e aggiungiamo alla topologia solo il \it{Router 4G}. Quindi la configurazione di partenza è descritta in fig.\ref{fig:conf-init-router}.
 
 \newsavebox{\myimagea}
 \begin{figure}[H]
@@ -18,7 +18,7 @@ Continuando a seguire un approccio incrementale, ignoriamo per ora gli \it{host-
         \centering
         \usebox{\myimagea}
         \caption{Configurazione iniziale}
-        \label{fig:diag-router}
+        \label{fig:conf-init-router}
     \end{subfigure}
     \hfill%
     \begin{subfigure}{0.5\textwidth}
@@ -27,24 +27,13 @@ Continuando a seguire un approccio incrementale, ignoriamo per ora gli \it{host-
             \includegraphics[width=1\linewidth]{immagini/diag-router_goal}
         }
         \caption{Configurazione da raggiungere}
-        \label{fig:diag-router1}
+        \label{fig:conf-final-router}
     \end{subfigure}
     \caption{Schemi delle configurazioni iniziali e finali per il capitolo \ref{ch:configurazione-router}}
 \end{figure}
 
-L'obbiettivo di questo capitolo è di configurare il \it{Router 4G} e il \it{Server} in modo da poter instaurare un canale di comunicazione tra \it{Router} e \it{Client}.
+L'obbiettivo di questo capitolo è di configurare il \it{Router 4G} e il \it{Server} in modo da poter instaurare un canale di comunicazione tra \it{Router} e \it{Client}, raggiungendo una topologia virtuale descritta in fig.\ref{fig:conf-final-router}.
 
-
-\section{Creazione della configurazione Openvpn}
-
-% TODO da riscrivere
-Si devono seguire gli step descritti in sezione \ref{sec:client_keys}, quindi creare la certificate request e firmarla nel \textit{server CA}. Per poi usare lo script creato in sezione \ref{sec:script_client} per costruire il file di configurazione:
-
-\begin{bashcode}{Server}{}
-$ ./make_config.sh router
-\end{bashcode}
-
-Dopodiché si deve spostare il file \code{router.ovpn} dal \textit{Server} al \textit{Router 4g}, supponiamo di averlo copiato nella cartella \code{/configs}. 
 
 Di default non è presente \textit{OpenVPN} nel \textit{Router 4g}, lo si può installare con:
 
@@ -54,7 +43,20 @@ $ opkg install openvpn
 $ opkg install luci-app-openvpn
 \end{bashcode}
 
-Ora possiamo avviare il client openvpn:
+\section{Creazione della configurazione OpenVPN per il \textit{Router}}
+
+Per creare il file di configurazione OpenVPN per il \it{Router} si devono seguire gli step descritti in fig. \ref{fig:diag-firma_certificato_client}. Supponiamo di usare come \it{Common Name} \code{router}, quindi dopo aver firmato il certificato e ottenuto il file \code{router.ctr} dal \it{Server CA} possiamo procedere con la creazione della configurazione OpenVPN usando l'apposito script:
+
+\begin{bashcode}{Server}{}
+$ ./make_config.sh router
+\end{bashcode}
+
+Dopodiché si deve copiare il file \code{router.ovpn} dal \textit{Server} al \textit{Router}, supponiamo di averlo copiato nella cartella \code{/configs} del \it{Router}. 
+
+
+\section{Connessione del \textit{Router} alla VPN}
+
+Possiamo quindi spostarci nel \it{Router} e tentare di connetterlo alla VPN:
 
 \begin{bashcode}{Router 4g}{}
 $ openvpn --config /configs/router.ovpn
@@ -72,7 +74,9 @@ Se il file di configurazione è stato creato correttamente si vedrà il messaggi
 
 Comparirà inoltre l'interfaccia \code{tun0} a cui è stato assegnato l'indirizzo \code{10.8.0.3}.
 
-Per abilitare l'autostart di openvpn per il router si deve, per prima cosa, modificare il file \code{/etc/config/openvpn} in modo che faccia riferimento alla config corretta:
+\section{Auto start del Client VPN nel \textit{Router}}
+
+Per abilitare l'auto start di openvpn per il router si deve, per prima cosa, modificare il file \code{/etc/config/openvpn} in modo che faccia riferimento alla configurazione corretta:
 
 \begin{bashcode}{Router 4g}{}
 $ vim /etc/config/openvpn
@@ -80,7 +84,6 @@ $ vim /etc/config/openvpn
 \end{bashcode}
 
 Ora possiamo abilitarla usando luci:
-
 
 \begin{figure}[H]
     \centering
@@ -92,20 +95,15 @@ Ora possiamo abilitarla usando luci:
 Alla riga "custom\_config" Si deve mettere il check su \textit{enabled} e premere start, per poi salvare le modifiche. In questo modo il router si connetterà automaticamente alla VPN anche se venisse riavviato.
 
 
-% <-- section -->
 \section{Abilitazione del Client-to-Client nel server OpenVPN}
 
-In questo momento i client della VPN, \textit{client1} e \textit{router}, possono comunicare tra loro, ma lo fanno passando per la network stack del \textit{server}. Infatti:
+In questo momento i client della VPN, \code{client1} e \code{router}, possono comunicare tra loro. Ma lo fanno passando per la network stack del \textit{Server}, possiamo verificarlo con le utility \code{ping} e \it{tcpdump}:
 
 \begin{bashcode}{Router 4g}{}
-$ ping -c2 10.8.0.2                  # client1
+$ ping -c2 10.8.0.2                                 # client1
 PING 10.8.0.2 (10.8.0.2): 56 data bytes
 64 bytes from 10.8.0.2: seq=0 ttl=63 time=0.519 ms
 64 bytes from 10.8.0.2: seq=1 ttl=63 time=0.501 ms
-
---- 10.8.0.2 ping statistics ---
-2 packets transmitted, 2 packets received, 0% packet loss
-round-trip min/avg/max = 0.501/0.510/0.519 ms
 \end{bashcode}
 
 Dal server possiamo vedere i pacchetti con \textit{tcpdump}:
@@ -124,7 +122,7 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \end{bashcode}
 
 Si vede che ogni richiesta viene duplicata, la prima è in entrata sulla network stack del \textit{server} e la seconda in uscita. 
-% TODO forse da mettere lo schema che fa vedere la network stack?
+\todo[forse da mettere lo schema che fa vedere la network stack?]
 Per evitare questo traffico possiamo abilitare l'opzione \code{client-to-client} nel file di configurazione del server. In questo modo il layer openvpn effettuerà direttamente il forwarding tra i client della vpn \cite{client-to-client}.
 
 \begin{bashcode}{Server}{}
@@ -136,14 +134,10 @@ $ sudo systemctl restart openvpn-server@server.service
 Possiamo quindi rieseguire gli stessi test fatti sopra:
 
 \begin{bashcode}{Router 4g}{}
-$ ping -c2 10.8.0.2
+$ ping -c2 10.8.0.2                                 # client1
 PING 10.8.0.2 (10.8.0.2): 56 data bytes
 64 bytes from 10.8.0.2: seq=0 ttl=64 time=0.351 ms
 64 bytes from 10.8.0.2: seq=1 ttl=64 time=0.307 ms
-
---- 10.8.0.2 ping statistics ---
-2 packets transmitted, 2 packets received, 0% packet loss
-round-trip min/avg/max = 0.307/0.329/0.351 ms
 \end{bashcode}
 
 Ma questa volta la network stack del \textit{server} non vede nessun pacchetto:
@@ -156,18 +150,21 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 
 \section{Assegnazione IP statico al Router}
 
-Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, per sapere sempre quale IP viene assegnato al router è necessario assegnargliene uno statico.
+Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, e l'assegnazione degli IP da parte del server OpenVPN è dinamico, per conoscere sempre quale IP viene assegnato al \it{Router} è necessario assegnargliene uno statico attraverso un'opportuna configurazione.
 
-% TODO aggiungi per che serve la ccd
-Questo viene fatto usando la \code{cleint-config-dir}.
+Questo viene fatto usando la \code{cleint-config-dir}, che consiste in una cartella dove l'admin può creare dei file di configurazione specifici per determinati utenti. Ciò è utile in caso alcune configurazioni non debbano essere applicate a tutti gli utenti, ma solo a uno. Il nome del file deve essere lo stesso del \it{Common Name} del certificato del client per cui si sta creando la configurazione.
+
+Nel nostro caso siamo interessati a impostare un'IP statico per il \it{Router}, quindi si deve creare nella cartella \code{ccd} un file chiamato \code{router}. 
+
+L'opzione che permette di impostare un IP statico attraverso la \code{cleint-config-dir} è \\\code{ifconfig-push} \cite{ifconfig-push}.
 
 \begin{bashcode}{Server}{}
-$ sudo mkdir /etc/openvpn/server/ccd    # creo la client-config-dir
+$ sudo mkdir /etc/openvpn/server/ccd         # creo la client-config-dir
+$ sudo vim /etc/openvpn/server/ccd/router
+ifconfig-push 10.8.0.254 255.255.255.0       # impongo l'ip per questo common name
 $ sudo vim /etc/openvpn/server/server.conf   # abilito l'opzione nella config del server
 167  client-config-dir ccd
-$ sudo vim /etc/openvpn/server/ccd/router
-ifconfig-push 10.8.0.254 255.255.255.0  # impongo l'ip per questo common name
 $ sudo systemctl restart openvpn-server@server.service
 \end{bashcode}
 
-Così facendo al router gli verrà sempre assegnato l'ip \code{10.8.0.254}, indipendentemente dall'ordine in cui gli host si connettono alla vpn. Ciò ci permette di sapere sempre e a priori qual è l'ip del router.
+Così facendo al router gli verrà sempre assegnato l'IP \code{10.8.0.254}, indipendentemente dall'ordine in cui gli host si connettono alla vpn. Ciò ci permette di sapere sempre e a priori qual è l'IP del router.

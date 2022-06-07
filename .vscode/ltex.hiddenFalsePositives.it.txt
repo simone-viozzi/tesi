@@ -28,3 +28,4 @@
 {"rule":"GR_04_002","sentence":"^\\QEseguendo il comando verrà chiesto di inserire una passshare, che verrà usata per criptare la chiave privata appena generata.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QCio' e' necessario per permettere al server OpnenVPN di inoltrare il traffico proveniente dalla VPN nella network stack del server, e viceversa.\\E$"}
 {"rule":"ST_01_005","sentence":"^\\QSe la configurazione e' stata effettuata correttamente di avra' un output simile al precedente, in caso contrario si dovranno valutare gli errori dati da ufw.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QL'opzione che permette di impostare un IP statico e' ifconfig-push.\\E$"}
