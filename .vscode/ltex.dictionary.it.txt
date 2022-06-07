@@ -132,3 +132,6 @@ hashing
 build-ca
 passphrase
 Common
+reqs
+req
+owner

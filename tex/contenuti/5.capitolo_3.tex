@@ -345,7 +345,7 @@ $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 Il secondo file creato, \code{server.req}, corrisponde a una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. 
 
 \subsection{Firma del certificato OpenVPN dalla CA} % step 5, 6, 7
-\label{sec:sign_openvpn}
+\label{subsec:sign_openvpn}
 
 Per firmare la \textit{Certificate Signing Request} si deve copiare il file \code{.req} nel \textit{server CA}, supponiamo quindi di averlo copiato nella cartella \code{/tmp}.
 
@@ -443,16 +443,13 @@ $ cd ~/openvpn-pki/
 $ ./easyrsa gen-req client1 nopass
 \end{bashcode}
 
-Con questo comando verranno creati 2 file, \code{pki/private/client1.key} costituisce la chiave privata del certificato e va copiata nella directory creata in code:~\ref{clients-config-folder}; \code{pki/reqs/client1.req} è la \textit{Certificate Signing Request} che deve essere copiata nel \textit{server CA} per essere firmata.
-
-Ora dobbiamo copiare \code{client1.key} nella directory creata in code:~\ref{clients-config-folder}, e \code{client1.req} va copiato nel server CA per essere firmato:
+Con questo comando verranno creati 2 file, \code{pki/private/client1.key} costituisce la chiave privata del certificato e va copiata nella directory creata in code:~\ref{code:clients-config-folder}; \code{pki/reqs/client1.req} è la \textit{Certificate Signing Request} che deve essere copiata nel \textit{server CA} per essere firmata.
 
 \begin{bashcode}{Server}{}
 $ cp pki/private/client1.key ~/client-configs/keys/
-$ scp /home/ubuntu/openvpn-pki/pki/reqs/client1.req ubuntu@ca_server:/tmp
 \end{bashcode}
 
-Dobbiamo quindi spostarci sul server CA e importare la \textit{certificate request} e firmarla:
+Supponiamo di aver copiato il file \code{client1.req} nella cartella \code{tmp} del \it{Server CA}, possiamo quindi importarla e firmarla (passaggi 2 e 3 fig.\ref{fig:diag-firma_certificato_client}):
 
 \begin{bashcode}{Server CA}{}
 $ cd ~/openvpn-ca
@@ -469,23 +466,89 @@ Write out database with 1 new entries
 Data Base Updated
 \end{bashcode}
 
-Per poi ricopiare dal server CA al server openvpn il certificato firmato:
+Ciò produrrà il file di certificato \code{openvpn-ca/pki/issued/client1.crt} che deve essere copiato nel \it{Server OpenVpn}, supponiamo di copiarlo nella cartella \code{~/client-configs/keys/}.
 
-% TODO unire il codice
+\subsection{Script per la creazione delle configurazioni dei client}
+\label{subsec:script_client}
+
+Per facilitare la creazione dei file di configurazione dei client, \code{Common-Name.ovpn}, andremo a creare un apposito script bash che userà la cartella creata in code:\ref{code:clients-config-folder}. 
+
+Per concludere la preparazione si devono copiare i file \code{ta.key} (creato nella sezione \ref{sec:tls-crypt}) e \code{ca.crt} (creato nella sezione \ref{subsec:sign_openvpn}), sistemando inoltre l'\it{owner} in modo che l'utente non privilegiato vi possa accedere:
 
 \begin{bashcode}{Server}{}
-$ scp ubuntu@ca_server:/home/ubuntu/openvpn-ca/pki/issued/client1.crt /tmp
-\end{bashcode}
-
-Quindi ci dobbiamo spostare sul server OpenVPN e copiare le chiavi nella cartella \\\code{client-configs/keys}, in modo da prepararla per la creazione delle configurazioni OpenVPN. È necessario inoltre cambiare i permessi dei file rendendoli accessibili all'utente Ubuntu:
-
-\begin{bashcode}{Server}{}
-$ cp /tmp/client1.crt ~/client-configs/keys/
 $ cp ~/openvpn-pki/ta.key ~/client-configs/keys/
 $ sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 $ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 \end{bashcode}
 
+Ora andiamo a scaricare e personalizzare la configurazione di esempio per i client:
+
+\begin{bashcode}{Server}{}
+$ cd ~/client-configs/
+$ wget "https://raw.githubusercontent.com/OpenVPN/openvpn\
+            /master/sample/sample-config-files/client.conf" \
+                -O base.conf
+$ vim base.conf
+42   remote 51.178.141.119 1194     # va messo l'ip e la porta del server OpenVPN
+88   ;ca ca.crt                     # non useremo i file esterni ma ingloberemo 
+89   ;cert client.crt               #   questi file direttamente nella
+90   ;key client.key                #   configurazione del client
+108  ;tls-auth ta.key 1             # 
+116  cipher AES-256-GCM             # cifratura usata
+117  auth SHA256                    # autenticazione usata
+118  key-direction 1                # indica che è un client
+\end{bashcode}
+
+Ora creiamo lo script bash \code{make\_config.sh}:
+
+\begin{bashcode}{Server}{}
+$ vim make_config.sh
+#!/bin/bash
+
+# usage:
+# \$ make\_config.sh client1
+# will use [ca.crt, client1.crt, client1.key, ta.key] to create client1.ovpn
+    
+KEY_DIR=~/client-configs/keys
+OUTPUT_DIR=~/client-configs/files
+BASE_CONFIG=~/client-configs/base.conf
+    
+cat ${BASE_CONFIG} \
+    <(echo -e '<ca>') \
+    ${KEY_DIR}/ca.crt \
+    <(echo -e '</ca>\n<cert>') \
+    ${KEY_DIR}/${1}.crt \
+    <(echo -e '</cert>\n<key>') \
+    ${KEY_DIR}/${1}.key \
+    <(echo -e '</key>\n<tls-crypt>') \
+    ${KEY_DIR}/ta.key \
+    <(echo -e '</tls-crypt>') \
+    > ${OUTPUT_DIR}/${1}.ovpn
+$ chmod 700 make_config.sh
+\end{bashcode}
+
+Questo script permette di aggiungere in modo \it{inline} i file necessari all'autenticazione di un client alla VPN, % TODO da riscrivere fa pena
+ciò è molto comodo dato che sarà sufficiente mandare ai client un solo file invece di 5 file separati.
+
+Quindi lo script userà: il certificato della CA, \code{ca.crt}; 
+il certificato e chiave relativi al client per cui si sta creando la configurazione, il nome della configurazione deve essere lo stesso del \it{Common Name} del certificato; 
+la \textit{preshared key}, \code{ta.key}.
+
+
+Lo scopo di questo script è di aggiungere in modo \it{inline} al file \code{base.conf}
+il certificato della CA, \code{ca.crt}, 
+il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, 
+e la \textit{preshared key}. 
+
+Il tutto viene scritto in un file che ha lo stesso nome del \textit{client} per cui si sta creando la configurazione ma \code{.ovpn}.
+
+Quindi per creare la configurazione di \textit{client 1}:
+
+\begin{bashcode}{Server}{}
+$ ./make_config.sh client1
+\end{bashcode}
+
+Nella cartella \code{client-configs/files/} si troverà il file di configurazione per il client \\\code{client1.ovpn}.
 
 % <-- section -->
 \section{Creazione del file di configurazione del server OpenVPN}
@@ -662,67 +725,7 @@ Apr 18 13:08:44 server openvpn[436]: Initialization Sequence Completed
 Il comando \code{systemctl enable} abilita il servizio per essere avviato all'avvio della macchina, mentre \code{systemctl start} lo avvia immediatamente. Con il comando \code{systemctl status} si può verificare lo stato del servizio, si vede che il servizio è \textit{active (running)}.
 
 % <-- section -->
-\section{Script per la creazione delle configurazioni dei client}
-\label{sec:script_client}
 
-Per facilitare la creazione dei file di configurazione dei client, \code{clientX.ovpn}, andremo a creare un apposito script bash. Per prima cosa si deve scaricare e personalizzare la configurazione base del client:
-
-\begin{bashcode}{Server}{}
-$ cd ~/client-configs/
-$ wget "https://raw.githubusercontent.com/OpenVPN/openvpn\
-            /master/sample/sample-config-files/client.conf" \
-                -O base.conf
-$ vim base.conf
-42   remote 51.178.141.119 1194     # va messo l'ip e la porta del server OpenVPN
-88   ;ca ca.crt                     # non useremo i file esterni ma ingloberemo 
-89   ;cert client.crt               #   questi file in un file direttamente nella
-90   ;key client.key                #   configurazione del client
-108  ;tls-auth ta.key 1             # 
-116  cipher AES-256-GCM             # cifratura usata
-117  auth SHA256                    # autenticazione usata
-118  key-direction 1                # indica che è un client
-\end{bashcode}
-
-Ora creiamo lo script bash \code{make\_config.sh}:
-
-\begin{bashcode}{Server}{}
-$ vim make_config.sh
-#!/bin/bash
-
-# usage:
-# \$ make\_config.sh client1
-# will use [ca.crt, client1.crt, client1.key, ta.key] to create client1.ovpn
-    
-KEY_DIR=~/client-configs/keys
-OUTPUT_DIR=~/client-configs/files
-BASE_CONFIG=~/client-configs/base.conf
-    
-cat ${BASE_CONFIG} \
-    <(echo -e '<ca>') \
-    ${KEY_DIR}/ca.crt \
-    <(echo -e '</ca>\n<cert>') \
-    ${KEY_DIR}/${1}.crt \
-    <(echo -e '</cert>\n<key>') \
-    ${KEY_DIR}/${1}.key \
-    <(echo -e '</key>\n<tls-crypt>') \
-    ${KEY_DIR}/ta.key \
-    <(echo -e '</tls-crypt>') \
-    > ${OUTPUT_DIR}/${1}.ovpn
-$ chmod 700 make_config.sh
-\end{bashcode}
-
-% TODO da riscrivere!
-Lo scopo di questo script è di aggiungere al file \code{base.conf} il certificato della CA, \code{ca.crt}, il certificato e chiave relativi al client per cui si sta creando la configurazione, passato come argomento allo script, e la \textit{preshared key}. 
-
-Il tutto viene scritto in un file che ha lo stesso nome del \textit{client} per cui si sta creando la configurazione ma \code{.ovpn}.
-
-Quindi per creare la configurazione di \textit{client 1}:
-
-\begin{bashcode}{Server}{}
-$ ./make_config.sh client1
-\end{bashcode}
-
-Nella cartella \code{client-configs/files/} si troverà il file di configurazione per il client \\\code{client1.ovpn}.
 
 \section{Test della configurazione}
 \label{sec:test_config_server}
