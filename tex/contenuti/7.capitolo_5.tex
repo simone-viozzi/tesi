@@ -1,12 +1,19 @@
 
-\chapter{Connessione degli host domotici alla VPN \todo[è ancora da rileggere]}
+\chapter{Connessione degli Host domotici alla VPN \todo[è ancora da rileggere]}
 \label{ch:connessione-host-domotici}
 
 \section{Overview della configurazione}
 
-L'ultima parte della configurazione consiste nel rendere disponibile nella VPN la rete locale del \textit{router 4g}, consentendo quindi lo scambio di dati tra gli \textit{host-domotici} e i client della VPN.
+L'ultima parte della configurazione consiste nel rendere disponibile nella VPN la rete locale del \textit{router 4g}, consentendo quindi lo scambio di dati tra gli \textit{host-domotici} e i \it{Client} della VPN.
 
-Per simulare gli un host domotico è stata usata una \textit{raspberry pi}.
+Per fare ciò si dovrà configurare il \it{Router} in modo che effettui il forwarding verso la VPN e il \it{Server} in modo che annunci la sottorete del \it{Router} a tutti gli Host della VPN.
+
+Per simulare un host domotico è stata usata una \textit{raspberry pi}, ciò ci consente di poter accedere alla sua shell per effettuare i vari test necessari per confermare che la topologia funzioni correttamente. 
+
+In fig.~\ref{fig:diag2-host_real} possiamo vedere la configurazione iniziale per questo capitolo, cioè la configurazione finale del capitolo \ref{ch:configurazione-router} con l'aggiunta dell'\it{host domotico} connesso al \it{Router}. 
+
+
+Una volta conclusa la configurazione si arriverà a una topologia virtuale descritta in fig.~\ref{fig:diag2-host_virtual}, che costituisce inoltre la topologia di obbiettivo per questo elaborato (fig.~\ref{fig:schema_architettura_virtuale}).
 
 \begin{figure}[H]
     \centering
@@ -17,7 +24,7 @@ Per simulare gli un host domotico è stata usata una \textit{raspberry pi}.
         \centering
         \usebox{\myimage}
         \caption{Diagramma della configurazione iniziale}
-        \label{fig:diag2-host}
+        \label{fig:diag2-host_real}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.53\linewidth}
@@ -26,7 +33,7 @@ Per simulare gli un host domotico è stata usata una \textit{raspberry pi}.
             \includegraphics[width=1\linewidth]{immagini/diag2-host_virtual}
         }
         \caption{Diagramma finale}
-        \label{fig:diag2-host1}
+        \label{fig:diag2-host_virtual}
     \end{subfigure}
     \caption{Schemi concettuali della configurazione iniziale e finale per il capitolo \ref{ch:connessione-host-domotici}}
 \end{figure}

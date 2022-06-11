@@ -151,7 +151,7 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 
 Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, e l'assegnazione degli IP da parte del server OpenVPN è dinamico, per conoscere sempre quale IP viene assegnato al \textit{Router} è necessario assegnargliene uno statico attraverso un'opportuna configurazione.
 
-Questo viene fatto usando la \code{cleint-config-dir}, che consiste in una cartella dove l'admin può creare dei file di configurazione specifici per determinati utenti. Ciò è utile in caso alcune configurazioni non debbano essere applicate a tutti gli utenti, ma solo a uno. Il nome del file deve essere lo stesso del \textit{Common Name} del certificato del client per cui si sta creando la configurazione.
+Questo viene fatto usando la \code{cleint-config-dir}, che consiste in una cartella dove l'amministratore può creare dei file di configurazione specifici per determinati utenti. Ciò è utile in caso alcune configurazioni non debbano essere applicate a tutti gli utenti, ma solo a uno. Il nome del file deve essere lo stesso del \textit{Common Name} del certificato del client per cui si sta creando la configurazione.
 
 Nel nostro caso siamo interessati a impostare un'IP statico per il \textit{Router}, quindi si deve creare nella cartella \code{ccd} un file chiamato \code{router}. 
 
