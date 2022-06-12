@@ -43,8 +43,8 @@ EOF
 
     
     sleep 2
-    ping -c 2 10.8.0.1 >/dev/null || echo -e "-----------------------\nserver is down\n-----------------------"
-    ping -c 2 10.8.0.2 >/dev/null || echo -e "-----------------------\nclient to client is off\n-----------------------"
+    ping -c 2 10.8.0.1 >/dev/null && echo -e "-----------------------\nserver is OK\n-----------------------"|| echo -e "-----------------------\nserver is down\n-----------------------"
+    ping -c 2 10.8.0.2 >/dev/null && echo -e "-----------------------\nclient to client is OK\n-----------------------"|| echo -e "-----------------------\nclient to client is off\n-----------------------"
 
 }
 

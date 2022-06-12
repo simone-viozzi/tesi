@@ -1,19 +1,19 @@
 
-\chapter{Connessione degli Host domotici alla VPN \todo[è ancora da rileggere]}
+\chapter{Connessione degli Host domotici alla VPN}
 \label{ch:connessione-host-domotici}
 
 \section{Overview della configurazione}
 
 L'ultima parte della configurazione consiste nel rendere disponibile nella VPN la rete locale del \textit{router 4g}, consentendo quindi lo scambio di dati tra gli \textit{host-domotici} e i \textit{Client} della VPN.
 
-Per fare ciò si dovrà configurare il \textit{Router} in modo che effettui il forwarding verso la VPN e il \textit{Server} in modo che annunci la sottorete del \textit{Router} a tutti gli Host della VPN.
+Per fare ciò si dovrà configurare il \textit{Router} in modo che effettui il forwarding verso la VPN, e il \textit{Server} in modo che annunci la sottorete del \textit{Router} a tutti gli Host della VPN.
+
+\todo[non sta nel capitolo 2 sta cosa? va bene ripetere?]
 
 Per simulare un host domotico è stata usata una \textit{raspberry pi}, ciò ci consente di poter accedere alla sua shell per effettuare i vari test necessari per confermare che la topologia funzioni correttamente. 
 
 In fig.~\ref{fig:diag2-host_real} possiamo vedere la configurazione iniziale per questo capitolo, cioè la configurazione finale del capitolo \ref{ch:configurazione-router} con l'aggiunta dell'\textit{host domotico} connesso al \textit{Router}. 
 
-
-Una volta conclusa la configurazione si arriverà a una topologia virtuale descritta in fig.~\ref{fig:diag2-host_virtual}, che costituisce inoltre la topologia di obbiettivo per questo elaborato (fig.~\ref{fig:schema_architettura_virtuale}).
 
 \begin{figure}[H]
     \centering
@@ -38,54 +38,57 @@ Una volta conclusa la configurazione si arriverà a una topologia virtuale descr
     \caption{Schemi concettuali della configurazione iniziale e finale per il capitolo \ref{ch:connessione-host-domotici}}
 \end{figure}
 
+Una volta conclusa la configurazione si arriverà a una topologia virtuale descritta in fig.~\ref{fig:diag2-host_virtual}, che costituisce inoltre la topologia di obbiettivo per questo elaborato (fig.~\ref{fig:schema_architettura_virtuale}).
+
 \section{Creazione della firewall zone per la VPN} 
 
-Per rendere possibile la comunicazione tra la rete \textit{lan} del \textit{Router} e la VPN è necessario configurare opportunamente il firewall.
+Per rendere possibile la comunicazione tra la rete \textit{lan} del \textit{Router} e la VPN è necessario configurare opportunamente il firewall nel \it{Router}.
 
-Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconfigurate 2 zone, lan e wan, come si vede figura \ref{fig:luci-firewall-init}.
+Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconfigurate delle zone firewall, in questo caso sono presenti di default 2 zone: \it{lan} e \it{wan}:
 
-% TODO cambiare caption
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_init1}
-    \caption{Configurazione iniziale del firewall}
+    \includegraphics[width=0.8\linewidth]{immagini/LuCI_firewall_init1}
+    \caption{Configurazione di default delle zone del firewall.}
     \label{fig:luci-firewall-init}
 \end{figure}
 
-Si deve quindi aggiungere una nuova zona, chiamata vpn, con le seguenti opzioni:
+Le 2 zone sono collegate alle relative interfacce: la zona \it{lan} è collegata all'interfaccia relativa alla rete interna del \textit{Router}; la zona \it{wan} è collegata all'interfaccia esterna del \textit{Router}. 
+
+Andiamo quindi ad aggiungere una nuova zona, chiamata \it{vpn}, che successivamente sarà collegata all'interfaccia virtuale della VPN (\it{tun0}). La zona \it{vpn} dovrà avere le seguenti opzioni:
+
 \begin{itemize}
     \item Policy di forward: accept
-    \item Forward consentito verso la zona lan
-    \item Forward consentito dalla zona lan
+    \item Forward consentito verso la zona \it{lan}
+    \item Forward consentito dalla zona \it{lan}
 \end{itemize}
 
-Possiamo vedere la pagina di configurazione:
-
-% TODO forse è meglio se le 2 figure stanno vicine
-
+Possiamo vedere la pagina di configurazione con le opzioni inserite:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_vpn1}
-    \caption{Configurazione del firewall}
+    \includegraphics[width=0.8\linewidth]{immagini/LuCI_firewall_vpn1}
+    \caption{Schermata di aggiunta di una nuova zona firewall.}
     \label{fig:luci-firewall-vpn}
 \end{figure}
 
 Dopo aver salvato, la pagina del firewall sarà:
 
-% TODO cambiare caption
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{immagini/LuCI_firewall_end1}
-    \caption{Configurazione finale del firewall}
+    \includegraphics[width=0.8\linewidth]{immagini/LuCI_firewall_end1}
+    \caption{Configurazione delle zone firewall dopo l'aggiunta della zona \it{vpn}.}
     \label{fig:luci-firewall-end}
 \end{figure}
 
 \section{Aggiunta dell'interfaccia tun0 alla zona vpn}
 
-Per rendere attiva la zona firewall appena creata gli si deve assegnare almeno un'interfaccia, in questo caso gli si deve assegnare l'interfaccia tun0.
+Per far effettivamente funzionare la zona firewall aggiunta nella sezione precedente, si deve aggiungere l'interfaccia relativa alla VPN (\it{tun0}) alla zona \it{vpn}.
 
-Ciò va fatto da LuCI, nella sezione \textit{interfaces}. Si deve quindi aggiungere una nuova interfaccia con le seguenti opzioni:
+Dato che l'interfaccia \it{tun0} non è presente in LuCI, la si deve creare usando le opzioni che già conosciamo. Durante la creazione, nella sezione \it{Firewall Settings}, sarà possibile assegnare l'interfaccia a una zona firewall.
+
+Quindi nella sezione \textit{interfaces}, si deve aggiungere una nuova interfaccia con le seguenti opzioni:
+
 \begin{itemize}
     \item Name: tun0
     \item Proto: static
@@ -97,22 +100,45 @@ Ciò va fatto da LuCI, nella sezione \textit{interfaces}. Si deve quindi aggiung
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{0.9\linewidth}
+    \begin{subfigure}{1\linewidth}
         \centering
-        \includegraphics[width=0.9\linewidth]{immagini/LuCI_int_tun0_1}
+        \includegraphics[width=0.8\linewidth]{immagini/LuCI_int_tun0_1}
         \caption{General settings}
         \label{fig:luci-firewall-interfaces}
     \end{subfigure}
     \medskip
-
-    \begin{subfigure}{0.9\linewidth}
+    \begin{subfigure}{1\linewidth}
         \centering
-        \includegraphics[width=0.9\linewidth]{immagini/LuCI_int_tun0_2}
+        \includegraphics[width=0.8\linewidth]{immagini/LuCI_int_tun0_2}
         \caption{Firewall settings}
         \label{fig:luci-firewall-interfaces1}
     \end{subfigure}
     \caption{Assegnazione interfaccia \textit{tun0} alla zona firewall \textit{vpn} tramite interfaccia LuCI}
 \end{figure}
+
+A questo punto i pacchetti provenienti dalla lan del router vengono inoltrati correttamente nella VPN, ma i device nella VPN non hanno una rotta verso la rete interna del router. Quindi in questo momento la comunicazione è monodirezionale.
+
+Possiamo vederlo praticamente con un test:
+
+\begin{itemize}
+    \item l'host domotico effettua il ping verso il client
+    \item il \it{Router} è in ascolto sull'interfaccia \it{tun0} con \code{tcpdump}
+\end{itemize}
+
+\begin{bashcode}{Host-domotico}{}
+$ ping -c1 10.8.0.2     # client 1
+PING 10.8.0.2 (10.8.0.2) 56(84) bytes of data.
+
+--- 10.8.0.2 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+\end{bashcode}
+
+\begin{bashcode}{Router}{}
+$ tcpdump -i tun0
+15:33:38.363082 IP 192.168.130.3 > 10.8.0.2: ICMP echo request, id 17, seq 1, length 64
+\end{bashcode}
+
+Si vede come il pacchetto ICMP \it{echo request} venga correttamente inoltrato nella VPN dal \it{Router}, ma il ping fallisce poiché che non vi è nessun \it{echo reply} dal \it{client}. Questi problemi verranno risolti prossima sezione.
 
 
 \section{Modifiche alla configurazione OpenVPN del \textit{Server}}
@@ -120,18 +146,16 @@ Ciò va fatto da LuCI, nella sezione \textit{interfaces}. Si deve quindi aggiung
 Per instaurare una comunicazione bidirezionale tra \textit{host-domotico} e \textit{client} è necessario che:
 
 \begin{enumerate}
-    \item il server vpn sia consapevole che il \textit{router} vuole esporre una sua sottorete verso la vpn
-    \item il client abbia l'opportuna rotta per raggiungere la sottorete dove si trova l'\textit{host-domotico}
+    \item il \it{Server OpenVPN} sia consapevole che il \textit{router} vuole esporre una sua sottorete verso la VPN
+    \item i client della VPN abbiano l'opportuna rotta per raggiungere la sottorete dove si trova l'\textit{host-domotico}
 \end{enumerate}
 
-Per il punto 1 è necessario aggiungere la seguente riga nel file \\\code{/etc/openvpn/server/ccd/router}:
+Per il punto 1 è necessario aggiungere l'opzione \code{iroute} nel file \\\code{/etc/openvpn/server/ccd/router}, creato in sezione \ref{sec:static-ip-router}:
 
 \begin{bashcode}{Server}{}
 $ vim /etc/openvpn/server/ccd/router
 ifconfig-push 10.8.0.254 255.255.255.0
-iroute 192.168.130.0 255.255.255.0
-$ vim /etc/openvpn/server/server.conf
-169 route 192.168.130.0 255.255.255.0  # aggiungo la rotta nel server
+iroute 192.168.130.0 255.255.255.0      # net e netmask della rete lan del router
 \end{bashcode}
 
 Per il punto 2 è necessario aggiungere la seguente riga alla configurazione OpenVPN nel \textit{Server}:
@@ -141,7 +165,7 @@ $ vim /etc/openvpn/server/server.conf
 168 push "route 192.168.130.0 255.255.255.0"
 \end{bashcode}
 
-Dopo aver modificato la configurazione del server va riavviarlo con \code{systemctl restart}.
+Dopo aver modificato la configurazione del Server è necessario riavviarlo con \\\code{systemctl restart}.
 
 % TODO da rivedere
 In questo modo nella procedura di connessione alla VPN, i client aggiungeranno la rotta verso la sottorete \code{192.168.130.0/24} nella loro tabella di routing. Possiamo verificarlo con: 
@@ -152,9 +176,7 @@ $ ip route
 192.168.130.0/24 via 10.8.0.1 dev tun0
 \end{bashcode}
 
-\section{Test della configurazione}
-\todo[da scrivere di più per i test, sono importanti, forse mettere qualcosa sul troubble shooting... mhhh]
-
+\section{Test della configurazione \todo[da scrivere di più per i test, sono importanti, forse mettere qualcosa sul troubble shooting... mhhh] \workinprogress}
 
 Per testare la connessione tra \textit{client} e \textit{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \textit{Server} e \textit{Router} per vedere il percorso dei pacchetti.
 

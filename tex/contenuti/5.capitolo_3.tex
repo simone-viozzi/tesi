@@ -1,8 +1,8 @@
 % <-- chapter -->
-\chapter{Configurazione del \textit{Server}}
+\chapter{Configurazione del \textit{Server} \ok}
 \label{ch:server}
 
-\section{Overview della configurazione e prerequisiti}
+\section{Overview della configurazione e prerequisiti \ok}
 \label{sec:overview_server}
 
 In questo capitolo andremo a installare e configurare \textit{OpenVPN server} sulla VPS di OVHCloud.
@@ -40,7 +40,7 @@ Supponiamo inoltre che l'IP pubblico del Server sia \code{51.178.141.119}, si av
 
 Per instaurare una comunicazione bidirezionale tra il server e il client, si dovrà configurare opportunamente una rete VPN, che risulterà nella configurazione virtuale rappresentata in figura \ref{fig:diag-simple_ips_vpn}.
 
-\section{Creazione della \textit{Public key infrastructure}}
+\section{Creazione della \textit{Public key infrastructure} \ok}
 \label{sec:pki_ca}
 
 Per la gestione dell'autenticazione dei client alla VPN è necessario creare una \textit{Public key infrastructure} (PKI), come descritto nella sezione \ref{subsec:auth}. Inoltre, per una maggiore sicurezza è indicato separare la \textit{Certificate Authority} dal \textit{Server OpenVPN} \cite{openvpn-as-ca}, supponiamo quindi di usare un secondo server chiamato \textit{Server CA}. 

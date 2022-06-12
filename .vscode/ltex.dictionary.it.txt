@@ -143,3 +143,4 @@ inline
 config
 configs
 cleint-config-dir
+client-config-dir
