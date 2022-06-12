@@ -120,7 +120,7 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 16:20:51.791374 IP 10.8.0.2 > 10.8.0.3: ICMP echo reply, id 1759, seq 1, length 64
 \end{bashcode}
 
-Si vede che ogni richiesta viene duplicata, la prima è in entrata sulla network stack del \textit{server} e la seconda in uscita. 
+Si vede che ogni richiesta viene duplicata, la prima è in entrata sulla network stack del \textit{Server} e la seconda in uscita. 
 \todo[forse da mettere lo schema che fa vedere la network stack?]
 Per evitare questo traffico possiamo abilitare l'opzione \code{client-to-client} nel file di configurazione del server. In questo modo il layer openvpn effettuerà direttamente il forwarding tra i client della vpn \cite{client-to-client}.
 
@@ -139,7 +139,7 @@ PING 10.8.0.2 (10.8.0.2): 56 data bytes
 64 bytes from 10.8.0.2: seq=1 ttl=64 time=0.307 ms
 \end{bashcode}
 
-Ma questa volta la network stack del \textit{server} non vede nessun pacchetto:
+Ma questa volta la network stack del \textit{Server} non vede nessun pacchetto:
 
 \begin{bashcode}{Server}{}
 $ sudo tcpdump -i tun0

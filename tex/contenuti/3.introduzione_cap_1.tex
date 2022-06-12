@@ -2,7 +2,7 @@
 \chapter{Introduzione}
 
 
-\section{TCP/IP e modello a strati}
+\section{TCP/IP e modello a strati \ok}
 
 
 \begin{comment}
@@ -32,10 +32,17 @@ Un sistema di comunicazione Internet consiste in un interconnessione tra reti di
 L'obbiettivo di Internet è quello di collegare hosts attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati.
 \end{comment}
 
-Il suo obbiettivo è quello di collegare utenti attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati, ad esempio il modello TCP/IP è costituito da 4 strati. 
+Il suo obbiettivo è quello di collegare utenti attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati, il modello TCP/IP è costituito da 4 strati. 
 
-\newpage
-\subsection{Internet Protocol Suite}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{immagini/diag2-modello_a_strati}
+    \caption{Rappresentazione degli strati del modello TCP/Ip, con relativo incapsulamento e dispositivo di dominio}
+    \label{fig:modello-a-strati}
+\end{figure}
+
+
+\subsection{Internet Protocol Suite \ok}
 
 \begin{comment}
 Internet Protocol Suit
@@ -48,19 +55,14 @@ from each layer.
 % ok
 Per comunicare su Internet, gli Host devono implementare un set di protocolli che costituiscono l'\textit{Internet protocol suite} \cite{RFC_1122}. I protocolli si suddividono in strati logici che li raggruppano in 4 categorie, ogni Host deve implementare almeno un protocollo per ogni strato.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{immagini/diag2-modello_a_strati}
-    \caption{Rappresentazione degli strati del modello TCP/Ip, con relativo incapsulamento e dispositivo di dominio}
-    \label{fig:modello-a-strati}
-\end{figure}
 
-% TODO forse espandere
+
+% TODO forse espandere (?)
 Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 \begin{enumerate} % \cite https://datatracker.ietf.org/doc/html/rfc1122#section-1
     \item[layer 4:] \textbf{Application}: Il livello applicazione è il layer pi\`u alto dell'\textit{Internet protocol suite}, i protocolli di questo livello si suddividono in protocolli utente e di supporto. \newline
-        I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}, etc. Mentre i protocolli di supporto non sono direttamente usati dagli utenti ma sono comunque necessari per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP} etc.
+        I protocolli utente espongono un servizio direttamente all'utente finale, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol}{http}, \href{https://en.wikipedia.org/wiki/File_Transfer_Protocol}{ftp}, \href{https://en.wikipedia.org/wiki/Secure_Shell}{ssh}. Mentre i protocolli di supporto non sono direttamente usati dagli utenti ma sono comunque necessari per il funzionamento della rete, alcuni esempi sono: \href{https://en.wikipedia.org/wiki/Domain_Name_System}{DNS}, \href{https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol}{SNMP}.
 
         \begin{comment}
         The application layer is the top layer of the Internet
@@ -114,8 +116,8 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
         Transport layer protocols are discussed in Chapter 4.
         \end{comment}
 
-        % TODO da rivedere
-    \item[layer 2:] \textbf{Internet}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non è end-to-end, quindi è intrinsecamente di tipo connection-less. Non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilità dei servizi quando essa è richiesta. Di questo layer fanno parte i protocolli \href{https://en.wikipedia.org/wiki/Internet_Protocol}{IP}, \href{https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol}{ICMP}, etc.
+        % TODO da rivedere (?)
+    \item[layer 2:] \textbf{Internet}: Tutti i protocolli di trasporto usano il protocollo Internet (IP) per portare i dati dall'host sorgente alla destinazione. Al contrario dei protocolli di livello trasporto il protocollo IP non è end-to-end, quindi è intrinsecamente di tipo connection-less. Non fornisce quindi nessuna garanzia che il pacchetto arrivi a destinazione, o arrivi danneggiato o duplicato. I layer sopra al livello IP sono responsabili di mantenere l'affidabilità dei servizi quando essa è richiesta. Di questo layer fanno parte i protocolli \href{https://en.wikipedia.org/wiki/Internet_Protocol}{IP} e \href{https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol}{ICMP} ad esempio.
 
         \begin{comment}
         All Internet transport protocols use the Internet Protocol
@@ -168,6 +170,7 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vedere una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
 
+\todo[togli ripetizione di possiamo vedere]
 
 Possiamo vedere l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web https:
 
@@ -192,11 +195,11 @@ Quindi andando ad analizzare lo stack di protocolli si vede:
 \begin{itemize}
     \item \textbf{Transport Layer Security}\cite{RFC_8446}: È il dato effettivo che è stato trasmesso in rete. In questo caso consiste in un pacchetto http cifrato con il protocollo TLS.
 
-    \item \textbf{Transmission Control Protocol}\cite{RFC_0793}: incapsula il layer applicazione in un layer di trasporto usando il protocollo TCP. Le informazioni principali contenute nell'header sono la porta sorgente e destinazione, ciò permette di individuare a quale applicazione è destinato il pacchetto.
+    \item \textbf{Transmission Control Protocol}\cite{RFC_0793}: Incapsula il layer applicazione in un layer di trasporto usando il protocollo TCP. Le informazioni principali contenute nell'header sono la porta sorgente e destinazione, ciò permette di individuare a quale applicazione è destinato il pacchetto.
     
-    \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: incapsula il layer di trasporto in un pacchetto IP. Nell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.
+    \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: Incapsula il layer di trasporto in un pacchetto IP. Nell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.
     
-    \item \textbf{Ethernet II}\cite{ethernet-ii}: il questo caso il mezzo fisico è una porta Ethernet quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare a quale host è l'interfaccia fisica di destinazione.
+    \item \textbf{Ethernet II}\cite{ethernet-ii}: In questo caso il mezzo fisico è una porta Ethernet, quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare qual'è l'iterfaccia fisica a cui è destinato il pacchetto.
 \end{itemize}
 
 Possiamo vedere graficamente il pacchetto descritto in code:\ref{code:tls-wireshark} e le informazioni principali di ogni header:
@@ -209,7 +212,7 @@ Possiamo vedere graficamente il pacchetto descritto in code:\ref{code:tls-wiresh
 \end{figure}
 
 
-\subsection{IP Network Address Translator (NAT)}
+\subsection{IP Network Address Translator (NAT) \workinprogress}
 
 \begin{comment}
 https://datatracker.ietf.org/doc/html/rfc2663
@@ -234,6 +237,7 @@ Network address translation (NAT) is a method of mapping an IP address space int
 The main advantage of NAT is that it can be installed without changes to routers or hosts. This solution has the disadvantage of taking away the end-to-end significance of an IP address, and making up for it with increased state in the network.
 \end{comment}
 
+% ok
 Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP. La mappatura può essere sia uno-a-uno, nel caso di \textit{Static NAT} e \textit{Dynamic NAT}; sia molti-a-molti, nel caso di \textit{Network Address and Port Translation} (NAPT), in cui oltre all'IP viene modificata anche la porta del protocollo di trasporto. Ciò consente di mappare un grande numero di indirizzi privati in relativamente pochi indirizzi pubblici. 
 
 \begin{comment}
@@ -247,7 +251,25 @@ unique IP addresses are assigned according to current CIDR address
 allocation schemes.
 \end{comment}
 
-Una delle applicazioni più comuni è inserirlo nel gateway di una rete privata domestica, ciò permette di mascherare i dispositivi nella rete privata e far si che la rete esterna veda tutto il traffico attraverso un solo dispositivo, il router. 
+% ok
+Una delle applicazioni più comuni è inserirlo nel gateway di una rete privata domestica, ciò permette di mascherare i dispositivi nella rete privata e far si che la rete esterna veda tutto il traffico attraverso un solo dispositivo, il router.
+
+\begin{comment}
+svantaggi del nat
+    - il nat rompe la comunicazione end to end
+    - a meno che non si modifichi la configurazione del nat non è possibile fare una comunicazione end to end
+    - cita nat hole qualcosa
+\end{comment}
+
+\todo[da qua in poi è da rieleggere sta molto work in progress]
+
+Dato il funzionamento del NAT è intrinsecamente impossibile comunicare dall'esterno verso un dispositivo al di sotto del NAT a meno che non venga opportunamente configurato per consentirlo.
+
+
+Prendiamo in esempio un NAT di tipo \it{easyip}, in questo caso un'intera sottorete viene mappata su un singolo ip esterno. Ogni volta che un'host della rete tenta di comunicare con un server esterno, nel NAT viene salvata la relazione tra chi ha inviato la richiesta e su quale porta esterna è stata inviata verso il server. Data questa relazione il NAT è in grado di re-inoltrare all'host corretto la risposta del server. Si vede quindi che la comunicazione attraverso un NAT è possibile solo se viene iniziata da un'host della rete privata, poichè in caso contrario il NAT non potrebbe conoscere a quale host stiamo tentando di comunicare e quindi semplicemente scarterebbe il pacchetto.
+
+
+
 
 \subsubsection{Carrier Grade NAT (CG-NAT)}
 \begin{comment}
@@ -257,13 +279,11 @@ https://en.wikipedia.org/wiki/Carrier-grade_NAT
     Carrier-grade NAT is often used for mitigating IPv4 address exhaustion.
 \end{comment}
 
-\todo[cita qualcosa]
-
-I CG-NAT sono una tipologia di NAT che lavorano su larga scala e in generale sono implementati all'interno della rete dell'ISP. Sono usati per mappare un grande numero di utenti in relativi pochi indirizzi pubblici.
+I CG-NAT \cite{Carrier-grade_NAT} sono una tipologia di NAT che lavorano su larga scala e in generale sono implementati all'interno della rete dell'ISP. Sono usati per mappare un grande numero di utenti in relativi pochi indirizzi pubblici.
 Dato che sono gestiti dall'ISP, gli utenti non hanno nessun controllo sulla sua configurazione.
 
 
-\section{Openvpn}
+\section{Openvpn \ok}
 
 \begin{comment}
 https://wiki.wireshark.org/OpenVPN
@@ -288,7 +308,7 @@ OpenVPN has been ported and embedded to several systems. For example, DD-WRT has
 It was written by James Yonan and is free software, released under the terms of the GNU General Public License version 2 (GPLv2).[12] Additionally, commercial licenses are available.[13]
 \end{comment}
 
-OpenVPN è un applicativo open source che ha l' obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn può incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che può viaggiare sia su TCP che UDP. Ha molte opzioni di configurazione, come la possibilità di usare qualsiasi porta, oppure l'uso della compressione. Il tutto è raccolto in un singolo applicativo che può funzionare sia da client che da server, in base alla configurazione fornita.
+OpenVPN è un applicativo open source che ha l'obbiettivo di fornire una VPN che sia semplice da configurare e che funzioni in ogni contesto. Openvpn può incapsulare sia pacchetti IP che frame Ethernet, in un tunnel sicuro che può viaggiare sia su TCP che UDP. Ha molte opzioni di configurazione, come la possibilità di usare qualsiasi porta, oppure l'uso della compressione. Il tutto è raccolto in un singolo applicativo che può funzionare sia da client che da server, in base alla configurazione fornita.
 
 Possiamo ad esempio vedere una cattura di Wireshark di un pacchetto OpenVPN su UDP e porta 1194:
 
@@ -304,7 +324,7 @@ Data (36 bytes)
 Data: 00000019a366196eb2aca181df226faf8514ab73f524f7ef335d55fc57322d032a2095e4
 \end{bashcode}
 
-\subsection{Crittografia e autenticazione}
+\subsection{Crittografia e autenticazione \ok}
 \label{subsec:auth}
 
 \begin{comment}
@@ -324,7 +344,7 @@ OpenVPN has several ways to authenticate peers with each other. OpenVPN offers p
 \end{comment}
 
 % ok
-L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \textit{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette a quello specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento, facendo così perdere l'accesso all'utente che lo stava usando. 
+L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \textit{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette allo specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento, facendo così perdere l'accesso all'utente che lo stava usando. 
 
 % ok
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
@@ -422,7 +442,7 @@ Al contrario di altri sistemi operativi per dispositivi embedded, OpenWRT presen
 OpenWRT può essere configurato sia tramite shell (\href{https://en.wikipedia.org/wiki/Almquist_shell}{ash}) che tramite interfaccia web (\href{https://openwrt.org/docs/guide-user/luci/start}{LuCI}).
 
 
-\subsection{LuCI web interface}
+\subsection{LuCI web interface \ok}
 
 \begin{comment}
 The initial reason for this project was the absence of a free, clean, extensible and easily maintainable web user interface for embedded devices. While most similar configuration interfaces make heavy use of the shell-scripting language, LuCI uses the Lua programming language and splits up the interface into logical parts like models and views, uses object-oriented libraries and templating. That ensures a higher performance, smaller installation size, faster runtimes and what is even more important: better maintainability.
