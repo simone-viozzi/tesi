@@ -2,12 +2,14 @@
 \chapter{Configurazione del \textit{Server}}
 \label{ch:server}
 
-\section{Overview della configurazione e prerequisiti \ok}
+\section{Overview della configurazione e prerequisiti}
 \label{sec:overview_server}
 
 In questo capitolo andremo a installare e configurare \textit{OpenVPN server} sulla VPS di OVHCloud.
 
-Per facilitare la configurazione e il testing, supponiamo di partire da una topologia che contiene solo il server OpenVPN e un generico client. Come da specifiche il Server deve avere a disposizione un'IP pubblico e il client deve essere il più generico possibile, lo supponiamo quindi sotto a un NAT.
+Per facilitare la configurazione e il testing, supponiamo di partire da una topologia che contiene solo il server OpenVPN e un generico client. Come da specifiche, il Server deve avere a disposizione un'IP pubblico (sezione \ref{subsec:vps-ovhcloud}); e il client deve essere il più generico possibile, lo supponiamo quindi sotto a un NAT (sezione \ref{subsec:macchina-cliente}).
+
+\todo[non supponiamo, da cambiare]
 
 Supponiamo inoltre che l'IP pubblico del Server sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
@@ -354,7 +356,7 @@ $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 
 Il secondo file creato, \code{server.req}, corrisponde a una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. 
 
-\subsection{Firma del certificato OpenVPN dalla CA} % step 5, 6, 7
+\subsection{Firma del certificato OpenVPN dalla CA \ok} % step 5, 6, 7
 \label{subsec:sign_openvpn}
 
 Per firmare la \textit{Certificate Signing Request} si deve copiare il file \code{.req} nel \textit{Server CA}, supponiamo quindi di averlo copiato nella cartella \code{/tmp}.
@@ -364,8 +366,8 @@ Ora lo si deve importare nella CA e firmarlo, ciò corrisponde ai passaggi 5 e 6
 % step 5, 6
 \begin{bashcode}{Server CA}{}  
 $ cd ~/openvpn-ca
-$ ./easyrsa import-req /tmp/server.req server
-$ ./easyrsa sign-req server server
+$ ./easyrsa import-req /tmp/server.req server   # passaggio 5
+$ ./easyrsa sign-req server server              # passaggio 6
 Using configuration from /home/ubuntu/openvpn-ca/pki/safessl-easyrsa.cnf
 Check that the request matches the signature
 Signature ok
@@ -379,7 +381,7 @@ Data Base Updated
 
 Verrà creato un file in \code{~/openvpn-ca/pki/issued} chiamato \code{server.crt}, che contiene il certificato firmato dalla CA.
 
-Per concludere la procedura (step 7 fig.\ref{fig:diag-firma_certificato_ca}), si devono copiare i file \code{ca.crt} e \code{server.crt} dal \textit{Server CA} al \textit{Server OpnenVPN}, spostandoli nella cartella del server OpenVPN \\(\code{/etc/openvpn/server})
+Per concludere la procedura (step 7 fig.\ref{fig:diag-firma_certificato_ca}), si devono copiare i file \code{ca.crt} e \code{server.crt} dal \textit{Server CA} al \textit{Server OpnenVPN}, spostandoli nella cartella del \it{Server OpenVPN}: \\\code{/etc/openvpn/server}.
 
 
 \begin{comment}
@@ -406,7 +408,7 @@ tree
 4 directories, 13 files
 \end{comment}
 
-\section{Generazione della \textit{tls-crypt pre-shared key}}
+\section{Generazione della \textit{tls-crypt pre-shared key} \ok}
 \label{sec:tls-crypt}
 
 Per aumentare ulteriormente la sicurezza del nostro \textit{Server OpenVPN} possiamo creare un'ulteriore chiave, che permette di offuscare il certificato in fase di validazione. In questo caso la chiave è di tipo \textit{preshared} ed è comune per utti gli utenti, serve principalmente per aggiungere un ulteriore livello di sicurezza.
@@ -419,7 +421,7 @@ $ openvpn --genkey --secret ta.key
 $ sudo cp ta.key /etc/openvpn/server
 \end{bashcode}
 
-\section{Generazione dei certificati per i \textit{clients}}
+\section{Generazione dei certificati per i \textit{clients} \ok}
 \label{sec:client_keys}
 
 La generazione dei certificati per i client consiste in una procedura molto simile alla creazione del certificato del \textit{Server}, sezione \ref{sec:pki_openvpn} e \ref{subsec:sign_openvpn}.
@@ -447,18 +449,21 @@ $ cd ~/openvpn-pki/
 $ ./easyrsa gen-req client1 nopass
 \end{bashcode}
 
-Con questo comando verranno creati 2 file, \code{pki/private/client1.key} costituisce la chiave privata del certificato e va copiata nella directory creata in code:~\ref{code:clients-config-folder}; \code{pki/reqs/client1.req} è la \textit{Certificate Signing Request} che deve essere copiata nel \textit{Server CA} per essere firmata.
+Con questo comando verranno creati 2 file: \code{pki/private/client1.key} costituisce la chiave privata del certificato e va copiata nella directory creata in code:~\ref{code:clients-config-folder}; 
 
+\todo[serve sto cp?]
 \begin{bashcode}{Server}{}
 $ cp pki/private/client1.key ~/client-configs/keys/
 \end{bashcode}
+
+\code{pki/reqs/client1.req} è la \textit{Certificate Signing Request} che deve essere copiata nel \textit{Server CA} per essere firmata.
 
 Supponiamo di aver copiato il file \code{client1.req} nella cartella \code{tmp} del \textit{Server CA}, possiamo quindi importarla e firmarla (passaggi 2 e 3 fig.\ref{fig:diag-firma_certificato_client}):
 
 \begin{bashcode}{Server CA}{}
 $ cd ~/openvpn-ca
-$ ./easyrsa import-req /tmp/client1.req client1
-$ ./easyrsa sign-req client client1
+$ ./easyrsa import-req /tmp/client1.req client1     # passaggio 2
+$ ./easyrsa sign-req client client1                 # passaggio 3
 Using configuration from /home/ubuntu/openvpn-ca/pki/safessl-easyrsa.cnf
 Check that the request matches the signature
 Signature ok
@@ -472,7 +477,7 @@ Data Base Updated
 
 Ciò produrrà il file di certificato \code{openvpn-ca/pki/issued/client1.crt} che deve essere copiato nel \textit{Server OpenVpn}, supponiamo di copiarlo nella cartella \code{~/client-configs/keys/}.
 
-\subsection{Script per la creazione delle configurazioni dei client}
+\subsection{Script per la creazione delle configurazioni dei client \ok}
 \label{subsec:script_client}
 
 Per facilitare la creazione dei file di configurazione dei client, \code{Common-Name.ovpn}, andremo a creare un apposito script bash che userà la cartella creata in code:\ref{code:clients-config-folder}. 
@@ -545,12 +550,12 @@ Quindi per creare la configurazione di \textit{client1} (passaggio 4 fig.\ref{fi
 $ ./make_config.sh client1
 \end{bashcode}
 
-Ciò creerà il file di configurazione per \textit{client1} scrivendolo in \\\code{client-configs/files/client1.ovpn}, successivamente sarà necessario copiare questo file nella macchina del \textit{client}.
+Ciò creerà il file \code{client-configs/files/client1.ovpn}, successivamente sarà necessario copiare questo file nella macchina del \textit{client}.
 
-\section{Creazione del file di configurazione del Server OpenVPN}
+\section{Creazione del file di configurazione del Server OpenVPN \ok}
 \label{sec:server_config}
 
-Il server openvpn viene configurato attraverso il file di configurazione \\\code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si può usare la configurazione di esempio offerta da openvpn:
+Il server openvpn viene configurato attraverso il file di configurazione \\\code{/etc/openvpn/server/server.conf}, per non partire da una configurazione vuota si può usare la configurazione di esempio offerta da OpenVPN:
 
 \begin{bashcode}{Server}{}
 $ cd /etc/openvpn/server/
@@ -579,17 +584,17 @@ $ sudo vim server.conf
 Questa è la configurazione necessaria per questo capitolo, nei successivi capitoli saranno aggiunte delle opzioni quando necessarie.
 \end{comment}
 
-\section{Configurazioni sulla network stack del Server}
+\section{Configurazioni sulla network stack del Server \ok}
 \label{sec:network_stack}
 
-OpenVPN per funzionare necessita che il server abbia l'\textit{ip forwarding} nel firewall abilitato. Ciò è necessario per permettere al server OpnenVPN di inoltrare il traffico proveniente dalla VPN nella sua network stack, e viceversa.
+OpenVPN per funzionare necessita che il server abbia l'\textit{ip forwarding} abilitato. Ciò è necessario per permettere al server OpnenVPN di inoltrare il traffico proveniente dalla VPN nella sua network stack, e viceversa.
 
 \begin{comment}
 Now your OpenVPN server will be able to forward incoming traffic from one ethernet device to another. This setting makes sure the server can direct traffic from clients that connect on the virtual VPN interface out over its other physical ethernet devices. This configuration will route all web traffic from your client via your server’s IP address, and your client’s public IP address will effectively be hidden.
 \end{comment}
 
 
-Per abilitare l'\textit{ip forwarding} si dovrà modificare il file \code{/etc/sysctl.conf}, il comando successivo serve a ricaricare le configurazioni dai file:
+Per abilitare l'\textit{ip forwarding} nella network stack si dovrà modificare il file \code{/etc/sysctl.conf}, il successivo comando serve a ricaricare le configurazioni dai file:
 
 \begin{bashcode}{Server}{}
 $ sudo vim /etc/sysctl.conf
@@ -601,7 +606,7 @@ net.ipv4.ip_forward = 1
 \section{Configurazione del firewall}
 \label{sec:firewall}
 
-Sulla VPS scelta è presente il firewall \code{firewalld}, ma per una più semplice configurazione è consigliato di disattivarlo e installare \code{ufw}:
+Sulla VPS scelta (sezione \ref{subsec:vps-ovhcloud}) è presente il firewall \code{firewalld}, ma per una più semplice configurazione è consigliato di disattivarlo e installare \code{ufw}:
 
 \begin{bashcode}{Server}{}
 $ sudo systemctl mask firewalld
@@ -615,7 +620,9 @@ $ sudo ufw enable
 
 È importantissimo abilitare l'SSH prima di abilitare il firewall, altrimenti si perderà l'accesso alla VPS.
 
-\subsection{Configurazione del NAT}
+\subsection{Configurazione del NAT \ok}
+
+\todo[va bene corsivo per vpn e nat ?]
 
 Per far si che i pacchetti provenienti dalla \textit{VPN} entrino nella network stack del \textit{Server} si deve aggiungere una regola di \textit{NAT} nel firewall. Per farlo si deve conoscere quale è l'interfaccia di rete del \textit{Server}, cioè quella che ha come IP il suo IP pubblico:
 
@@ -660,9 +667,9 @@ COMMIT
 
 Nella modifica del file si deve stare attenti a inserire la nuova regola in cima al file e sotto i commenti iniziali, è inoltre importante inserire i commenti nella regola.
 
-\subsection{Configurazione del packet forwarding}
+\subsection{Configurazione del packet forwarding \ok}
 
-Precedentemente abbiamo abilitato il forwarding nella network stack del server, ora si deve abilitare la corrispondente opzione nel firewall. Si deve quindi cambiare la regola di default per i pacchetti inoltrati da \code{DROP} ad \code{ACCEPT}.
+Precedentemente abbiamo abilitato il forwarding nella network stack del server (sezione \ref{sec:network_stack}), ora si deve abilitare la corrispondente opzione nel firewall. Si deve quindi cambiare la regola di default per i pacchetti inoltrati da \code{DROP} ad \code{ACCEPT}.
 
 Per farlo si deve modificare il file \code{/etc/default/ufw}:
 
@@ -674,7 +681,7 @@ DEFAULT_FORWARD_POLICY="ACCEPT"
 %
 
 
-\subsection{Conclusione della configurazione del firewall}
+\subsection{Conclusione della configurazione del firewall \ok}
 
 Per concludere la configurazione si deve abilitare la porta relativa alla vpn, in questo caso \code{1194}, e riavviare il firewall:
 
@@ -693,10 +700,10 @@ To              Action      From
 
 Se la configurazione è stata effettuata correttamente di avrà un output simile al precedente, in caso contrario si dovranno valutare gli errori dati da ufw.
 
-\section{Avvio del Server OpenVPN}
+\section{Avvio del Server OpenVPN \ok}
 \label{sec:start_server}
 
-Ora che la configurazione del server è in una situazione stabile possiamo tentate di avviarlo:
+Ora che la configurazione del Server è in una situazione stabile possiamo tentate di avviarlo:
 
 \begin{bashcode}{Server}{}
 $ sudo systemctl enable openvpn-server@server.service
@@ -735,7 +742,7 @@ Con il comando \code{systemctl status} si può verificare lo stato del servizio,
 In caso il servizio fallisse ad avviarsi si avrà un breve log con \code{systemctl status}, oppure si possono leggere i log completi usando \code{journalctl -u openvpn-server@server.service}.
 
 
-\section{Test della configurazione}
+\section{Test della configurazione \ok \todo[si può espandere in qualche modo?]}
 \label{sec:test_config_server}
 
 Ora che la configurazione per questo capitolo è conclusa possiamo testare che tutto funzioni correttamente.
@@ -755,7 +762,7 @@ Thu Apr 21 12:53:04 2022 Initialization Sequence Completed
 
 Se la configurazione fino a questo punto è corretta si avrà il messaggio \\\code{Initialization Sequence Completed}.
 
-Nel \textit{Client} si avrà una nuova interfaccia di rete chiamata \code{tun0}, questa è l'interfaccia virtuale creata dalla vpn.
+Nel \textit{Client} si avrà una nuova interfaccia di rete chiamata \code{tun0}, questa è l'interfaccia virtuale creata dalla vpn:
 
 \begin{bashcode}{Client}{}
 $ ip addr
