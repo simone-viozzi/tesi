@@ -172,7 +172,7 @@ Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il p
 
 \todo[togli ripetizione di possiamo vedere]
 
-Possiamo vedere l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web https:
+Possiamo vedere l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web \it{https}:
 
 \begin{bashcode}{Wireshark}{tls-wireshark}
 Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
@@ -199,7 +199,7 @@ Quindi andando ad analizzare lo stack di protocolli si vede:
     
     \item \textbf{Internet Protocol Version 4}\cite{RFC_0791}: Incapsula il layer di trasporto in un pacchetto IP. Nell'header IP sono contenuti l'indirizzo IP di sorgente e destinazione, ciò permette di individuare a quale host è destinato il pacchetto.
     
-    \item \textbf{Ethernet II}\cite{ethernet-ii}: In questo caso il mezzo fisico è una porta Ethernet, quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare qual'è l'iterfaccia fisica a cui è destinato il pacchetto.
+    \item \textbf{Ethernet II}\cite{ethernet-ii}: In questo caso il mezzo fisico è una porta Ethernet, quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare qual è l'interfaccia fisica a cui è destinato il pacchetto.
 \end{itemize}
 
 Possiamo vedere graficamente il pacchetto descritto in code:\ref{code:tls-wireshark} e le informazioni principali di ogni header:
@@ -238,7 +238,7 @@ The main advantage of NAT is that it can be installed without changes to routers
 \end{comment}
 
 % ok
-Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP. La mappatura può essere sia uno-a-uno, nel caso di \textit{Static NAT} e \textit{Dynamic NAT}; sia molti-a-molti, nel caso di \textit{Network Address and Port Translation} (NAPT), in cui oltre all'IP viene modificata anche la porta del protocollo di trasporto. Ciò consente di mappare un grande numero di indirizzi privati in relativamente pochi indirizzi pubblici. 
+Il NAT \cite{RFC_1631} permette di effettuare una mappatura da uno spazio di indirizzi a un altro, modificando così le informazioni di routing nel pacchetto IP. La mappatura può essere sia \mbox{uno-a-uno}, nel caso di \textit{Static NAT} e \textit{Dynamic NAT}; sia molti-a-molti, nel caso di \textit{Network Address and Port Translation} (NAPT), in cui oltre all'IP viene modificata anche la porta del protocollo di trasporto. Ciò consente di mappare un grande numero di indirizzi privati in relativamente pochi indirizzi pubblici. 
 
 \begin{comment}
 The address reuse solution is to

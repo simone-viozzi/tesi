@@ -29,3 +29,4 @@
 {"rule":"GR_04_002","sentence":"^\\QCio' e' necessario per permettere al server OpnenVPN di inoltrare il traffico proveniente dalla VPN nella network stack del server, e viceversa.\\E$"}
 {"rule":"ST_01_005","sentence":"^\\QSe la configurazione e' stata effettuata correttamente di avra' un output simile al precedente, in caso contrario si dovranno valutare gli errori dati da ufw.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QL'opzione che permette di impostare un IP statico e' ifconfig-push.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QNell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare qual è l'interfaccia fisica a cui è destinato il pacchetto.\\E$"}
