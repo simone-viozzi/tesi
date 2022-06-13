@@ -2,18 +2,22 @@
 \chapter{Connessione degli Host domotici alla VPN}
 \label{ch:connessione-host-domotici}
 
-\section{Overview della configurazione}
+\section{Overview della configurazione \ok}
 
 L'ultima parte della configurazione consiste nel rendere disponibile nella VPN la rete locale del \textit{router 4g}, consentendo quindi lo scambio di dati tra gli \textit{host-domotici} e i \textit{Client} della VPN.
 
 Per fare ciò si dovrà configurare il \textit{Router} in modo che effettui il forwarding verso la VPN, e il \textit{Server} in modo che annunci la sottorete del \textit{Router} a tutti gli Host della VPN.
 
+\begin{comment}
 \todo[non sta nel capitolo 2 sta cosa? va bene ripetere?]
 
-Per simulare un host-domotico è stata usata una \textit{raspberry pi}, ciò ci consente di poter accedere alla sua shell per effettuare i vari test necessari per confermare che la topologia funzioni correttamente. 
+Per simulare un host-domotico è stata usata una \textit{raspberry pi}, ciò ci consente di poter accedere alla sua shell per effettuare i vari test necessari per confermare che la topologia funzioni correttamente.
+\end{comment}
+
 
 In fig.~\ref{fig:diag2-host_real} possiamo vedere la configurazione iniziale per questo capitolo, cioè la configurazione finale del capitolo \ref{ch:configurazione-router} con l'aggiunta dell'\textit{host-domotico} connesso al \textit{Router}. 
 
+\todo[sistema le caption]
 
 \begin{figure}[H]
     \centering
@@ -35,17 +39,19 @@ In fig.~\ref{fig:diag2-host_real} possiamo vedere la configurazione iniziale per
         \caption{Diagramma finale}
         \label{fig:diag2-host_virtual}
     \end{subfigure}
-    \caption{Schemi concettuali della configurazione iniziale e finale per il capitolo \ref{ch:connessione-host-domotici}}
+    \caption{Schemi concettuali della configurazione iniziale e finale per il capitolo~\ref{ch:connessione-host-domotici}}.
 \end{figure}
 
 Una volta conclusa la configurazione si arriverà a una topologia virtuale descritta in fig.~\ref{fig:diag2-host_virtual}, che costituisce inoltre la topologia di obbiettivo per questo elaborato (fig.~\ref{fig:schema_architettura_virtuale}).
 
-\section{Creazione della zona firewall per la VPN}
-\label{sec:creazione-firewall-zone-vpn}
+\section{Configurazione del firewall nel \textit{Router} \ok}
+
+\subsection{Creazione della zona firewall per la VPN \ok}
+\label{subsec:creazione-firewall-zone-vpn}
 
 Per rendere possibile la comunicazione tra la rete \textit{lan} del \textit{Router} e la VPN è necessario configurare opportunamente il firewall nel \textit{Router}.
 
-Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconfigurate delle zone firewall, in questo caso sono presenti di default 2 zone: \textit{lan} e \textit{wan}:
+Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconfigurate delle zone firewall, in questo caso sono presenti di default 2 zone: \textit{lan} e \textit{wan}
 
 \begin{figure}[H]
     \centering
@@ -58,7 +64,9 @@ Le 2 zone sono collegate alle relative interfacce: la zona \textit{lan} è colle
 
 Andiamo quindi ad aggiungere una nuova zona, chiamata \textit{vpn}, che successivamente sarà collegata all'interfaccia virtuale della VPN (\textit{tun0}). La zona \textit{vpn} dovrà avere le seguenti opzioni:
 
-\begin{itemize}
+\setlist{nolistsep}
+\begin{itemize}[noitemsep]
+    \itemsep0em
     \item Policy di forward: accept
     \item Forward consentito verso la zona \textit{lan}
     \item Forward consentito dalla zona \textit{lan}
@@ -82,8 +90,8 @@ Dopo aver salvato, la pagina del firewall sarà:
     \label{fig:luci-firewall-end}
 \end{figure}
 
-\section{Aggiunta dell'interfaccia \textit{tun0} alla zona firewall \textit{vpn}}
-\label{sec:aggiunta-interfaccia-tun0-zona-vpn}
+\subsection{Aggiunta dell'interfaccia \textit{tun0} alla zona firewall \textit{vpn} \ok}
+\label{subsec:aggiunta-interfaccia-tun0-zona-vpn}
 
 Per far effettivamente funzionare la zona firewall aggiunta nella sezione precedente, si deve aggiungere l'interfaccia relativa alla VPN (\textit{tun0}) alla zona \textit{vpn}.
 
@@ -92,12 +100,12 @@ Dato che l'interfaccia \textit{tun0} non è presente in LuCI, la si deve creare 
 Quindi nella sezione \textit{interfaces}, si deve aggiungere una nuova interfaccia con le seguenti opzioni:
 
 \begin{itemize}
-    \item Name: tun0
-    \item Proto: static
-    \item Device: tun0
-    \item ipv4 address: 10.8.0.254
-    \item ipv4 netmask: 255.255.255.0
-    \item Assign firewall zone: vpn
+    \item \bf{Name}: tun0
+    \item \bf{Proto}: static
+    \item \bf{Device}: tun0
+    \item \bf{ipv4 address}: 10.8.0.254
+    \item \bf{ipv4 netmask}: 255.255.255.0
+    \item \bf{Assign firewall zone}: vpn
 \end{itemize}
 
 \begin{figure}[H]
@@ -118,13 +126,14 @@ Quindi nella sezione \textit{interfaces}, si deve aggiungere una nuova interfacc
     \caption{Assegnazione interfaccia \textit{tun0} alla zona firewall \textit{vpn} tramite interfaccia LuCI}
 \end{figure}
 
-A questo punto i pacchetti provenienti dalla lan del \it{Router} vengono inoltrati correttamente nella VPN, ma i device nella VPN non hanno una rotta verso la rete interna del router. Quindi in questo momento la comunicazione è monodirezionale.
+A questo punto i pacchetti provenienti dalla lan del \it{Router} vengono inoltrati correttamente nella VPN, ma gli Host nella VPN non hanno una rotta verso la rete interna del router. Quindi in questo momento la comunicazione è mono direzionale.
 
 Possiamo vederlo praticamente con un test:
 
+\setlist{nolistsep}
 \begin{itemize}
-    \item l'host-domotico effettua il ping verso il client
-    \item il \textit{Router} è in ascolto sull'interfaccia \textit{tun0} con \code{tcpdump}
+    \item l'host-domotico effettua il ping verso il client;
+    \item il \textit{Router} è in ascolto sull'interfaccia \textit{tun0} con \code{tcpdump};
 \end{itemize}
 
 \begin{bashcode}{Host-domotico}{}
@@ -143,7 +152,7 @@ $ tcpdump -i tun0
 Si vede come il pacchetto ICMP \textit{echo request} venga correttamente inoltrato nella VPN dal \textit{Router}, ma il \code{ping} fallisce poiché che non vi è nessun \textit{echo reply} dal \textit{Client}. Questi problemi verranno risolti prossima sezione.
 
 
-\section{Modifiche alla configurazione OpenVPN del \textit{Server}}
+\section{Modifiche alla configurazione OpenVPN del \textit{Server} }
 \label{sec:hosts-openvpn-server}
 
 Per instaurare una comunicazione bidirezionale tra \textit{host-domotico} e \textit{Client} è necessario che:
@@ -152,6 +161,8 @@ Per instaurare una comunicazione bidirezionale tra \textit{host-domotico} e \tex
     \item il \textit{Server OpenVPN} sia consapevole che il \textit{Router} vuole esporre una sua sottorete verso la VPN
     \item i client della VPN abbiano l'opportuna rotta per raggiungere la sottorete dove si trova l'\textit{host-domotico}
 \end{enumerate}
+
+\todo[metti le citazioni sulle opzioni]
 
 Per il punto 1 è necessario aggiungere l'opzione \code{iroute} nel file \\\code{/etc/openvpn/server/ccd/router}, creato in sezione \ref{sec:static-ip-router}:
 
@@ -218,7 +229,7 @@ Supponiamo di poter seguire il percorso del pacchetto analizzando gli step princ
     \item Il NAT effettua la traduzione, modificando l'IP e la porta del pacchetto esterno e lo inoltra all'interfaccia \textit{wan} del \textit{Router}.
     
 
-    \item Il \textit{Router} riceve il pacchetto e lo decifra. Vedendo che il pacchetto è destinato alla subnet \code{192.168.130.0/24} lo inoltra alla sua \textit{lan} (sezione \ref{sec:creazione-firewall-zone-vpn} e \ref{sec:aggiunta-interfaccia-tun0-zona-vpn}). Il pacchetto interno viene quindi inoltrato verso l'\textit{host-domotico} (\code{192.168.130.2}).
+    \item Il \textit{Router} riceve il pacchetto e lo decifra. Vedendo che il pacchetto è destinato alla subnet \code{192.168.130.0/24} lo inoltra alla sua \textit{lan} (sezione \ref{subsec:creazione-firewall-zone-vpn} e \ref{subsec:aggiunta-interfaccia-tun0-zona-vpn}). Il pacchetto interno viene quindi inoltrato verso l'\textit{host-domotico} (\code{192.168.130.2}).
     
     \item Il \textit{host-domotico} riceve il pacchetto e legge il contenuto, vedendo che si trtta di ICMP \textit{echo request} provvede a costruire una risposta ICMP \textit{echo reply} e la invia al \textit{Client}, invertendo sorgente e destinazione del pacchetto che aveva ricevuto.
 

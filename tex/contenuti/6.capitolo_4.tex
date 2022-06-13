@@ -34,11 +34,11 @@ Continuando a seguire un approccio incrementale, ignoriamo per ora gli \textit{h
 
 L'obbiettivo di questo capitolo è di configurare il \textit{Router 4G} e il \textit{Server} in modo da poter instaurare un canale di comunicazione tra \textit{Router} e \textit{Client}, raggiungendo una topologia virtuale descritta in fig.~\ref{fig:conf-final-router}.
 
-\section{Prerequisiti per la configurazione del \textit{Router} \todo[molto male da sistemare]}
+\section{Prerequisiti per la configurazione del \textit{Router} \ok}
 
-La configurazione del \it{Router} verrà effettuata sia via shell sia via interfaccia grafica, ci si deve assicurare quindi che sia installata (sezione \ref{subsec:luci-web-interface}).
+La configurazione del \it{Router} verrà effettuata sia via shell, sia via interfaccia grafica LuCI, ci si deve assicurare quindi che sia installata (sezione \ref{subsec:luci-web-interface}).
 
-Di default OpenVPN non è presente, lo si può installare con:
+Di default OpenVPN non è presente su OpenWRT, ma lo si può installare usando il package manager. Installiamo inoltre il \href{https://openwrt.org/docs/guide-user/services/vpn/openvpn/client-luci}{plugin di OpenVPN per LuCI}, \code{luci-app-openvpn}.
 
 \begin{bashcode}{Router 4g}{}
 $ opkg update
@@ -97,12 +97,15 @@ Ora possiamo abilitarla usando luci:
 Alla riga "custom\_config" Si deve mettere il check su \textit{enabled} e premere start, per poi salvare le modifiche. In questo modo il router si connetterà automaticamente alla VPN anche se venisse riavviato.
 
 
-\section{Abilitazione del Client-to-Client nel server OpenVPN \todo[da rileggere]}
+\section{Abilitazione del Client-to-Client nel server OpenVPN \ok}
 
 In questo momento i client della VPN, \code{client1} e \code{router}, possono comunicare tra loro. Ma lo fanno passando per la network stack del \textit{Server}, possiamo verificarlo con le utility \href{https://en.wikipedia.org/wiki/Ping_(networking_utility)}{\it{ping}} e \href{https://en.wikipedia.org/wiki/Tcpdump}{\it{tcpdump}}. 
 
 Eseguiamo ad esempio un test in cui:
-\begin{itemize}
+
+\setlist{nolistsep}
+\begin{itemize}%[noitemsep]
+    \itemsep0.2em
     \item \code{router} effettua il \it{ping} verso \code{client1} 
     \item \code{server} è in ascolto sull'interfaccia \code{tun0} usando \code{tcpdump}
 \end{itemize}
@@ -111,10 +114,9 @@ Eseguiamo ad esempio un test in cui:
 $ ping -c1 10.8.0.2                                 # client1
 PING 10.8.0.2 (10.8.0.2): 56 data bytes
 64 bytes from 10.8.0.2: seq=0 ttl=63 time=0.519 ms
-64 bytes from 10.8.0.2: seq=1 ttl=63 time=0.501 ms
 \end{bashcode}
 
-Il \code{ping} ha successo, quindi è possibile una comunicazione bidirezionale tra \\\code{router} e \code{client1}.
+Il \code{ping} ha successo, quindi è possibile una comunicazione bidirezionale tra \code{router} e \code{client1}.
 
 Dal server possiamo vedere un'analisi dei pacchetti che passano attraverso l'interfaccia \code{tun0} usando la utility \code{tcpdump}:
 
@@ -134,30 +136,29 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 16:20:51.791374 IP 10.8.0.2 > 10.8.0.3: ICMP echo reply, id 1759, seq 1, length 64
 \end{comment}
 
-Si vede che ogni richiesta viene duplicata, la prima è in entrata sulla network stack del \textit{Server} e la seconda in uscita. Ciò perchè il forwarding del pacchetto viene effettuato dal layer IP del \it{Server}, e dato che \code{tcpdump} è in ascolto sull'interfaccia \code{tun0}, il pacchetto viene letto 2 volte. Si può vedere una rappresentazione del percorso del pacchetto nella network stack del \it{Server} in fig.~\ref{fig:diag2-client-to-client-off}, si vede come il pacchetto passa 2 volte per l'interfaccia \code{tun0}, punto 2 e 5. 
+Si vede però che ogni richiesta viene duplicata, la prima è in entrata sulla network stack del \textit{Server} e la seconda in uscita. Ciò perché il forwarding del pacchetto viene effettuato dal layer IP del \it{Server}, e dato che \code{tcpdump} è in ascolto sull'interfaccia \code{tun0}, il pacchetto viene letto 2 volte. Si può vedere una rappresentazione del percorso del pacchetto nella network stack del \it{Server} in fig.~\ref{fig:diag2-client-to-client-off}, si vede come il pacchetto passa 2 volte per l'interfaccia \code{tun0}, punto 2 e 5. 
 
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=1\linewidth]{immagini/diag2-client-to-client-off}
+        \includegraphics[width=0.8\linewidth]{immagini/diag2-client-to-client-off}
         \caption{Client-to-client off}
         \label{fig:diag2-client-to-client-off}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \includegraphics[width=1\linewidth]{immagini/diag2-client-to-client-on}
+        \includegraphics[width=0.8\linewidth]{immagini/diag2-client-to-client-on}
         \caption{Client-to-client on}
         \label{fig:diag2-client-to-client-on}
     \end{subfigure}
     \cprotect\caption{Effetto del \code{client-to-client} sulla network stack del \textit{Server} \cite{client-to-client}.}
-    
 \end{figure}
 
 
-Per evitare questo traffico possiamo abilitare l'opzione \code{client-to-client} nel \it{Server OpenVPN}. In questo modo il layer OpenVPN effettuerà direttamente il forwarding tra i client della VPN. Graficamente si vede in fig.~\ref{fig:diag2-client-to-client-on} come il pacchetto viene subito inoltrato e non entra affatto nella network stack del server. Ciò comporta, come effetto collaterale, che i pacchetti tra client della VPN non sono soggetti alle regole di firewall imposte nel \it{Server}.
+Per evitare questo traffico possiamo abilitare l'opzione \code{client-to-client} nel \it{Server OpenVPN}. In questo modo il layer OpenVPN effettuerà direttamente il forwarding tra i client della VPN. Graficamente si vede in fig.~\ref{fig:diag2-client-to-client-on} come il pacchetto viene subito inoltrato e non entra affatto nella network stack del server. Ciò comporta, come effetto collaterale, che i pacchetti tra client della VPN non siano soggetti alle regole di firewall imposte nel \it{Server}.
 
 Andiamo quindi a modificare la configurazione del \it{Server OpenVPN}:
 

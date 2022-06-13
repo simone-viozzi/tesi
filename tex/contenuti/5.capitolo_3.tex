@@ -68,9 +68,7 @@ Il pacchetto \textit{easy-rsa} è presente nei repository ufficiali di ubuntu e 
 ln è un comando dei sistemi operativi Unix e Unix-like, e più in generale dei sistemi POSIX[1], che crea collegamenti simbolici e collegamenti fisici a file e directory. Se non diversamente specificato, crea collegamenti fisici. 
 \end{comment}
 
-\todo[va bene sta frase???]
-
-Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, ma è sconsigliato usarlo per motivi di sicurezza. 
+Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, ma è sconsigliato usarla per motivi di sicurezza. 
 
 Quindi si deve spostare/collegare questo percorso in una cartella di un utente non privilegiato, andiamo quindi a crearne un collegamento nella home dell'utente \code{ubuntu}:
 
@@ -282,9 +280,7 @@ Your new CA certificate file for publishing is at:
 /home/ubuntu/openvpn-ca/pki/ca.crt
 \end{bashcode}
 
-\todo[criptare o cifrare?]
-
-Eseguendo il comando verrà chiesto di inserire una passphrase, che verrà usata per criptare la chiave privata appena generata. Se non si vuole criptare la chiave privata, basta lasciare il campo vuoto. Il secondo prompt è relativo al \textit{Common Name} da dare alla certificazione, in questo caso è stato lasciato il valore di default \code{Easy-RSA CA}.
+Eseguendo il comando verrà chiesto di inserire una passphrase, che verrà usata per cifrare la chiave privata appena generata. Se non si vuole cifrare la chiave privata, basta lasciare il campo vuoto. Il secondo prompt è relativo al \textit{Common Name} da dare alla certificazione, in questo caso è stato lasciato il valore di default \code{Easy-RSA CA}.
 
 \subsection{Configurazione della PKI di OpenVPN \ok} % step 3, 4
 \label{sec:pki_openvpn}
@@ -443,14 +439,11 @@ $ cd ~/openvpn-pki/
 $ ./easyrsa gen-req client1 nopass
 \end{bashcode}
 
-Con questo comando verranno creati 2 file: \code{pki/private/client1.key} costituisce la chiave privata del certificato e va copiata nella directory creata in code:~\ref{code:clients-config-folder}; 
-
-\todo[serve sto cp?]
-\begin{bashcode}{Server}{}
-$ cp pki/private/client1.key ~/client-configs/keys/
-\end{bashcode}
-
-\code{pki/reqs/client1.req} è la \textit{Certificate Signing Request} che deve essere copiata nel \textit{Server CA} per essere firmata.
+Con questo comando verranno creati 2 file: 
+\begin{itemize}
+    \item \code{pki/private/client1.key} costituisce la chiave privata del certificato e va copiata nella cartella creata in code:~\ref{code:clients-config-folder};
+    \item \code{pki/reqs/client1.req} è la \textit{Certificate Signing Request} che deve essere copiata nel \mbox{\textit{Server CA}} per essere firmata.
+\end{itemize}
 
 Supponiamo di aver copiato il file \code{client1.req} nella cartella \code{tmp} del \textit{Server CA}, possiamo quindi importarla e firmarla (passaggi 2 e 3 fig.\ref{fig:diag-firma_certificato_client}):
 
@@ -597,7 +590,7 @@ $ sudo sysctl -p
 net.ipv4.ip_forward = 1
 \end{bashcode}
 
-\section{Configurazione del firewall}
+\section{Configurazione del firewall \ok}
 \label{sec:firewall}
 
 Sulla VPS scelta (sezione \ref{subsec:vps-ovhcloud}) è presente il firewall \code{firewalld}, ma per una più semplice configurazione è consigliato di disattivarlo e installare \code{ufw}:
@@ -736,7 +729,7 @@ Con il comando \code{systemctl status} si può verificare lo stato del servizio,
 In caso il servizio fallisse ad avviarsi si avrà un breve log con \code{systemctl status}, oppure si possono leggere i log completi usando \code{journalctl -u openvpn-server@server.service}.
 
 
-\section{Test della configurazione \ok \todo[si può espandere in qualche modo?]}
+\section{Test della configurazione \ok}
 \label{sec:test_config_server}
 
 Ora che la configurazione per questo capitolo è conclusa possiamo testare che tutto funzioni correttamente.
