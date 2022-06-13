@@ -135,13 +135,14 @@ PING 10.8.0.2 (10.8.0.2) 56(84) bytes of data.
 
 \begin{bashcode}{Router}{}
 $ tcpdump -i tun0
-15:33:38.363082 IP 192.168.130.3 > 10.8.0.2: ICMP echo request, id 17, seq 1, length 64
+15:33:38.363082 IP 192.168.130.2 > 10.8.0.2: ICMP echo request, id 17, seq 1, length 64
 \end{bashcode}
 
 Si vede come il pacchetto ICMP \it{echo request} venga correttamente inoltrato nella VPN dal \it{Router}, ma il ping fallisce poiché che non vi è nessun \it{echo reply} dal \it{client}. Questi problemi verranno risolti prossima sezione.
 
 
 \section{Modifiche alla configurazione OpenVPN del \textit{Server}}
+\label{sec:hosts-openvpn-server}
 
 Per instaurare una comunicazione bidirezionale tra \textit{host-domotico} e \textit{client} è necessario che:
 
@@ -176,22 +177,54 @@ $ ip route
 192.168.130.0/24 via 10.8.0.1 dev tun0
 \end{bashcode}
 
-\section{Test della configurazione \todo[da scrivere di più per i test, sono importanti, forse mettere qualcosa sul troubble shooting... mhhh] \workinprogress}
+\section{Test e analisi della configurazione \workinprogress}
 
-Per testare la connessione tra \textit{client} e \textit{host-domotico} usiamo sia \code{ping} che \code{tracepath}, possiamo inoltre usare \code{tcpdump} sul \textit{Server} e \textit{Router} per vedere il percorso dei pacchetti.
+Ora che la configurazione della topologia è conclusa, raggiungendo l'obbiettivo posto in sezione \ref{sec:overview-goal}, dobbiamo testarla approfonditamente per confermare che tutto funzioni come previsto. Nei vari test verranno usate le utility \code{ping}, \code{tracepath} e \code{tcpdump} in vari punti della topologia, in modo da valutare il percorso reale e virtuale dei pacchetti.
+
+Supponiamo che il \it{Client} voglia comunicare con un \it{host-domotico}, in questo caso la \it{raspberry pi} che ha IP \code{192.168.130.2}, e che il dato da trasmettere sia un ICMP \it{echo request}, facente parte di un \code{ping}.
+
+Quindi il \it{Client} fa partire il ping:
+
+\begin{bashcode}{Client}{}
+$ ping -c 1 192.168.130.2
+\end{bashcode}
+
+Supponiamo di poter seguire il percorso del pacchetto analizzando gli step principali, in questo caso consideriamo 6 step:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{immagini/diag2-test_real}
+    \caption{Diagramma di test realizzato con il \textit{Router} e il \textit{Client}}
+    \label{fig:diag-test-real}
+\end{figure}
+
+\begin{enumerate}
+    \item Il \it{Client} (\code{10.8.0.2}) effettua il ping verso l'\it{host-domotico} (\code{192.168.130.2}). Dato che il \it{Client} ha la subnet \code{192.168.130.0/24} nella sua tabella di routing (sezione \ref{sec:hosts-openvpn-server}) viene costruito un pacchetto di tipo ICMP \it{echo request} che ha come IP sorgente \code{10.8.0.2} e come destinazione \code{192.168.130.2}. A questo punto il client OpenVPN cifra e incapsula il pacchetto in un ulteriore pacchetto IP (sezione \ref{subsec:openvpn-networking}), che questa volta ha come IP di destinazione \code{51.178.141.119}, cioè l'ip pubblico del \it{Server}. A questo punto il pacchetto può essere trasmesso attraverso internet, esce quindi dal \it{Client} e raggiunge il \it{Server}.
+    \item Il \it{Server} riceve il pacchetto, vedendo che si tratta di un pacchetto di tipo OpenVPN 
+\end{enumerate}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{immagini/diag2-test_virtual}
+    \caption{Diagramma di test virtuale}
+    \label{fig:diag-test_virtual}
+\end{figure}
+
+
 
 Vediamo quindi un ping dal client verso l'\textit{host-domotico}, con server e router in ascolto sull'interfaccia tun0:
 
-\begin{bashcode}{Client}{}
-$ ping -c 1 192.168.130.3
-PING 192.168.130.3 (192.168.130.3) 56(84) bytes of data.
-64 bytes from 192.168.130.3: icmp_seq=1 ttl=63 time=0.643 ms
 
---- 192.168.130.3 ping statistics ---
+\begin{bashcode}{Client}{}
+$ ping -c 1 192.168.130.2
+PING 192.168.130.2 (192.168.130.2) 56(84) bytes of data.
+64 bytes from 192.168.130.2: icmp_seq=1 ttl=63 time=0.643 ms
+
+--- 192.168.130.2 ping statistics ---
 1 packets transmitted, 1 received, 0% packet loss, time 0ms
 rtt min/avg/max/mdev = 0.643/0.643/0.643/0.000 ms
 \end{bashcode}
-
 
 \begin{bashcode}{Server}{}
 $ tcpdump -i tun0
@@ -203,8 +236,8 @@ Il server non ha visto traffico poiché ha l'opzione \code{client-to-client} abi
 \begin{bashcode}{Router}{}
 $ tcpdump -i tun0
 listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
-10:44:07.228387 IP 10.8.0.2 > host-domotico: ICMP echo request, id 12, seq 1, length 64
-10:44:07.228550 IP host-domotico > 10.8.0.2: ICMP echo reply, id 12, seq 1, length 64
+10:44:07.228387 IP 10.8.0.2 > 192.168.130.2: ICMP echo request, id 12, seq 1, length 64
+10:44:07.228550 IP 192.168.130.2 > 10.8.0.2: ICMP echo reply, id 12, seq 1, length 64
 \end{bashcode}
 
 Il router vede il pacchetto e lo instrada verso l'host corretto.
@@ -226,19 +259,19 @@ e il router vede:
 \begin{bashcode}{Router}{}
 $ tcpdump -i tun0
 listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
-11:56:10.469901 IP host-domotico > 10.8.0.2: ICMP echo request, id 14, seq 1, length 64
-11:56:10.470230 IP 10.8.0.2 > host-domotico: ICMP echo reply, id 14, seq 1, length 64
+11:56:10.469901 IP 192.168.130.2 > 10.8.0.2: ICMP echo request, id 14, seq 1, length 64
+11:56:10.470230 IP 10.8.0.2 > 192.168.130.2: ICMP echo reply, id 14, seq 1, length 64
 \end{bashcode}
 
 % TODO da espandere
 Possiamo inoltre usare \code{tracepath} per vedere gli hop:
 
 \begin{bashcode}{Client}{}
-$ tracepath 192.168.130.3
+$ tracepath 192.168.130.2
 1?: [LOCALHOST]                      pmtu 1500
 1:  10.8.0.254                       0.471ms
 1:  10.8.0.254                       0.473ms
-2:  192.168.130.3                    0.567ms reached
+2:  192.168.130.2                    0.567ms reached
     Resume: pmtu 1500 hops 2 back 2
 \end{bashcode}
 
