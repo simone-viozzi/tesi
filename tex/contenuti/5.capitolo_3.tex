@@ -9,29 +9,23 @@ In questo capitolo andremo a installare e configurare \textit{OpenVPN server} su
 
 Per facilitare la configurazione e il testing, supponiamo di partire da una topologia che contiene solo il server OpenVPN e un generico client. Come da specifiche, il Server deve avere a disposizione un'IP pubblico (sezione \ref{subsec:vps-ovhcloud}); e il client deve essere il più generico possibile, lo supponiamo quindi sotto a un NAT (sezione \ref{subsec:macchina-cliente}).
 
-\todo[non supponiamo, da cambiare]
-
-Supponiamo inoltre che l'IP pubblico del Server sia \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
+Sappiamo inoltre che l'IP pubblico del Server è \code{51.178.141.119}, si avrà quindi una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
 
 \newsavebox{\myimage}
 \begin{figure}[H]
     \centering%
-    \savebox{\myimage}{
-        \includegraphics[width=0.45\textwidth]{immagini/diag-simple_ips}
-    }
-    \begin{subfigure}{0.4\textwidth}
+    
+    \begin{subfigure}{0.49\textwidth}
         \centering
-        \usebox{\myimage}
-        \caption{Configurazione di partenza per questo capitolo.}
+        \includegraphics[width=0.8\textwidth]{immagini/diag-simple_ips}
+        \caption{Configurazione di partenza per questo capitolo.\newline}
         \label{fig:diag-simple_ips}
     \end{subfigure}
     \hfill%
-    \begin{subfigure}{0.5\textwidth}
+    \begin{subfigure}{0.49\textwidth}
         \centering
-        \raisebox{\dimexpr.5\ht\myimage-.5\height\relax}{
-            \includegraphics[height=1.15\linewidth]{immagini/diag-simple_ips_vpn}
-        }
+        \includegraphics[width=0.8\textwidth]{immagini/diag-simple_ips_vpn}
         \caption{Configurazione virtuale da raggiungere per questo capitolo.}
         \label{fig:diag-simple_ips_vpn}
     \end{subfigure}%

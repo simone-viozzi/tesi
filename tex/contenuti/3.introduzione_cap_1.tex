@@ -2,7 +2,7 @@
 \chapter{Introduzione}
 
 
-\section{TCP/IP e modello a strati \ok \todo[non ho minimamente messo la distinzione ip pubblico / privato]}
+\section{TCP/IP e modello a strati \ok}
 
 
 \begin{comment}
@@ -166,13 +166,11 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 \end{enumerate}
 
-\subsection{Incapsulamento \workinprogress}
+\subsection{Incapsulamento \ok}
 
-Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vedere una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
+Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vederne una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
 
-\todo[togli ripetizione di possiamo vedere]
-
-Possiamo vedere l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web \it{https}:
+Possiamo inoltre esaminare l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web \it{https}:
 
 \begin{bashcode}{Wireshark}{tls-wireshark}
 Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
@@ -187,8 +185,6 @@ Length: 34
 Encrypted Application Data: 389bf9516cce567d0d90ef62ba2a87376091fedb7f66f3b9e60e45a39376b1ae667a
     [Application Data Protocol: http-over-tls]
 \end{bashcode}
-
-\todo[da perfezionare]
 
 Quindi andando ad analizzare lo stack di protocolli si vede:
 
@@ -212,7 +208,7 @@ Possiamo vedere graficamente il pacchetto descritto in code:\ref{code:tls-wiresh
 \end{figure}
 
 
-\subsection{IP Network Address Translator (NAT) \workinprogress}
+\subsection{IP Network Address Translator (NAT) \ok}
 
 \begin{comment}
 https://datatracker.ietf.org/doc/html/rfc2663
@@ -251,8 +247,10 @@ unique IP addresses are assigned according to current CIDR address
 allocation schemes.
 \end{comment}
 
-% ok
+\begin{comment}
 Una delle applicazioni più comuni è inserirlo nel gateway di una rete privata domestica, ciò permette di mascherare i dispositivi nella rete privata e far si che la rete esterna veda tutto il traffico attraverso un solo dispositivo, il router.
+\end{comment}
+
 
 \begin{comment}
 svantaggi del nat
@@ -261,17 +259,13 @@ svantaggi del nat
     - cita nat hole qualcosa
 \end{comment}
 
-\todo[da qua in poi è da rieleggere sta molto work in progress]
-
 Dato il funzionamento del NAT è intrinsecamente impossibile comunicare dall'esterno verso un dispositivo al di sotto del NAT a meno che non venga opportunamente configurato per consentirlo.
 
 
-Prendiamo in esempio un NAT di tipo \textit{easyip}, in questo caso un'intera sottorete viene mappata su un singolo ip esterno. Ogni volta che un'host della rete tenta di comunicare con un server esterno, nel NAT viene salvata la relazione tra chi ha inviato la richiesta e su quale porta esterna è stata inviata verso il server. Data questa relazione il NAT è in grado di re-inoltrare all'host corretto la risposta del server. Si vede quindi che la comunicazione attraverso un NAT è possibile solo se viene iniziata da un'host della rete privata, poichè in caso contrario il NAT non potrebbe conoscere a quale host stiamo tentando di comunicare e quindi semplicemente scarterebbe il pacchetto.
+Prendiamo in esempio un NAT di tipo \textit{easyip}, in questo caso un'intera sottorete viene mappata su un singolo IP esterno. Ogni volta che un'host della rete tenta di comunicare con un server esterno, nel NAT viene salvata la relazione tra chi ha inviato la richiesta e su quale porta esterna è stata inviata verso il server. Data questa relazione il NAT è in grado di re-inoltrare all'host corretto la risposta del server. Si vede quindi che la comunicazione attraverso un NAT è possibile solo se viene iniziata da un'host della rete privata, poiché in caso contrario il NAT non potrebbe conoscere a quale host stiamo tentando di comunicare e quindi semplicemente scarterebbe il pacchetto.
 
 
-
-
-\subsubsection{Carrier Grade NAT (CG-NAT)}
+\subsubsection{Carrier Grade NAT (CG-NAT) \ok}
 \begin{comment}
 https://en.wikipedia.org/wiki/Carrier-grade_NAT
     Carrier-grade NAT (CGN or CGNAT), also known as large-scale NAT (LSN), is a type of Network address translation (NAT) for use in IPv4 network design. With CGNAT, end sites, in particular residential networks, are configured with private network addresses that are translated to public IPv4 addresses by middlebox network address translator devices embedded in the network operator's network, permitting the sharing of small pools of public addresses among many end sites. This shifts the NAT function and configuration thereof from the customer premises to the Internet service provider network (though "conventional" NAT on the customer premises will often be used additionally).
@@ -349,7 +343,7 @@ L'autenticazione può essere eseguita usando una pre-shared key, un sistema basa
 % ok
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
 
-\subsection{Networking \workinprogress}
+\subsection{Networking \todo[da riscrivere l'ultima parte]}
 \label{subsec:openvpn-networking}
 
 \begin{comment}
@@ -372,12 +366,29 @@ OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP 
 
 La configurazione del server permette di impostare opzioni che modificano la configurazione di rete del server o dei client, ciò permette ad esempio di aggiungere una rotta alla tabella di routing dei client nel momento in cui si connettono alla VPN.
 
+
 % TODO da riscrivere
-Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare un tunnel IP di livello 3 (TUN), o Ethernet livello 2 (TAP).
+Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare sia un tunnel IP di livello 3 (TUN), sia Ethernet livello 2 (TAP).
 
 \todo[da rivedere!]
 
-In figura \ref{fig:incapsulamento-openvpn} possiamo vedere l'incapsulamento del pacchetto OpenVPN descritto in code:~\ref{code:openvpn-wireshark}. Si vede inoltre come il contenuto del campo data del pacchetto OpenVPN contenga al suo interno un pacchetto IP, ciò non è visibile dall'esterno perchè il tutto è opportunamente cifrato.
+\begin{comment}
+il tunnel si realizza come si vede in figura
+
+il pacchetto interno è cifrato e incapsulato in quello esterno
+
+quello interno ha ip relativi alla subnet della vpn
+
+quello esterno ha gli ip delgli hosts
+
+il pacchetto interno può essere decifrato solo da host della vpn
+\end{comment}
+
+In figura \ref{fig:incapsulamento-openvpn} possiamo vedere l'incapsulamento del pacchetto OpenVPN descritto in code:~\ref{code:openvpn-wireshark}, compreso di un esempio del contenuto cifrato. 
+
+Si può vedere come il campo data del protocollo OpenVPN contenga al suo interno pacchetto IP/Ethernet cifrato, in questo modo 
+
+Si vede inoltre come il contenuto del campo data del pacchetto OpenVPN contenga al suo interno un pacchetto IP, ciò non è visibile dall'esterno perché il tutto è opportunamente cifrato.
 
 \begin{figure}[h]
     \centering

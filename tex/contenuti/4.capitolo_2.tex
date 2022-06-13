@@ -1,13 +1,11 @@
 
 
-\chapter{Overview dell'architettura e delle componenti utilizzate \todo[da rivedere è un disastro]}
+\chapter{Overview dell'architettura e delle componenti utilizzate \workinprogress}
 
 \label{ch:overview}
 
-\section{Obbiettivo da ottenere \workinprogress}
+\section{Obbiettivo da ottenere \workinprogress \todo[la sezione è da espandere! in qualche modo]}
 \label{sec:overview-goal}
-
-\todo[la sezione è da espandere! in qualche modo]
 
 In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'azienda \textbf{Esse-ti S.R.L.} ci è stato esposto un progetto che consiste nel:
 
@@ -51,13 +49,10 @@ La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 	\label{fig:schema_architettura_virtuale}
 \end{figure}
 
-\newpage
-\section{Specifiche dei componenti}
 
-\todo[declassare da subsection a qualco di più basso]
+\section{Specifiche dei componenti \todo[va bene senza intro cosi? da rileggere]}
 
-
-\subsection{Esse-ti 4G.Router \workinprogress}
+\subsubsection{Esse-ti 4G.Router \workinprogress}
 
 Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link}).
 
@@ -71,7 +66,6 @@ Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funziona
 
 Per l'implementazione di questa architettura sono necessarie solo un sub-set delle specifiche:
 
-
 \begin{itemize}
 	\item Access Point wireless per offrire connettività Internet Wi-Fi
  
@@ -80,10 +74,10 @@ Per l'implementazione di questa architettura sono necessarie solo un sub-set del
 	\item Gateway telefonico per consentire l’invio e la ricezione di chiamate attraverso la rete 4G LTE/UMTS/GSM a telefoni fissi
 \end{itemize}
 
-\todo[meglio ma si può fare meglio]
-
+% ok
 Il sistema operativo del router è una versione personalizzata di OpenWRT, le funzionalità sono le stesse della versione OpenSource ma la grafica è leggermente differente ed è preconfigurato con le impostazioni per la gestione del 4G.
 
+% ok
 La configurazione del dispositivo può essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
 
 \begin{figure}[H]
@@ -117,14 +111,16 @@ La configurazione del dispositivo può essere fatta sia da terminale, entrando i
 
 Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \textit{Router}.
 
-\subsection{VPS OVHCloud}
+\subsubsection{VPS OVHCloud}
 \label{subsec:vps-ovhcloud}
 
-La VPS ha il solo vincolo di dover avere un'ip pubblico e una connessione a internet abbastanza veloce. Dovrà infatti sopportare un traffico simmetrico in upload / download.
+La VPS ha il solo vincolo di dover avere un'IP pubblico e una connessione a internet abbastanza veloce. Dovrà infatti sopportare un traffico simmetrico in upload/download.
 
 Per la realizzazione della topologia è stata selezionata una macchina VPS del provider \textit{OVHCloud}, con le seguenti caratteristiche:
 
-\begin{itemize}
+\setlist{nolistsep}
+\begin{itemize}[noitemsep]
+	\itemsep0em
 	\item 2 core virtuali
 	\item 4Gb di memoria ram
 	\item 80Gb di storage NVMe
@@ -135,22 +131,17 @@ Per la realizzazione della topologia è stata selezionata una macchina VPS del p
 
 Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \textit{Server}.
 
-\subsection{Host domotico \workinprogress}
+\subsubsection{Host domotico}
 
-L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'host domotico potrebbe essere un qualunque dispositivo di rete, una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una raspberry pi.
+L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'\it{host-domotico} potrebbe essere un qualunque dispositivo di rete, ad es: una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una raspberry pi.
 
-Per simulare un'host domotico ed effettuare le varie operazioni di testing è stata usata una \textit{raspberry pi}, con le utility \textit{ping} e \textit{tracepath}.
+Per simulare un'\it{host-domotico} ed effettuare le varie operazioni di testing è stata usata una \textit{raspberry pi}, con le utility \textit{ping} e \textit{tracepath}.
 
-\subsection{Macchina del cliente \workinprogress}
+\subsubsection{Macchina del cliente}
 \label{subsec:macchina-cliente}
 
-Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica. Data la scelta di usare OpenVPN come provider VPN, e dato che OpenVPN è cross-platform, la macchina del cliente non ha specifiche di sistema operativo. L'unica necessità è di avere il client OpenVPN installato sul sistema, ad esempio:
+Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica, per questo è stato scelto di usare OpenVPN come provider VPN, che essendo cross-platform non ha vincoli di sistema operativo.
 
-\todo[don't like forse lo tolgo]
-
-\begin{itemize}
-	\item con sistema operativo Windows si deve scaricare l'eseguibile dal \href{https://openvpn.net/client-connect-vpn-for-windows/}{sito ufficiale}
-	\item su linux è sufficiente cercare nei repository ufficiali della distribuzione che si sta usando, es. Ubuntu: \code{apt-get install openvpn}.
-\end{itemize}
+Si farà riferimento a una generica macchina di un cliente come \it{Client}.
 
 
