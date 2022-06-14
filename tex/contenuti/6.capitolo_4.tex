@@ -98,14 +98,13 @@ Alla riga "custom\_config" Si deve mettere il check su \textit{enabled} e premer
 
 
 \section{Abilitazione del Client-to-Client nel server OpenVPN \ok}
+\label{sec:client-to-client}
 
 In questo momento i client della VPN, \code{client1} e \code{router}, possono comunicare tra loro. Ma lo fanno passando per la network stack del \textit{Server}, possiamo verificarlo con le utility \href{https://en.wikipedia.org/wiki/Ping_(networking_utility)}{\textit{ping}} e \href{https://en.wikipedia.org/wiki/Tcpdump}{\textit{tcpdump}}. 
 
 Eseguiamo ad esempio un test in cui:
 
-\setlist{nolistsep}
-\begin{itemize}%[noitemsep]
-    \itemsep0.2em
+\begin{itemize}[nosep, itemsep=1ex]
     \item \code{router} effettua il \textit{ping} verso \code{client1} 
     \item \code{server} è in ascolto sull'interfaccia \code{tun0} usando \code{tcpdump}
 \end{itemize}
