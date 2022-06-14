@@ -119,9 +119,7 @@ Quindi nella sezione \textit{interfaces}, si deve aggiungere una nuova interfacc
     \caption{Assegnazione interfaccia \textit{tun0} alla zona firewall \textit{vpn} tramite interfaccia LuCI}
 \end{figure}
 
-A questo punto i pacchetti provenienti dalla lan del \textit{Router} vengono inoltrati correttamente nella VPN, ma gli Host nella VPN non hanno una rotta verso la rete interna del router. Quindi in questo momento la comunicazione è mono direzionale.
-
-Possiamo vederlo praticamente con un test:
+A questo punto i pacchetti provenienti dalla lan del \textit{Router} vengono inoltrati correttamente nella VPN, ma gli Host nella VPN non hanno una rotta verso la rete interna del router, perciò la comunicazione risulta ancora mono direzionale. E' possibile verificarlo con un semplice test i cui:
 
 \begin{itemize}[nosep]
     \item l'host-domotico effettua il ping verso il client;
@@ -141,13 +139,13 @@ $ tcpdump -i tun0
 15:33:38.363082 IP 192.168.130.2 > 10.8.0.2: ICMP echo request, id 17, seq 1, length 64
 \end{bashcode}
 
-Si vede come il pacchetto ICMP \textit{echo request} venga correttamente inoltrato nella VPN dal \textit{Router}, ma il \code{ping} fallisce poiché che non vi è nessun \textit{echo reply} dal \textit{Client}. Questi problemi verranno risolti prossima sezione.
+Si vede come il pacchetto ICMP \textit{echo request} venga correttamente inoltrato nella VPN dal \textit{Router}, ma il \code{ping} fallisce poiché che non vi è nessun \textit{echo reply} dal \textit{Client}.
 
 
-\section{Modifiche alla configurazione OpenVPN del \textit{Server} }
+\section{Modifiche alla configurazione OpenVPN del \textit{Server}}
 \label{sec:hosts-openvpn-server}
 
-Per instaurare una comunicazione bidirezionale tra \textit{host-domotico} e \textit{Client} è necessario che:
+Come visto nella sezione precedente, la comunicazione tra \textit{host-domotico} e \textit{Client} è ancora mono direzionale. Per renderla bidirezionale, si deve modificare la configurazione del \textit{Server} di OpenVPN facendo in modo che:
 
 \begin{enumerate}
     \item il \textit{Server OpenVPN} sia consapevole che il \textit{Router} vuole esporre una sua sottorete verso la VPN;
@@ -182,9 +180,9 @@ $ ip route
 
 \section{Test e analisi della configurazione \workinprogress}
 
-Ora che la configurazione della topologia è conclusa, raggiungendo l'obbiettivo posto in sezione \ref{sec:overview-goal}, dobbiamo testarla approfonditamente per confermare che tutto funzioni come previsto. 
+Al termine della procedura di configurazione esposta, l'obbiettivo precedentemente fissato in sezione \ref{sec:overview-goal} risulta completamente raggiunto. Ma è opportuno effettuare alcuni test che coprono i casi d'uso più comuni.
 
-Nei vari test verranno usate le utility \code{ping}, \code{tracepath} e \code{tcpdump}, poste in vari punti della topologia, in modo da valutare il percorso reale e virtuale dei pacchetti.
+Nelle procedure di verifica verranno usate le utility \code{ping}, \code{tracepath} e \code{tcpdump}, poste in vari punti della topologia, in modo da valutare il percorso reale e virtuale dei pacchetti.
 
 Supponiamo che il \textit{Client} voglia comunicare con un \textit{host-domotico}, in questo caso la \textit{Raspberry Pi} che ha IP \code{192.168.130.2}, e che il dato da trasmettere sia un ICMP \textit{echo request}, facente parte di un \code{ping}.
 
@@ -226,7 +224,7 @@ $ sudo tcpdump -i ens3 -n port 1194
 \end{bashcode}
     
 
-    \item[3.] Il \textit{Server OpenVPN} vede che il pacchetto è destinato nella subnet \code{192.168.130.0/24}, data la configurazione fatta in sezione \ref{sec:hosts-openvpn-server}, il \textit{Server} sa che deve inoltrarlo al \textit{Router} (\code{10.8.0.254}).
+    \item[3.] Il \textit{Server OpenVPN} verifica che il pacchetto è destinato nella subnet \code{192.168.130.0/24}, data la configurazione fatta in sezione \ref{sec:hosts-openvpn-server}, il \textit{Server} provvederà a inoltrarlo al \textit{Router} (\code{10.8.0.254}).
     
     La comunicazione attraverso il NAT è possibile poiché OpenVPN implementa nel suo protocollo una serie di pacchetti \textit{keepalive} \cite{openvpn-keepalive} tra ogni Host e il Server. Ciò permette al NAT di sapere a quale host della sua rete privata deve inoltrare i pacchetti. 
     
@@ -256,6 +254,7 @@ $ tcpdump -i tun0
 
 \end{enumerate}
 
+\newpage
 Se è stato configurato tutto correttamente il \code{ping} avrà successo:
 \begin{bashcode}{Client}{}
 $ ping -c 1 192.168.130.2
@@ -280,7 +279,7 @@ Considerando solo il percorso del pacchetto interno si ha una semplificazione de
 
 \end{comment}
 
-Possiamo inolte verificare il percorso del pacchetto interno (cifrato) usando la utility \code{tracepath}, che permette di vedere tutti i router che sono presenti tra chi eseque il \it{tracepath} e la destinazione:
+Possiamo inolte verificare il percorso del pacchetto interno (cifrato) usando la utility \code{tracepath}, che permette di vedere l'indirizzo IP di tutti i router che sono presenti tra chi esegue il comando e la destinazione:
 
 \begin{bashcode}{Client}{}
 $ tracepath 192.168.130.2
@@ -293,6 +292,8 @@ $ tracepath 192.168.130.2
 
 Come possiamo vedere l'unico router presente nella topologia virtuale è il \it{Router 4G} (\code{10.8.0.254}).
 
+
+Con questi test possiamo concludere che la topologia sia stata implementata correttamente.
 
 \begin{comment}
 Vediamo quindi un ping dal \textit{Client} verso l'\textit{host-domotico}, con \textit{Server} e \textit{Router} in ascolto sull'interfaccia tun0:
