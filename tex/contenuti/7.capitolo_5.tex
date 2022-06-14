@@ -92,7 +92,7 @@ Dato che l'interfaccia \textit{tun0} non è presente in LuCI, la si deve creare 
 
 Quindi nella sezione \textit{interfaces}, si deve aggiungere una nuova interfaccia con le seguenti opzioni:
 
-\begin{itemize}
+\begin{itemize}[nosep]
     \item \bf{Name}: tun0
     \item \bf{Proto}: static
     \item \bf{Device}: tun0
@@ -194,33 +194,43 @@ Quindi il \textit{Client} fa partire il ping:
 $ ping -c 1 192.168.130.2
 \end{bashcode}
 
-Supponiamo di poter seguire il percorso del pacchetto analizzando gli step principali, in questo caso consideriamo 6 step:
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{immagini/diag2-test_real}
-    \caption{Diagramma di test realizzato con il \textit{Router} e il \textit{Client}}
+    \caption{Topologia finale con evidenziati alcuni punti di interesse nel percorso del pacchetto.}
     \label{fig:diag-test-real}
 \end{figure}
 
+Supponiamo di poter seguire il percorso del pacchetto analizzando gli step principali (fig.~\ref{fig:diag-test-real}), in questo caso consideriamo 6 step:
+
 \begin{enumerate}
-    \item[1.] Il \textit{Client} (\code{10.8.0.2}) effettua il ping verso l'\textit{host-domotico} (\code{192.168.130.2}). Dato che il \textit{Client} ha la subnet \code{192.168.130.0/24} nella sua tabella di routing (sezione \ref{sec:hosts-openvpn-server}) viene costruito un pacchetto di tipo ICMP \textit{echo request} che ha come IP sorgente \code{10.8.0.2} e come destinazione \code{192.168.130.2}. A questo punto il \textit{Client OpenVPN} cifra e incapsula il pacchetto in un ulteriore pacchetto IP (sezione \ref{subsec:openvpn-networking}), che questa volta ha come IP di destinazione \code{51.178.141.119}, cioè l'IP pubblico del \textit{Server}. Il pacchetto può essere quindi trasmesso attraverso Internet.
+    \item[1.] Il \textit{Client} (\code{10.8.0.2}) effettua il ping verso l'\textit{host-domotico} (\code{192.168.130.2}).
+    
+    Dato che il \textit{Client} ha la subnet \code{192.168.130.0/24} nella sua tabella di routing (sezione \ref{sec:hosts-openvpn-server}) viene costruito un pacchetto di tipo ICMP \textit{echo request} che ha come IP sorgente \code{10.8.0.2} e come destinazione \code{192.168.130.2}. 
+    
+    A questo punto il \textit{Client OpenVPN} cifra e incapsula il pacchetto in un ulteriore pacchetto IP (sezione \ref{subsec:openvpn-networking}), che questa volta ha come IP di destinazione \code{51.178.141.119}, cioè l'IP pubblico del \textit{Server}. Il pacchetto può essere quindi trasmesso attraverso Internet.
     
 
-    \item[2.] Il \textit{Server} riceve il pacchetto, vedendo che si tratta di un pacchetto di tipo OpenVPN lo inoltra al \textit{Server OpenVPN} (sezione \ref{sec:network_stack} e \ref{sec:firewall}). Il contenuto del pacchetto viene quindi decifrato e analizzato, il \textit{Server OpenVPN} vede che il pacchetto è destinato nella subnet \code{192.168.130.0/24}, data la configurazione fatta in sezione \ref{sec:hosts-openvpn-server} il \textit{Server} sa che deve inoltrarlo al \textit{Router} (\code{10.8.0.254}).
-    Data la configurazione fatta in sezione \ref{sec:client-to-client} il pacchetto non passa per l'interfaccia \code{tun0}, infatti mettendoci in ascolto con \code{tcpdump} non vediamo nessun pacchetto:
+    \item[2.] Il \textit{Server} riceve il pacchetto, vedendo che si tratta di un pacchetto di tipo OpenVPN lo inoltra al \textit{Server OpenVPN} (sezione \ref{sec:network_stack} e \ref{sec:firewall}). 
+    
+    Il contenuto del pacchetto viene quindi decifrato e analizzato.
+    
+    Dato che l'opzione \code{client-to-client} è abilitata (sezione \ref{sec:client-to-client}) il pacchetto non passa per l'interfaccia \code{tun0}, infatti mettendoci in ascolto con \code{tcpdump} non vediamo nessun pacchetto:
 \begin{bashcode}{Server}{}
 $ tcpdump -i tun0
-listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \end{bashcode}
-    Possiamo però vedere il pacchetto transitare sull'interfaccia esterna del server (\it{ens3}), il contenuto del pacchetto è cifrato ma lo possiamo riconoscere dalla porta:
+    Possiamo però vedere il pacchetto transitare sull'interfaccia esterna del \it{Server} (\it{ens3}). In questo caso però vedremo il pacchetto esterno, possiamo riconoscerlo e distinguerlo dal normale traffico internet selezionando la porta di OpenVPN:
 \begin{bashcode}{Server}{}
 $ sudo tcpdump -i ens3 -n port 1194
 15:43:15.543169 IP 151.57.44.194.59478 > 51.178.141.119.1194: UDP, length 108
 \end{bashcode}
     
 
-    \item[3.] Viene costruito un pacchetto IP destinato al NAT, che ha al suo interno il pacchetto cifrato costruito al punto 2. La comunicazione attraverso il NAT è possibile poiché OpenVPN implementa nel suo protocollo una serie di pacchetti \textit{keepalive} tra ogni Host e il Server. Ciò permette al NAT di sapere a quale host della sua rete privata deve inoltrare i pacchetti. Il pacchetto cifrato viene quindi inoltrato usando come IP di sorgente \code{51.178.141.119} e destinazione l'IP pubblico del NAT.
+    \item[3.] Il \textit{Server OpenVPN} vede che il pacchetto è destinato nella subnet \code{192.168.130.0/24}, data la configurazione fatta in sezione \ref{sec:hosts-openvpn-server}, il \textit{Server} sa che deve inoltrarlo al \textit{Router} (\code{10.8.0.254}).
+    
+    La comunicazione attraverso il NAT è possibile poiché OpenVPN implementa nel suo protocollo una serie di pacchetti \textit{keepalive} \cite{openvpn-keepalive} tra ogni Host e il Server. Ciò permette al NAT di sapere a quale host della sua rete privata deve inoltrare i pacchetti. 
+    
+    Il pacchetto cifrato viene quindi inoltrato usando come IP di sorgente \code{51.178.141.119} e destinazione l'IP pubblico del NAT.
     
     Possiamo vedere il pacchetto in uscita dal server mettendoci in ascolto sull'interfaccia \it{ens3}:
 \begin{bashcode}{Server}{}
@@ -232,10 +242,13 @@ $ sudo tcpdump -i ens3 -n port 1194
     \item[4.] Il NAT effettua la traduzione, modificando l'IP e la porta del pacchetto esterno e lo inoltra all'interfaccia \textit{wan} del \textit{Router}.
     
 
-    \item[5.] Il \textit{Router} riceve il pacchetto e lo decifra. Vedendo che il pacchetto interno è destinato alla subnet \code{192.168.130.0/24} lo inoltra alla sua \textit{lan} (sezione \ref{subsec:creazione-firewall-zone-vpn} e \ref{subsec:aggiunta-interfaccia-tun0-zona-vpn}). Il pacchetto interno viene quindi inoltrato all'\textit{host-domotico} (\code{192.168.130.2}). In questo caso è possibile vedere il percorso del pacchetto decifrato con \code{tcpdump}:
+    \item[5.] Il \textit{Router} riceve il pacchetto e lo decifra. Vedendo che il pacchetto interno è destinato alla subnet \code{192.168.130.0/24}, deve essere quindi inoltrato alla sua \textit{lan} (sezione \ref{subsec:creazione-firewall-zone-vpn} e \ref{subsec:aggiunta-interfaccia-tun0-zona-vpn}). 
+    
+    Il pacchetto interno viene quindi inoltrato all'\textit{host-domotico} (\code{192.168.130.2}). 
+    
+    In questo caso è possibile vedere il percorso del pacchetto decifrato con \code{tcpdump}:
 \begin{bashcode}{Router}{}
 $ tcpdump -i tun0
-listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 10:44:07.228387 IP 10.8.0.2 > 192.168.130.2: ICMP echo request, id 12, seq 1, length 64
 \end{bashcode}
     
@@ -243,17 +256,42 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 
 \end{enumerate}
 
-Valutando solo il percorso del pacchetto cifrato si avrebbe:
+Se è stato configurato tutto correttamente il \code{ping} avrà successo:
+\begin{bashcode}{Client}{}
+$ ping -c 1 192.168.130.2
+PING 192.168.130.2 (192.168.130.2) 56(84) bytes of data.
+64 bytes from 192.168.130.2: icmp_seq=1 ttl=63 time=0.643 ms
+
+--- 192.168.130.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.643/0.643/0.643/0.000 ms
+\end{bashcode}
+
+
+\begin{comment}
+Considerando solo il percorso del pacchetto interno si ha una semplificazione del diagramma~\ref{fig:diag-test-real}:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{immagini/diag2-test_virtual}
-    \caption{Diagramma di test virtuale}
+    \caption{Topologia virtuale finale, con evidenziati i punti di interesse nel percorso del pacchetto.}
     \label{fig:diag-test_virtual}
 \end{figure}
 
+\end{comment}
 
-\todo[da qual in poi è un disastro!]
+Possiamo inolte verificare il percorso del pacchetto interno (cifrato) usando la utility \code{tracepath}, che permette di vedere tutti i router che sono presenti tra chi eseque il \it{tracepath} e la destinazione:
+
+\begin{bashcode}{Client}{}
+$ tracepath 192.168.130.2
+1?: [LOCALHOST]                      pmtu 1500
+1:  10.8.0.254                       0.471ms
+1:  10.8.0.254                       0.473ms
+2:  192.168.130.2                    0.567ms reached
+    Resume: pmtu 1500 hops 2 back 2
+\end{bashcode}
+
+Come possiamo vedere l'unico router presente nella topologia virtuale è il \it{Router 4G} (\code{10.8.0.254}).
 
 
 \begin{comment}
