@@ -340,7 +340,7 @@ OpenVPN has several ways to authenticate peers with each other. OpenVPN offers p
 \end{comment}
 
 % ok
-L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \textit{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette allo specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento, facendo così perdere l'accesso all'utente che lo stava usando. 
+L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \textit{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette allo specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento \cite{revoke-cert}, facendo così perdere l'accesso all'utente che lo stava usando. 
 
 % ok
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
