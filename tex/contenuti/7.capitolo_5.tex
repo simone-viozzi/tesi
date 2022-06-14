@@ -55,6 +55,7 @@ Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconf
 
 Le 2 zone sono collegate alle relative interfacce: la zona \textit{lan} è collegata all'interfaccia relativa alla rete interna del \textit{Router}; la zona \textit{wan} è collegata all'interfaccia esterna del \textit{Router}. 
 
+\newpage
 Andiamo quindi ad aggiungere una nuova zona, chiamata \textit{vpn}, che successivamente sarà collegata all'interfaccia virtuale della VPN (\textit{tun0}). La zona \textit{vpn} dovrà avere le seguenti opzioni:
 
 \begin{itemize}[nosep]
@@ -72,6 +73,7 @@ Possiamo vedere la pagina di configurazione con le opzioni inserite:
     \label{fig:luci-firewall-vpn}
 \end{figure}
 
+\newpage
 Dopo aver salvato, la pagina del firewall sarà:
 
 \begin{figure}[H]

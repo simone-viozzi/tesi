@@ -41,7 +41,7 @@ Il suo obbiettivo è quello di collegare utenti attraverso una rete geografica, 
     \label{fig:modello-a-strati}
 \end{figure}
 
-
+\newpage
 \subsection{Internet Protocol Suite \ok}
 
 \begin{comment}
@@ -166,6 +166,7 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 \end{enumerate}
 
+\newpage
 \subsection{Incapsulamento \ok}
 
 Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vederne una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
@@ -198,6 +199,7 @@ Quindi andando ad analizzare lo stack di protocolli si vede:
     \item \textbf{Ethernet II}\cite{ethernet-ii}: In questo caso il mezzo fisico è una porta Ethernet, quindi il pacchetto IP viene incapsulato con il protocollo Ethernet II. Nell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare qual è l'interfaccia fisica a cui è destinato il pacchetto.
 \end{itemize}
 
+\newpage
 Possiamo vedere graficamente il pacchetto descritto in code:\ref{code:tls-wireshark} e le informazioni principali di ogni header:
 
 \begin{figure}[H]

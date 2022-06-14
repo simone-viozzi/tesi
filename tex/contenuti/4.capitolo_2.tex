@@ -47,7 +47,7 @@ La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 	\label{fig:schema_architettura_virtuale}
 \end{figure}
 
-
+\newpage
 \section{Specifiche dei componenti}
 
 \subsubsection{VPS OVHCloud}
@@ -76,14 +76,14 @@ Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funziona
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=250px]{immagini/4grouter.jpg}
+	\includegraphics[width=240px]{immagini/4grouter.jpg}
 	\caption{Esse-ti 4G.Router}
 	\label{fig:esse-ti-router-4g}
 \end{figure}
 
 Per l'implementazione di questa architettura sono necessarie solo un sub-set delle specifiche:
 
-\begin{itemize}
+\begin{itemize}[nosep]
 	\item Modulo LTE per consentire l'accesso a internet;
 	\item Porta LAN e Access Point Wi-Fi;
 \end{itemize}
@@ -132,6 +132,7 @@ Per avere la massima flessibilità la macchina del cliente deve essere generica 
 
 Si farà riferimento a una generica macchina di un cliente come \textit{Client}.
 
+\newpage
 \subsubsection{Host domotico}
 
 L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'\textit{host-domotico} potrebbe essere un qualunque dispositivo di rete, ad es: una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una \href{https://en.wikipedia.org/wiki/Raspberry_Pi}{Raspberry Pi}.

@@ -69,6 +69,7 @@ ln è un comando dei sistemi operativi Unix e Unix-like, e più in generale dei 
 
 Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, ma è sconsigliato usarla per motivi di sicurezza. 
 
+\newpage
 Quindi si deve spostare/collegare questo percorso in una cartella di un utente non privilegiato, andiamo quindi a crearne un collegamento nella home dell'utente \code{ubuntu}:
 
 \begin{bashcode}{Server CA}{init-easyrsa}
@@ -231,6 +232,7 @@ Your newly created PKI dir is: /home/ubuntu/openvpn-ca/pki
 
 Ora si devono personalizzare le variabili \code{vars}, si può sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
 
+\newpage
 Andiamo quindi a creare un nuovo file \code{vars}:
 
 \todo[è ok lasciare queste?]
@@ -311,6 +313,7 @@ Your newly created PKI dir is: /home/ubuntu/openvpn-pki/pki
 
 A questo punto il server OpenVPN ha tutti i prerequisiti per creare una sua chiave privata e relativa \textit{Certificate Signing Request} (step 4 fig.\ref{fig:diag-firma_certificato_ca}). 
 
+\newpage
 Come \textit{Common Name} è stato scelto \code{server}:
 
 % step 4
@@ -345,6 +348,7 @@ $ sudo cp /home/ubuntu/openvpn-pki/pki/private/server.key /etc/openvpn/server/
 
 Il secondo file creato, \code{server.req}, corrisponde a una \textit{Certificate Signing Request (CSR)} che va firmata e validata dalla CA. 
 
+\newpage
 \subsection{Firma del certificato OpenVPN dalla CA \ok} % step 5, 6, 7
 \label{subsec:sign_openvpn}
 
@@ -429,7 +433,7 @@ $ mkdir -p ~/client-configs/keys
 $ chmod -R 700 ~/client-configs
 \end{bashcode}
 
-Creiamo quindi un certificato per un \textit{Client}, è importante che il \textit{Common Name} dato al certificato sia unico ed è consigliabile usare un nome che permetta di collegare il certificato con il cliente che ha richiesto il servizio. Ciò permette di conoscere quale certificato revocare in caso sia necessario \cite{revoke-cert}.
+Creiamo quindi un certificato per un \textit{Client}, è importante che il \textit{Common Name} dato al certificato sia unico ed è consigliabile usare un nome che permetta di collegare il certificato con il cliente che ha richiesto il servizio. Ciò permette di conoscere quale certificato revocare \cite{revoke-cert} in caso sia necessario.
 
 In questo caso è stato usato il \textit{Common Name} \code{client1} (step 1 fig.\ref{fig:diag-firma_certificato_client}):
 
@@ -476,6 +480,7 @@ $ sudo cp /etc/openvpn/server/ca.crt ~/client-configs/keys/
 $ sudo chown ubuntu:ubuntu ~/client-configs/keys/*
 \end{bashcode}
 
+\newpage
 Ora andiamo a scaricare e personalizzare la configurazione di esempio per i client:
 
 \begin{bashcode}{Server}{}
@@ -657,7 +662,7 @@ $ sudo vim /etc/default/ufw
 DEFAULT_FORWARD_POLICY="ACCEPT"
 \end{bashcode}
 
-
+\newpage
 \subsection{Conclusione della configurazione del firewall \ok}
 
 Per concludere la configurazione si deve abilitare la porta relativa alla vpn, in questo caso \code{1194}, e riavviare il firewall:
@@ -677,6 +682,7 @@ To              Action      From
 
 Se la configurazione è stata effettuata correttamente di avrà un output simile al precedente, in caso contrario si dovranno valutare gli errori dati da ufw.
 
+\newpage
 \section{Avvio del Server OpenVPN \ok}
 \label{sec:start_server}
 
@@ -759,6 +765,7 @@ PING 10.8.0.1 (10.8.0.1) 56(84) bytes of data.
 64 bytes from 10.8.0.1: icmp_seq=1 ttl=64 time=0.250 ms
 \end{bashcode}
 
+\newpage
 Se nel frattempo si esegue la utility \code{tpcdump} sul server si potranno vedere i pacchetti \textit{echo request} ed \textit{echo reply}:
 
 \begin{bashcode}{Server}{}
