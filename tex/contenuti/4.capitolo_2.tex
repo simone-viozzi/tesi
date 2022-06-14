@@ -24,7 +24,7 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 	\label{fig:schema_concettuale}
 \end{figure}
 
-E' pratica comune degli operatori mobili di implemtare nella loro rete un CG-NAT (sezione~\ref{subsubsec:cg-nat}) per gestire il traffico degli utenti, ciò significa che la comunicazione da internet verso il \it{router} non è possibile in generale. Un modo per risolvere questo problema potrebbe essere di richiede al cliente di avere a disposizione un IP pubblico, ciò però non è sempre possibile e sarebbe molto scomodo per il cliente. 
+E' pratica comune degli operatori mobili di implemtare nella loro rete un CG-NAT (sezione~\ref{subsubsec:cg-nat}) per gestire il traffico degli utenti, ciò significa che la comunicazione da internet verso il \textit{router} non è possibile in generale. Un modo per risolvere questo problema potrebbe essere di richiede al cliente di avere a disposizione un IP pubblico, ciò però non è sempre possibile e sarebbe molto scomodo per il cliente. 
 
 Quindi per una soluzione più generale a questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il \textit{4G.Router} e il cliente.
 
@@ -133,12 +133,12 @@ Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo 
 
 Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica, essendo OpnenVPN un applicativo cross-platform ci consente si non avere vincoli di sistema operativo.
 
-Si farà riferimento a una generica macchina di un cliente come \it{Client}.
+Si farà riferimento a una generica macchina di un cliente come \textit{Client}.
 
 \subsubsection{Host domotico}
 
-L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'\it{host-domotico} potrebbe essere un qualunque dispositivo di rete, ad es: una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una \href{https://en.wikipedia.org/wiki/Raspberry_Pi}{Raspberry Pi}.
+L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'\textit{host-domotico} potrebbe essere un qualunque dispositivo di rete, ad es: una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una \href{https://en.wikipedia.org/wiki/Raspberry_Pi}{Raspberry Pi}.
 
-Per simulare un'\it{host-domotico} ed effettuare le varie operazioni di testing è stata usata una \textit{Raspberry Pi}.
+Per simulare un'\textit{host-domotico} ed effettuare le varie operazioni di testing è stata usata una \textit{Raspberry Pi}.
 
 

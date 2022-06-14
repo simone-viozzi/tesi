@@ -15,11 +15,11 @@ scaletta
 
 \end{comment}
 
-L'architettura proposta in questo elaborato è stata effettivamente implementata su apparati reali durante il tirocinio in collaborazione con l'azienda \it{Esse-ti}. Per rendere più completo il prodotto è necessario modificare la configurazione per consentire che più clienti, ognuno con il proprio Router 4G, possano usufruire del servizio. Si deve però stare attenti a mantenere l'isolamento tra i clienti, per evitare che i dati trasmessi da un cliente vengano letti dagli altri.
+L'architettura proposta in questo elaborato è stata effettivamente implementata su apparati reali durante il tirocinio in collaborazione con l'azienda \textit{Esse-ti}. Per rendere più completo il prodotto è necessario modificare la configurazione per consentire che più clienti, ognuno con il proprio Router 4G, possano usufruire del servizio. Si deve però stare attenti a mantenere l'isolamento tra i clienti, per evitare che i dati trasmessi da un cliente vengano letti dagli altri.
 
-A livello implementativo ciò significa avere più di un servizio OpenVPN nel \it{Server}, ogni uno collegato a una \it{Certificate Authority} differente.
+A livello implementativo ciò significa avere più di un servizio OpenVPN nel \textit{Server}, ogni uno collegato a una \textit{Certificate Authority} differente.
 
-Ad esempio con 2 clienti si avrà un'architettura virtuale simile a fig.~\ref{fig:diag2-multiistanza_virtual}, che corrisponde ad una topologia relale in fig.~\ref{fig:diag2-multiistanza_real}.
+Ad esempio con 2 clienti si avrà un'architettura virtuale simile a fig.~\ref{fig:diag2-multiistanza_virtual}, che corrisponde ad una topologia reale in fig.~\ref{fig:diag2-multiistanza_real}.
 
 \begin{figure}[h]
     \centering
