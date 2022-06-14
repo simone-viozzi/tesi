@@ -345,7 +345,7 @@ L'autenticazione può essere eseguita usando una pre-shared key, un sistema basa
 % ok
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
 
-\subsection{Networking \todo[da riscrivere l'ultima parte]}
+\subsection{Networking}
 \label{subsec:openvpn-networking}
 
 \begin{comment}
@@ -372,32 +372,35 @@ La configurazione del server permette di impostare opzioni che modificano la con
 % TODO da riscrivere
 Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare sia un tunnel IP di livello 3 (TUN), sia Ethernet livello 2 (TAP).
 
-\todo[da rivedere!]
 
 \begin{comment}
 il tunnel si realizza come si vede in figura
 
 il pacchetto interno è cifrato e incapsulato in quello esterno
 
-quello interno ha ip relativi alla subnet della vpn
+quello interno ha IP relativi alla subnet della vpn
 
-quello esterno ha gli ip delgli hosts
+quello esterno ha gli IP delgli hosts
 
 il pacchetto interno può essere decifrato solo da host della vpn
 \end{comment}
 
 In figura \ref{fig:incapsulamento-openvpn} possiamo vedere l'incapsulamento del pacchetto OpenVPN descritto in code:~\ref{code:openvpn-wireshark}, compreso di un esempio del contenuto cifrato. 
 
-Si può vedere come il campo data del protocollo OpenVPN contenga al suo interno pacchetto IP/Ethernet cifrato, in questo modo 
-
-Si vede inoltre come il contenuto del campo data del pacchetto OpenVPN contenga al suo interno un pacchetto IP, ciò non è visibile dall'esterno perché il tutto è opportunamente cifrato.
+Si può vedere come il protocollo OpenVPN contenga al suo interno un pacchetto IP/Ethernet cifrato, in questo caso un pacchetto ICMP.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{immagini/diag2-incapsulamento_openvpn}
-    \caption{Incapsulamento}
+    \caption{Incapsulamento di un pacchetto OpenVPN.}
     \label{fig:incapsulamento-openvpn}
 \end{figure}
+
+Analizzando l'incapsulamento si vede che sono presenti 2 header IP:
+\begin{enumerate}
+    \item[\bf{Interno}.] Solo gli Host della vpn possono decifrare il pacchetto e leggere questo header. Gli IP di sorgente/destinazione sono relativi alla subnet della vpn.
+    \item[\bf{Esterno}.] Serve a trasportare il pacchetto tra i vari Host della VPN, deve quindi avere IP di sorgente/destinazione indirizzabili in Internet.
+\end{enumerate}
 
 \begin{comment}
 \begin{bashcode}
