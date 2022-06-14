@@ -4,15 +4,17 @@
 
 \label{ch:overview}
 
-\section{Obbiettivo da ottenere \workinprogress \todo[la sezione è da espandere! in qualche modo]}
+\section{Obbiettivo da ottenere \workinprogress}
 \label{sec:overview-goal}
 
 In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'azienda \textbf{Esse-ti S.R.L.} ci è stato esposto un progetto che consiste nel:
 
 %todo non mi piace come sta messo
+\setlist{nolistsep}
 \begin{itemize}
-	\item Fornire a dei clienti un router 4G, su cui possono essere connessi vari dispositivi, ad es. di tipo domotico.
-	\item Rendere questi dispositivi accessibili ai clienti attraverso internet
+	\itemsep0.2em
+	\item Fornire a dei clienti un router 4G, su cui possono essere connessi vari dispositivi, ad es. di tipo domotico;
+	\item Rendere questi dispositivi accessibili ai clienti attraverso internet;
 \end{itemize}
 
 \begin{figure}[H]
@@ -22,9 +24,9 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 	\label{fig:schema_concettuale}
 \end{figure}
 
-\todo[espandere menzionando la sim]
+E' pratica comune degli operatori mobili di implemtare nella loro rete un CG-NAT (sezione~\ref{subsubsec:cg-nat}) per gestire il traffico degli utenti, ciò significa che la comunicazione da internet verso il \it{router} non è possibile in generale. Un modo per risolvere questo problema potrebbe essere di richiede al cliente di avere a disposizione un IP pubblico, ciò però non è sempre possibile e sarebbe molto scomodo per il cliente. 
 
-Data la presenza del NAT si vede subito che non è realizzabile a meno che il cliente non abbia un'IP pubblico e la sua macchina venga configurata opportunamente. Questo però non è possibile nel caso generale, quindi per risolvere efficacemente questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il \textit{4G.Router} e il cliente.
+Quindi per una soluzione più generale a questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il \textit{4G.Router} e il cliente.
 
 
 \begin{figure}[H]
@@ -34,9 +36,9 @@ Data la presenza del NAT si vede subito che non è realizzabile a meno che il cl
 	\label{fig:schem_architettura_reale}
 \end{figure}
 
-In questo modo si può usare il \textit{Server} per configurare una \textit{Virtual Private Network} (VPN), a cui saranno connessi sia il \textit{4G.Router} che il cliente. Ciò consente la creazione di una topologia virtuale in cui tutti i dispositivi connessi alla VPN sono nella stessa rete locale, quindi possono comunicare tra loro.
+In questo modo si può usare il \textit{Server OVH} per configurare una \textit{Virtual Private Network} (VPN), a cui saranno connessi sia il \textit{4G.Router} che il cliente. Ciò consente la creazione di una topologia virtuale in cui tutti i dispositivi connessi alla VPN sono nella stessa rete locale, quindi possono comunicare tra loro.
 
-Inoltre in questo modo viene minimizzata la configurazione da effettuare sulle macchine dei clienti, infatti sarà sufficiente avere un client OpenVPN.
+Inoltre in questo modo viene minimizzata la configurazione da effettuare sulle macchine dei clienti, sarà infatti sufficiente avere un client OpenVPN.
 
 La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 
@@ -48,9 +50,29 @@ La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 \end{figure}
 
 
-\section{Specifiche dei componenti \todo[va bene senza intro cosi? da rileggere]}
+\section{Specifiche dei componenti}
 
-\subsubsection{Esse-ti 4G.Router \workinprogress}
+\subsubsection{VPS OVHCloud}
+\label{subsec:vps-ovhcloud}
+
+La VPS ha il solo vincolo di dover avere un'IP pubblico e una connessione a internet abbastanza veloce. Dovrà infatti sopportare un traffico simmetrico in upload/download.
+
+Per la realizzazione della topologia è stata selezionata una macchina VPS del provider \textit{OVHCloud}, con le seguenti caratteristiche:
+
+\setlist{nolistsep}
+\begin{itemize}[noitemsep]
+	\itemsep0em
+	\item 2 core virtuali
+	\item 4Gb di memoria ram
+	\item 80Gb di storage NVMe
+	\item 500Mbps simmetrici di banda
+	\item ipv4 pubblico
+	\item Ubuntu 16.04
+\end{itemize}
+
+Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \textit{Server}.
+
+\subsubsection{Esse-ti 4G.Router}
 
 Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link}).
 
@@ -65,11 +87,8 @@ Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funziona
 Per l'implementazione di questa architettura sono necessarie solo un sub-set delle specifiche:
 
 \begin{itemize}
-	\item Access Point wireless per offrire connettività Internet Wi-Fi
- 
-	\item Client Dynamic DNS per consentire all’utente di raggiungere da remoto, tramite Internet, il router stesso e tutti i dispositivi connessi via Wi-Fi o porta LAN
-	
-	\item Gateway telefonico per consentire l’invio e la ricezione di chiamate attraverso la rete 4G LTE/UMTS/GSM a telefoni fissi
+	\item Modulo LTE per consentire l'accesso a internet;
+	\item Porta LAN e Access Point Wi-Fi;
 \end{itemize}
 
 % ok
@@ -109,37 +128,17 @@ La configurazione del dispositivo può essere fatta sia da terminale, entrando i
 
 Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \textit{Router}.
 
-\subsubsection{VPS OVHCloud}
-\label{subsec:vps-ovhcloud}
-
-La VPS ha il solo vincolo di dover avere un'IP pubblico e una connessione a internet abbastanza veloce. Dovrà infatti sopportare un traffico simmetrico in upload/download.
-
-Per la realizzazione della topologia è stata selezionata una macchina VPS del provider \textit{OVHCloud}, con le seguenti caratteristiche:
-
-\setlist{nolistsep}
-\begin{itemize}[noitemsep]
-	\itemsep0em
-	\item 2 core virtuali
-	\item 4Gb di memoria ram
-	\item 80Gb di storage NVMe
-	\item 500Mbps simmetrici di banda
-	\item ipv4 pubblico
-	\item Ubuntu 16.04
-\end{itemize}
-
-Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \textit{Server}.
-
-\subsubsection{Host domotico}
-
-L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'\it{host-domotico} potrebbe essere un qualunque dispositivo di rete, ad es: una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una raspberry pi.
-
-Per simulare un'\it{host-domotico} ed effettuare le varie operazioni di testing è stata usata una \textit{raspberry pi}, con le utility \textit{ping} e \textit{tracepath}.
-
 \subsubsection{Macchina del cliente}
 \label{subsec:macchina-cliente}
 
-Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica, per questo è stato scelto di usare OpenVPN come provider VPN, che essendo cross-platform non ha vincoli di sistema operativo.
+Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica, essendo OpnenVPN un applicativo cross-platform ci consente si non avere vincoli di sistema operativo.
 
 Si farà riferimento a una generica macchina di un cliente come \it{Client}.
+
+\subsubsection{Host domotico}
+
+L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'\it{host-domotico} potrebbe essere un qualunque dispositivo di rete, ad es: una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una \href{https://en.wikipedia.org/wiki/Raspberry_Pi}{Raspberry Pi}.
+
+Per simulare un'\it{host-domotico} ed effettuare le varie operazioni di testing è stata usata una \textit{Raspberry Pi}.
 
 
