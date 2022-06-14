@@ -8,12 +8,6 @@ L'ultima parte della configurazione consiste nel rendere disponibile nella VPN l
 
 Per fare ciò si dovrà configurare il \textit{Router} in modo che effettui il forwarding verso la VPN, e il \textit{Server} in modo che annunci la sottorete del \textit{Router} a tutti gli Host della VPN.
 
-\begin{comment}
-\todo[non sta nel capitolo 2 sta cosa? va bene ripetere?]
-
-Per simulare un host-domotico è stata usata una \textit{Raspberry Pi}, ciò ci consente di poter accedere alla sua shell per effettuare i vari test necessari per confermare che la topologia funzioni correttamente.
-\end{comment}
-
 
 In fig.~\ref{fig:diag2-host_real} possiamo vedere la configurazione iniziale per questo capitolo, cioè la configurazione finale del capitolo \ref{ch:configurazione-router} con l'aggiunta dell'\textit{host-domotico} connesso al \textit{Router}. 
 
@@ -176,7 +170,6 @@ $ vim /etc/openvpn/server/server.conf
 
 Dopo aver modificato la configurazione del \textit{Server} è necessario riavviarlo con \\\code{systemctl restart}.
 
-% TODO da rivedere
 In questo modo nella procedura di connessione alla VPN, i client aggiungeranno la rotta verso la sottorete \code{192.168.130.0/24} nella loro tabella di routing. Possiamo verificarlo con: 
 
 \begin{bashcode}{Client}{}
@@ -258,11 +251,6 @@ Valutando solo il percorso del pacchetto cifrato si avrebbe:
 \end{figure}
 
 
-
-
-
-
-
 \todo[da qual in poi è un disastro!]
 
 
@@ -309,7 +297,6 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 11:56:10.470230 IP 10.8.0.2 > 192.168.130.2: ICMP echo reply, id 14, seq 1, length 64
 \end{bashcode}
 
-% TODO da espandere
 Possiamo inoltre usare \code{tracepath} per vedere gli hop:
 
 \begin{bashcode}{Client}{}

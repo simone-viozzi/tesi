@@ -551,7 +551,6 @@ $ sudo wget "https://raw.githubusercontent.com/OpenVPN/openvpn/\
 
 A questo punto andiamo a modificare il file di esempio personalizzandolo per le nostre necessità, per facilitare la riproduzione di questa configurazione è stato aggiunto il numero della riga che è stata modificata:
 
-% TODO da controllare se sono tutte le modifiche
 \begin{bashcode}{Server}{}
 $ sudo vim server.conf
 85  dh none             # non sono stati usati i parametri Diffie-Hellman
@@ -565,10 +564,6 @@ $ sudo vim server.conf
 318 auth sha256         # selezione del metodo di autenticazione
 \end{bashcode}
 
-\begin{comment}
-% TODO fa veramente pena. da mettere solo se strettamente necessario
-Questa è la configurazione necessaria per questo capitolo, nei successivi capitoli saranno aggiunte delle opzioni quando necessarie.
-\end{comment}
 
 \section{Configurazioni sulla network stack del Server \ok}
 \label{sec:network_stack}
@@ -608,9 +603,7 @@ $ sudo ufw enable
 
 \subsection{Configurazione del NAT \ok}
 
-\todo[va bene corsivo per vpn e nat ?]
-
-Per far si che i pacchetti provenienti dalla \textit{VPN} entrino nella network stack del \textit{Server} si deve aggiungere una regola di \textit{NAT} nel firewall. Per farlo si deve conoscere quale è l'interfaccia di rete del \textit{Server}, cioè quella che ha come IP il suo IP pubblico:
+Per far si che i pacchetti provenienti dalla VPN entrino nella network stack del \textit{Server} si deve aggiungere una regola di NAT nel firewall. Per farlo si deve conoscere quale è l'interfaccia di rete del \textit{Server}, cioè quella che ha come IP il suo IP pubblico:
 
 \begin{bashcode}{Server}{}
 $ ip addr
@@ -663,8 +656,6 @@ Per farlo si deve modificare il file \code{/etc/default/ufw}:
 $ sudo vim /etc/default/ufw
 DEFAULT_FORWARD_POLICY="ACCEPT"
 \end{bashcode}
-
-%
 
 
 \subsection{Conclusione della configurazione del firewall \ok}
