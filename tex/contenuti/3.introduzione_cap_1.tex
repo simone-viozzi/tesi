@@ -359,7 +359,7 @@ OpenVPN's use of common network protocols (TCP and UDP) makes it a desirable alt
 \end{comment}
 
 % ok
-OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ips blocchi VPN di livello più basso, es. \href{https://en.wikipedia.org/wiki/IPsec}{ipsec}. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewalls e NAT.
+OpenVPN viene incapsulato dai più comuni protocolli di trasporto (TCP e UDP), ciò lo rende adatto in caso l'ISP blocchi VPN di livello più basso, es. \href{https://en.wikipedia.org/wiki/IPsec}{ipsec}. Può inoltre funzionare attraverso la maggior parte dei server proxy, firewall e NAT.
 
 \begin{comment}
 The server configuration has the ability to "push" certain network configuration options to the clients. These include IP addresses, routing commands, and a few connection options.
@@ -379,11 +379,11 @@ il tunnel si realizza come si vede in figura
 
 il pacchetto interno è cifrato e incapsulato in quello esterno
 
-quello interno ha IP relativi alla subnet della vpn
+quello interno ha IP relativi alla subnet della VPN
 
 quello esterno ha gli IP delgli hosts
 
-il pacchetto interno può essere decifrato solo da host della vpn
+il pacchetto interno può essere decifrato solo da host della VPN
 \end{comment}
 
 In figura \ref{fig:incapsulamento-openvpn} possiamo vedere l'incapsulamento del pacchetto OpenVPN descritto in code:~\ref{code:openvpn-wireshark}, compreso di un esempio del contenuto cifrato. 
@@ -399,7 +399,7 @@ Si può vedere come il protocollo OpenVPN contenga al suo interno un pacchetto I
 
 Analizzando l'incapsulamento si vede che sono presenti 2 header IP:
 \begin{enumerate}
-    \item[\bf{Interno}.] Solo gli Host della vpn possono decifrare il pacchetto e leggere questo header. Gli IP di sorgente/destinazione sono relativi alla subnet della vpn.
+    \item[\bf{Interno}.] Solo gli Host della VPN possono decifrare il pacchetto e leggere questo header. Gli IP di sorgente/destinazione sono relativi alla subnet della VPN.
     \item[\bf{Esterno}.] Serve a trasportare il pacchetto tra i vari Host della VPN, deve quindi avere IP di sorgente/destinazione indirizzabili in Internet.
 \end{enumerate}
 

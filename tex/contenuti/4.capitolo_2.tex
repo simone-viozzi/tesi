@@ -1,10 +1,10 @@
 
 
-\chapter{Overview dell'architettura e delle componenti utilizzate \workinprogress}
+\chapter{Overview dell'architettura e delle componenti utilizzate \ok}
 
 \label{ch:overview}
 
-\section{Obbiettivo da ottenere \workinprogress}
+\section{Obbiettivo da ottenere \ok}
 \label{sec:overview-goal}
 
 In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'azienda \textbf{Esse-ti S.R.L.} ci è stato esposto un progetto che consiste nel:
@@ -22,8 +22,9 @@ In una collaborazione tra il Dipartimento di Ingegneria dell'Informazione e l'az
 	\label{fig:schema_concettuale}
 \end{figure}
 
-E' pratica comune degli operatori mobili di implemtare nella loro rete un CG-NAT (sezione~\ref{subsubsec:cg-nat}) per gestire il traffico degli utenti, ciò significa che la comunicazione da internet verso il \textit{router} non è possibile in generale. Un modo per risolvere questo problema potrebbe essere di richiede al cliente di avere a disposizione un IP pubblico, ciò però non è sempre possibile e sarebbe molto scomodo per il cliente. 
+È pratica comune degli operatori mobili di implemtare nella loro rete un CG-NAT (sezione~\ref{subsubsec:cg-nat}) per gestire il traffico degli utenti, ciò significa che la comunicazione da internet verso il \textit{router} non è possibile in generale. Un modo per risolvere questo problema potrebbe essere di richiede al cliente di avere a disposizione un IP pubblico, ciò però non è sempre possibile e sarebbe molto scomodo per il cliente. 
 
+\newpage
 Quindi per una soluzione più generale a questa topologia si deve necessariamente introdurre una terza macchina provvista di IP pubblico e che funga da ponte tra il \textit{4G.Router} e il cliente.
 
 
@@ -34,7 +35,7 @@ Quindi per una soluzione più generale a questa topologia si deve necessariament
 	\label{fig:schem_architettura_reale}
 \end{figure}
 
-In questo modo si può usare il \textit{Server OVH} per configurare una \textit{Virtual Private Network} (VPN), a cui saranno connessi sia il \textit{4G.Router} che il cliente. Ciò consente la creazione di una topologia virtuale in cui tutti i dispositivi connessi alla VPN sono nella stessa rete locale, quindi possono comunicare tra loro.
+In questo modo si può usare il \textit{Server} per configurare una \textit{Virtual Private Network} (VPN), a cui saranno connessi sia il \textit{4G.Router} che il cliente. Ciò consente la creazione di una topologia virtuale in cui tutti i dispositivi connessi alla VPN sono nella stessa rete locale, quindi possono comunicare tra loro.
 
 Inoltre in questo modo viene minimizzata la configurazione da effettuare sulle macchine dei clienti, sarà infatti sufficiente avere un client OpenVPN.
 
@@ -48,9 +49,9 @@ La configurazione virtuale vista dal 4G.Router e dai clienti sarà quindi:
 \end{figure}
 
 \newpage
-\section{Specifiche dei componenti}
+\section{Specifiche dei componenti \ok}
 
-\subsubsection{VPS OVHCloud}
+\subsubsection{VPS OVHCloud \ok}
 \label{subsec:vps-ovhcloud}
 
 La VPS ha il solo vincolo di dover avere un'IP pubblico e una connessione a internet sufficientemente veloce. Dovrà infatti sopportare un traffico simmetrico in upload/download.
@@ -69,9 +70,9 @@ Per la realizzazione della topologia è stata selezionata una macchina VPS del p
 
 Per semplicità si farà riferimento alla \textit{VPS OVHCloud} come \textit{Server}.
 
-\subsubsection{Esse-ti 4G.Router}
+\subsubsection{Esse-ti 4G.Router \ok}
 
-Ci è stato fornito dall'azienda Esse-ti, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link}).
+È stato fornito dall'azienda \it{Esse-ti}, consiste in un gateway 4G con funzionalità di router. Le specifiche complete possono essere trovate sul sito del produttore (\href{https://www.esse-ti.it/4g-router}{link}).
 
 
 \begin{figure}[ht]
@@ -89,7 +90,9 @@ Per l'implementazione di questa architettura sono necessarie solo un sub-set del
 \end{itemize}
 
 \newpage
-Il sistema operativo del router è una versione personalizzata di OpenWRT, le funzionalità sono le stesse della versione OpenSource ma la grafica è leggermente differente ed è preconfigurato con le impostazioni per la gestione del 4G.
+
+
+Il sistema operativo del \it{Router} è una versione personalizzata di OpenWRT, le funzionalità sono le stesse del corrispettivo OpenSource ma risulta preconfigurato per gestire tutte le funzionalità presenti, come ad esempio la gestione della connessione radiomobile.
 
 % ok
 La configurazione del dispositivo può essere fatta sia da terminale, entrando in ssh, sia da interfaccia web:
@@ -125,15 +128,15 @@ La configurazione del dispositivo può essere fatta sia da terminale, entrando i
 
 Per semplicità si farà riferimento all'\textit{Esse-ti 4G.Router} chiamandolo semplicemente \textit{Router}.
 
-\subsubsection{Macchina del cliente}
+\subsubsection{Macchina del cliente \ok}
 \label{subsec:macchina-cliente}
 
-Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica, essendo OpnenVPN un applicativo cross-platform ci consente si non avere vincoli di sistema operativo.
+Per avere la massima flessibilità la macchina del cliente deve essere generica e non deve necessitare di nessuna configurazione specifica. Infatti necessita solo del client OpnenVPN, che essendo un applicativo cross-platform non pone voicoli di sistema operativo.
 
 Si farà riferimento a una generica macchina di un cliente come \textit{Client}.
 
 \newpage
-\subsubsection{Host domotico}
+\subsubsection{Host domotico \ok}
 
 L'obbiettivo dell'azienda \textit{Esse-ti} è quello di fornire ai clienti una connessione diretta verso dispositivi domotici posti in una locazione remota. In questa topologia un'\textit{host-domotico} potrebbe essere un qualunque dispositivo di rete, ad es: una telecamera di videosorveglianza, un termostato digitale o un dispositivo più complesso come una \href{https://en.wikipedia.org/wiki/Raspberry_Pi}{Raspberry Pi}.
 

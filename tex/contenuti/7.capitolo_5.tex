@@ -1,5 +1,5 @@
 
-\chapter{Connessione degli Host domotici alla VPN}
+\chapter{Connessione degli Host domotici alla VPN \ok \ok}
 \label{ch:connessione-host-domotici}
 
 \section{Overview della configurazione \ok}
@@ -9,7 +9,7 @@ L'ultima parte della configurazione consiste nel rendere disponibile nella VPN l
 Per fare ciò si dovrà configurare il \textit{Router} in modo che effettui il forwarding verso la VPN, e il \textit{Server} in modo che annunci la sottorete del \textit{Router} a tutti gli Host della VPN.
 
 
-In fig.~\ref{fig:diag2-host_real} possiamo vedere la configurazione iniziale per questo capitolo, cioè la configurazione finale del capitolo \ref{ch:configurazione-router} con l'aggiunta dell'\textit{host-domotico} connesso al \textit{Router}. 
+In fig.~\ref{fig:diag2-host_real} è possibile vedere la configurazione iniziale per questo capitolo, cioè la configurazione finale del capitolo \ref{ch:configurazione-router} con l'aggiunta dell'\textit{host-domotico} connesso al \textit{Router}. 
 
 
 \begin{figure}[H]
@@ -56,7 +56,7 @@ Ciò viene fatto direttamente da LuCI, nella sezione firewall si avranno preconf
 Le 2 zone sono collegate alle relative interfacce: la zona \textit{lan} è collegata all'interfaccia relativa alla rete interna del \textit{Router}; la zona \textit{wan} è collegata all'interfaccia esterna del \textit{Router}. 
 
 \newpage
-Andiamo quindi ad aggiungere una nuova zona, chiamata \textit{vpn}, che successivamente sarà collegata all'interfaccia virtuale della VPN (\textit{tun0}). La zona \textit{vpn} dovrà avere le seguenti opzioni:
+Si deve quindi aggiungere una nuova zona, chiamata \textit{vpn}, che successivamente sarà collegata all'interfaccia virtuale della VPN (\textit{tun0}). La zona \textit{vpn} dovrà avere le seguenti opzioni:
 
 \begin{itemize}[nosep]
     \item Policy di forward: accept
@@ -64,7 +64,7 @@ Andiamo quindi ad aggiungere una nuova zona, chiamata \textit{vpn}, che successi
     \item Forward consentito dalla zona \textit{lan}
 \end{itemize}
 
-Possiamo vedere la pagina di configurazione con le opzioni inserite:
+In figura \ref{fig:luci-firewall-vpn} è possibile vedere la pagina di configurazione con le opzioni inserite.
 
 \begin{figure}[H]
     \centering
@@ -119,7 +119,7 @@ Quindi nella sezione \textit{interfaces}, si deve aggiungere una nuova interfacc
     \caption{Assegnazione interfaccia \textit{tun0} alla zona firewall \textit{vpn} tramite interfaccia LuCI}
 \end{figure}
 
-A questo punto i pacchetti provenienti dalla lan del \textit{Router} vengono inoltrati correttamente nella VPN, ma gli Host nella VPN non hanno una rotta verso la rete interna del router, perciò la comunicazione risulta ancora mono direzionale. E' possibile verificarlo con un semplice test i cui:
+A questo punto i pacchetti provenienti dalla \it{lan} del \textit{Router} vengono inoltrati correttamente nella VPN, ma gli Host nella VPN non hanno una rotta verso la rete interna del router, perciò la comunicazione risulta ancora mono direzionale. È possibile verificarlo con un semplice test i cui:
 
 \begin{itemize}[nosep]
     \item l'host-domotico effettua il ping verso il client;
@@ -178,13 +178,13 @@ $ ip route
 192.168.130.0/24 via 10.8.0.1 dev tun0
 \end{bashcode}
 
-\section{Test e analisi della configurazione \workinprogress}
+\section{Test e analisi della configurazione }
 
 Al termine della procedura di configurazione esposta, l'obbiettivo precedentemente fissato in sezione \ref{sec:overview-goal} risulta completamente raggiunto. Ma è opportuno effettuare alcuni test che coprono i casi d'uso più comuni.
 
 Nelle procedure di verifica verranno usate le utility \code{ping}, \code{tracepath} e \code{tcpdump}, poste in vari punti della topologia, in modo da valutare il percorso reale e virtuale dei pacchetti.
 
-Supponiamo per esempio che il \textit{Client} voglia comunicare con un \textit{host-domotico}, in questo caso la \textit{Raspberry Pi} che ha IP \code{192.168.130.2}, e che il dato da trasmettere sia un ICMP \textit{echo request}, facente parte di un \code{ping}.
+Supponendo per esempio che il \textit{Client} voglia comunicare con un \textit{host-domotico}, in questo caso la \textit{Raspberry Pi} che ha IP \code{192.168.130.2}, e che il dato da trasmettere sia un ICMP \textit{echo request}, facente parte di un \code{ping}.
 
 \begin{figure}[H]
     \centering
@@ -194,7 +194,7 @@ Supponiamo per esempio che il \textit{Client} voglia comunicare con un \textit{h
 \end{figure}
 
 \newpage
-Andiamo quindi ad analizzare il percorso del pacchetto nei punti di interesse rappresentati in fig.~\ref{fig:diag-test-real}, seguendo in modo dettagliato cosa succede ad ongi step:
+Nell'analisi andremo a seguire il percorso del pacchetto nei punti di interesse rappresentati in fig.~\ref{fig:diag-test-real}, esaminando in modo dettagliato cosa succede ad ongi step:
 
 \begin{enumerate}
     \item[1.] Il \textit{Client} (\code{10.8.0.2}) effettua il ping verso l'\textit{host-domotico} (\code{192.168.130.2}).
@@ -202,16 +202,16 @@ Andiamo quindi ad analizzare il percorso del pacchetto nei punti di interesse ra
 $ ping -c 1 192.168.130.2
 \end{bashcode}
     
-    Dato che il \textit{Client} ha la subnet \code{192.168.130.0/24} nella sua tabella di routing (sezione \ref{sec:hosts-openvpn-server}) viene costruito un pacchetto di tipo ICMP \textit{echo request} che ha come IP sorgente \code{10.8.0.2} e come destinazione \code{192.168.130.2}. 
+    Il \textit{Client} ha la subnet \code{192.168.130.0/24} nella sua tabella di routing (sezione \ref{sec:hosts-openvpn-server}), può essere quindi costruito un pacchetto di tipo ICMP \textit{echo request} che ha come IP sorgente \code{10.8.0.2} e come destinazione \code{192.168.130.2}. 
     
-    A questo punto il \textit{Client OpenVPN} cifra e incapsula il pacchetto in un ulteriore pacchetto IP (sezione \ref{subsec:openvpn-networking}), che questa volta ha come IP di destinazione \code{51.178.141.119}, cioè l'IP pubblico del \textit{Server}. Il pacchetto può essere quindi trasmesso attraverso Internet.
+    A questo punto il \textit{Client OpenVPN} lo cifra e incapsula in un ulteriore pacchetto IP (sezione \ref{subsec:openvpn-networking}), che questa volta ha IP di destinazione \code{51.178.141.119}, cioè l'IP pubblico del \textit{Server}. Il pacchetto può essere quindi trasmesso attraverso Internet.
     
 
-    \item[2.] Il \textit{Server} riceve il pacchetto, vedendo che si tratta di un pacchetto di tipo OpenVPN lo inoltra al \textit{Server OpenVPN} (sezione \ref{sec:network_stack} e \ref{sec:firewall}). 
+    \item[2.] Il \textit{Server} riceve il pacchetto, vedendo che il payload è di tipo OpenVPN lo inoltra al \textit{Server OpenVPN} (sezione \ref{sec:network_stack} e \ref{sec:firewall}). 
     
     Il contenuto del pacchetto viene quindi decifrato e analizzato.
     
-    Dato che l'opzione \code{client-to-client} è abilitata (sezione \ref{sec:client-to-client}) il pacchetto non passa per l'interfaccia \code{tun0}, infatti mettendoci in ascolto con \code{tcpdump} non vediamo nessun pacchetto:
+    Dato che l'opzione \code{client-to-client} è abilitata (sezione \ref{sec:client-to-client}) il traffico non passa per l'interfaccia \code{tun0}, infatti mettendoci in ascolto con \code{tcpdump} non vediamo nessun pacchetto:
 \begin{bashcode}{Server}{}
 $ tcpdump -i tun0
 \end{bashcode}
@@ -222,13 +222,13 @@ $ sudo tcpdump -i ens3 -n port 1194
 \end{bashcode}
     
 
-    \item[3.] Il \textit{Server OpenVPN} verifica che il pacchetto è destinato nella subnet \code{192.168.130.0/24}, data la configurazione fatta in sezione \ref{sec:hosts-openvpn-server}, il \textit{Server} provvederà a inoltrarlo al \textit{Router} (\code{10.8.0.254}).
+    \item[3.] Il \textit{Server OpenVPN} analizza il campo IP di destinazione e verifica che il pacchetto è destinato nella subnet \code{192.168.130.0/24}, data la configurazione fatta in sezione \ref{sec:hosts-openvpn-server}, il \textit{Server} provvederà a inoltrarlo al \textit{Router} (\code{10.8.0.254}).
     
     La comunicazione attraverso il NAT è possibile poiché OpenVPN implementa nel suo protocollo una serie di pacchetti \textit{keepalive} \cite{openvpn-keepalive} tra ogni Host e il Server. Ciò permette al NAT di sapere a quale host della sua rete privata deve inoltrare i pacchetti. 
     
-    Il pacchetto cifrato viene quindi inoltrato usando come IP di sorgente \code{51.178.141.119} e destinazione l'IP pubblico del NAT.
+    Il pacchetto viene cifrato con il certificato del \it{Router} e inoltrato usando come IP di sorgente \code{51.178.141.119} e destinazione l'IP pubblico del NAT.
     \newpage
-    Possiamo vedere il pacchetto in uscita dal server mettendoci in ascolto sull'interfaccia \it{ens3}:
+    Possiamo vedere il pacchetto in uscita dal \it{server} mettendoci in ascolto sull'interfaccia \it{ens3}:
 \begin{bashcode}{Server}{}
 $ sudo tcpdump -i ens3 -n port 1194
 15:43:15.543273 IP 51.178.141.119.1194 > 151.47.152.251.40637: UDP, length 108
@@ -238,7 +238,7 @@ $ sudo tcpdump -i ens3 -n port 1194
     \item[4.] Il NAT effettua la traduzione, modificando l'IP e la porta del pacchetto esterno e lo inoltra all'interfaccia \textit{wan} del \textit{Router}.
     
 
-    \item[5.] Il \textit{Router} riceve il pacchetto e lo decifra. Vedendo che il pacchetto interno è destinato alla subnet \code{192.168.130.0/24}, deve essere quindi inoltrato alla sua \textit{lan} (sezione \ref{subsec:creazione-firewall-zone-vpn} e \ref{subsec:aggiunta-interfaccia-tun0-zona-vpn}). 
+    \item[5.] Il \textit{Router} riceve il pacchetto e lo decifra usando il suo certificato. Vedendo che il pacchetto interno è destinato alla subnet \code{192.168.130.0/24}, deve essere quindi inoltrato alla sua \textit{lan} (sezione \ref{subsec:creazione-firewall-zone-vpn} e \ref{subsec:aggiunta-interfaccia-tun0-zona-vpn}). 
     
     Il pacchetto interno viene quindi inoltrato all'\textit{host-domotico} (\code{192.168.130.2}). 
     
@@ -278,7 +278,7 @@ Considerando solo il percorso del pacchetto interno si ha una semplificazione de
 \end{comment}
 
 \newpage
-Possiamo inoltre verificare il percorso del pacchetto interno (cifrato) usando la utility \code{tracepath}, che permette di vedere l'indirizzo IP di tutti i router che sono presenti tra chi esegue il comando e la destinazione:
+È inoltre possibile verificare il percorso del pacchetto interno (cifrato) usando la utility \code{tracepath}, che permette di vedere l'indirizzo IP di tutti i router che sono presenti tra chi esegue il comando e la destinazione:
 
 \begin{bashcode}{Client}{}
 $ tracepath 192.168.130.2

@@ -1,5 +1,5 @@
 
-\chapter{Configurazione del \textit{Router}}
+\chapter{Configurazione del \textit{Router} \ok \ok}
 \label{ch:configurazione-router}
 
 \section{Overview della configurazione \ok}
@@ -85,7 +85,7 @@ $ vim /etc/config/openvpn
 20  option config /configs/router.ovpn
 \end{bashcode}
 
-Ora possiamo abilitarla usando luci:
+Dopodiché va abilitata usando luci:
 
 \begin{figure}[H]
     \centering
@@ -100,9 +100,9 @@ Alla riga "custom\_config" Si deve mettere il check su \textit{enabled} e premer
 \section{Abilitazione del Client-to-Client nel server OpenVPN \ok}
 \label{sec:client-to-client}
 
-In questo momento i client della VPN, \code{client1} e \code{router}, possono comunicare tra loro. Ma lo fanno passando per la network stack del \textit{Server}, possiamo verificarlo con le utility \href{https://en.wikipedia.org/wiki/Ping_(networking_utility)}{\textit{ping}} e \href{https://en.wikipedia.org/wiki/Tcpdump}{\textit{tcpdump}}. 
+In questo momento i client della VPN, \code{client1} e \code{router}, possono comunicare tra loro. Ma lo fanno passando per la network stack del \textit{Server}, questo può essere verificato con le utility \href{https://en.wikipedia.org/wiki/Ping_(networking_utility)}{\textit{ping}} e \href{https://en.wikipedia.org/wiki/Tcpdump}{\textit{tcpdump}}. 
 
-Eseguiamo ad esempio un test in cui:
+Si può ad esempio eseguire un test in cui:
 
 \begin{itemize}[nosep, itemsep=1ex]
     \item \code{router} effettua il \textit{ping} verso \code{client1} 
@@ -117,7 +117,7 @@ PING 10.8.0.2 (10.8.0.2): 56 data bytes
 
 Il \code{ping} ha successo, quindi è possibile una comunicazione bidirezionale tra \code{router} e \code{client1}.
 
-Dal server possiamo vedere un'analisi dei pacchetti che passano attraverso l'interfaccia \code{tun0} usando la utility \code{tcpdump}:
+Dal server si può vedere un'analisi dei pacchetti che passano attraverso l'interfaccia \code{tun0} usando la utility \code{tcpdump}:
 
 \begin{bashcode}{Server}{}
 $ sudo tcpdump -i tun0
@@ -159,7 +159,7 @@ Si vede però che ogni richiesta viene duplicata, la prima è in entrata sulla n
 
 Per evitare questo traffico possiamo abilitare l'opzione \code{client-to-client} nel \textit{Server OpenVPN}. In questo modo il layer OpenVPN effettuerà direttamente il forwarding tra i client della VPN. Graficamente si vede in fig.~\ref{fig:diag2-client-to-client-on} come il pacchetto viene subito inoltrato e non entra affatto nella network stack del server. Ciò comporta, come effetto collaterale, che i pacchetti tra client della VPN non siano soggetti alle regole di firewall imposte nel \textit{Server}.
 
-Andiamo quindi a modificare la configurazione del \textit{Server OpenVPN}:
+Si deve quindi modificare la configurazione del \textit{Server OpenVPN}:
 
 \begin{bashcode}{Server}{}
 $ vim /etc/openvpn/server/server.conf
@@ -167,7 +167,7 @@ $ vim /etc/openvpn/server/server.conf
 $ sudo systemctl restart openvpn-server@server.service
 \end{bashcode}
 
-Possiamo quindi rieseguire gli stessi test fatti sopra:
+Dopo aver riavviato il servizio di openvpn con \code{systemctl restart}, è possibile rieseguire gli stessi test fatti sopra:
 
 \begin{bashcode}{Router 4g}{}
 $ ping -c1 10.8.0.2                                 # client1
@@ -186,11 +186,11 @@ listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes
 \section{Assegnazione IP statico al \textit{Router} \ok}
 \label{sec:static-ip-router}
 
-Dato che non possiamo sapere a priori quanti client si connetteranno contemporaneamente alla VPN, e l'assegnazione degli IP da parte del \textit{Server OpenVPN} è dinamico, per conoscere sempre quale IP viene assegnato al \textit{Router} è necessario assegnargliene uno statico attraverso un'opportuna configurazione.
+Dato che non è possibile sapere a priori quanti client si connetteranno contemporaneamente alla VPN, e l'assegnazione degli IP da parte del \textit{Server OpenVPN} è dinamico, per conoscere sempre quale IP viene assegnato al \textit{Router} è necessario assegnargliene uno statico attraverso un'opportuna configurazione.
 
 Questo viene fatto usando la \code{client-config-dir}, che consiste in una cartella dove l'amministratore può creare dei file di configurazione specifici per determinati utenti. Ciò è utile in caso alcune configurazioni non debbano essere applicate a tutti gli utenti, ma solo a uno. Il nome del file nella cartella deve essere lo stesso del \textit{Common Name} del certificato del client per cui si sta creando la configurazione.
 
-Nel nostro caso siamo interessati a impostare un IP statico per il \textit{Router}, quindi si deve creare nella cartella \code{ccd} un file chiamato \code{router}. 
+Nel caso in esame è necessario impostare un IP statico per il \textit{Router}, quindi si deve creare nella cartella \code{ccd} un file chiamato \code{router}. 
 
 L'opzione che permette di impostare un IP statico attraverso la \code{client-config-dir} è \\\code{ifconfig-push} \cite{ifconfig-push}:
 
