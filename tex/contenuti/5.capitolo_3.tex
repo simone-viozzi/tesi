@@ -40,11 +40,10 @@ Per la gestione dell'autenticazione dei client alla VPN è necessario creare una
 
 Il \textit{Server CA} verrà usato in fase di configurazione del server e di creazione dei certificati per i client, dopodiché non sarà più necessario.
 
-\todo[va bene senza mettere nessuna spiegazione per  lo schema??]
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{immagini/diag-firma_certificato_ca}
-    \caption{Diagramma per schematizzare la procedura di creazione della CA e della PKI del server OpenVPN.}
+    \caption{Diagramma per schematizzare la procedura di creazione della CA e della PKI del server OpenVPN.\todo[va bene senza mettere nessuna spiegazione per lo schema??]}
     \label{fig:diag-firma_certificato_ca}
 \end{figure}
 
@@ -55,8 +54,6 @@ Il \textit{Server CA} verrà usato in fase di configurazione del server e di cre
 \begin{comment}
 easy-rsa is a CLI utility to build and manage a PKI CA. In laymen's terms, this means to create a root certificate authority, and request and sign certificates, including intermediate CAs and certificate revocation lists (CRL).
 \end{comment}
-
-\todo[va bene wrapper??? :joy:]
 
 Per la gestione della PKI verrà usato il tool \href{https://github.com/OpenVPN/easy-rsa}{\textit{easy-rsa}}, che fornisce un wrapper intorno alle funzionalità di \textit{OpenSSL} facilitandone l'utilizzo.
 
@@ -233,9 +230,9 @@ Your newly created PKI dir is: /home/ubuntu/openvpn-ca/pki
 Ora si devono personalizzare le variabili \code{vars}, si può sia partire da un file vuoto oppure modificare \code{vars.example} per poi rinominarlo \code{vars}.
 
 \newpage
-Andiamo quindi a creare un nuovo file \code{vars}:
+Andiamo quindi a creare un nuovo file \code{vars} \todo[è ok lasciare queste?]:
 
-\todo[è ok lasciare queste?]
+
 
 \begin{bashcode}{Server CA}{}
 $ vim vars

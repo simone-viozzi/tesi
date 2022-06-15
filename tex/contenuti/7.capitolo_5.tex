@@ -142,7 +142,7 @@ $ tcpdump -i tun0
 Si vede come il pacchetto ICMP \textit{echo request} venga correttamente inoltrato nella VPN dal \textit{Router}, ma il \code{ping} fallisce poiché che non vi è nessun \textit{echo reply} dal \textit{Client}.
 
 
-\section{Modifiche alla configurazione OpenVPN del \textit{Server}}
+\section{Modifiche alla configurazione OpenVPN del \textit{Server} \ok}
 \label{sec:hosts-openvpn-server}
 
 Come visto nella sezione precedente, la comunicazione tra \textit{host-domotico} e \textit{Client} è ancora mono direzionale. Per renderla bidirezionale, si deve modificare la configurazione del \textit{Server} di OpenVPN facendo in modo che:
@@ -184,13 +184,7 @@ Al termine della procedura di configurazione esposta, l'obbiettivo precedentemen
 
 Nelle procedure di verifica verranno usate le utility \code{ping}, \code{tracepath} e \code{tcpdump}, poste in vari punti della topologia, in modo da valutare il percorso reale e virtuale dei pacchetti.
 
-Supponiamo che il \textit{Client} voglia comunicare con un \textit{host-domotico}, in questo caso la \textit{Raspberry Pi} che ha IP \code{192.168.130.2}, e che il dato da trasmettere sia un ICMP \textit{echo request}, facente parte di un \code{ping}.
-
-Quindi il \textit{Client} fa partire il ping:
-
-\begin{bashcode}{Client}{}
-$ ping -c 1 192.168.130.2
-\end{bashcode}
+Supponiamo per esempio che il \textit{Client} voglia comunicare con un \textit{host-domotico}, in questo caso la \textit{Raspberry Pi} che ha IP \code{192.168.130.2}, e che il dato da trasmettere sia un ICMP \textit{echo request}, facente parte di un \code{ping}.
 
 \begin{figure}[H]
     \centering
@@ -199,10 +193,14 @@ $ ping -c 1 192.168.130.2
     \label{fig:diag-test-real}
 \end{figure}
 
-Supponiamo di poter seguire il percorso del pacchetto analizzando gli step principali (fig.~\ref{fig:diag-test-real}), in questo caso consideriamo 6 step:
+\newpage
+Andiamo quindi ad analizzare il percorso del pacchetto nei punti di interesse rappresentati in fig.~\ref{fig:diag-test-real}, seguendo in modo dettagliato cosa succede ad ongi step:
 
 \begin{enumerate}
     \item[1.] Il \textit{Client} (\code{10.8.0.2}) effettua il ping verso l'\textit{host-domotico} (\code{192.168.130.2}).
+\begin{bashcode}{Client}{}
+$ ping -c 1 192.168.130.2
+\end{bashcode}
     
     Dato che il \textit{Client} ha la subnet \code{192.168.130.0/24} nella sua tabella di routing (sezione \ref{sec:hosts-openvpn-server}) viene costruito un pacchetto di tipo ICMP \textit{echo request} che ha come IP sorgente \code{10.8.0.2} e come destinazione \code{192.168.130.2}. 
     
@@ -229,7 +227,7 @@ $ sudo tcpdump -i ens3 -n port 1194
     La comunicazione attraverso il NAT è possibile poiché OpenVPN implementa nel suo protocollo una serie di pacchetti \textit{keepalive} \cite{openvpn-keepalive} tra ogni Host e il Server. Ciò permette al NAT di sapere a quale host della sua rete privata deve inoltrare i pacchetti. 
     
     Il pacchetto cifrato viene quindi inoltrato usando come IP di sorgente \code{51.178.141.119} e destinazione l'IP pubblico del NAT.
-    
+    \newpage
     Possiamo vedere il pacchetto in uscita dal server mettendoci in ascolto sull'interfaccia \it{ens3}:
 \begin{bashcode}{Server}{}
 $ sudo tcpdump -i ens3 -n port 1194
@@ -254,7 +252,7 @@ $ tcpdump -i tun0
 
 \end{enumerate}
 
-\newpage
+
 Se è stato configurato tutto correttamente il \code{ping} avrà successo:
 \begin{bashcode}{Client}{}
 $ ping -c 1 192.168.130.2
@@ -279,7 +277,8 @@ Considerando solo il percorso del pacchetto interno si ha una semplificazione de
 
 \end{comment}
 
-Possiamo inolte verificare il percorso del pacchetto interno (cifrato) usando la utility \code{tracepath}, che permette di vedere l'indirizzo IP di tutti i router che sono presenti tra chi esegue il comando e la destinazione:
+\newpage
+Possiamo inoltre verificare il percorso del pacchetto interno (cifrato) usando la utility \code{tracepath}, che permette di vedere l'indirizzo IP di tutti i router che sono presenti tra chi esegue il comando e la destinazione:
 
 \begin{bashcode}{Client}{}
 $ tracepath 192.168.130.2
