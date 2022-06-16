@@ -15,33 +15,18 @@ scaletta
 
 \end{comment}
 
-L'architettura proposta in questo elaborato è stata effettivamente implementata su apparati reali durante il tirocinio in collaborazione con l'azienda \textit{Esse-ti}. Ciò ci ha permesso di lavorare a stretto contatto con un'azienda del territorio, tenendo conto dei loro requisiti e limiti di budget.
+L'architettura proposta in questo elaborato è stata effettivamente implementata su apparati reali durante il tirocinio in collaborazione con l'azienda \textit{Esse-ti}. Ciò ha permesso, a me e hai miei colleghi, di lavorare a stretto contatto con un'azienda del territorio, tenendo conto dei loro requisiti e limiti di budget.
 
 
-\begin{comment}
-per rendere più completo il progetto, facendo in modo che più clienti si possano connettere allo stesso momneto e mantenendo l'isolamento tra essi si deveeee
-\end{comment}
+Personalmente questo progetto mi ha permesso di espandere la mia conoscenza sul mondo del networking e di Linux. Affrontando le sfide causate dalla configurazione di un server remoto e un dispositivo di tipo embedded.
 
 
-
-\todo[da riscrivere]
-Per rendere più completo il prodotto è necessario modificare la configurazione per consentire che più clienti, ognuno con il proprio Router 4G, possano usufruire del servizio. 
+In fase di revisione con il responsabile aziendale è emersa una limitazione dell'architettura implementata, può infatti sostenere un solo cliente e il relativo router 4G. Per sostenere più di un cliente sarebbe necessario avere più di una VPS e ripetere la procedura di configurazione in ognuna.
 
 
-Si deve però stare attenti a mantenere l'isolamento tra i clienti, per evitare che i dati trasmessi da un cliente vengano letti dagli altri.
+Se si vuole consentire l'uso di una sola VPS per più clienti è necessario implementare una multiistanza VPN, in cui ogni VPN è dedicata ad un solo cliente e relativo router. Possiamo vedere un prototipo della topologia reale e virtuale in fig.~\ref{fig:diag2-multiistanza_virtual} e fig.~\ref{fig:diag2-multiistanza_real}.
 
-
-
-A livello implementativo ciò significa avere più di un servizio OpenVPN nel \textit{Server}, ogni uno collegato a una \textit{Certificate Authority} differente.
-
-Ad esempio con 2 clienti si avrà un'architettura virtuale simile a fig.~\ref{fig:diag2-multiistanza_virtual}, che corrisponde ad una topologia reale in fig.~\ref{fig:diag2-multiistanza_real}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\linewidth]{immagini/diag2-multiistanza_virtual}
-    \caption{multi-istanza virtual}
-    \label{fig:diag2-multiistanza_virtual}
-\end{figure}
+In questo caso si deve porre particolare attenzione alla sicurezza, in quanto si deve garantire l'isolamento assoluto tra clienti differenti. La chiave per l'implentazione della multiistanza è di avere una \it{Certificate Autority} separata per ogni VPN, ciò comporta che i clienti possano autenticarsi solo alla VPN che gli è stata assegnata.
 
 
 \begin{figure}
@@ -51,5 +36,14 @@ Ad esempio con 2 clienti si avrà un'architettura virtuale simile a fig.~\ref{fi
     \label{fig:diag2-multiistanza_real}
 \end{figure}
 
-\todo[espandi!!!]
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{immagini/diag2-multiistanza_virtual}
+    \caption{multi-istanza virtual}
+    \label{fig:diag2-multiistanza_virtual}
+\end{figure}
+
+
+
+
 
