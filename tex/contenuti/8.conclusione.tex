@@ -21,25 +21,22 @@ L'architettura proposta in questo elaborato è stata effettivamente implementata
 Personalmente questo progetto mi ha permesso di espandere la mia conoscenza sul mondo del networking e di Linux. Affrontando le sfide causate dalla configurazione di un server remoto e un dispositivo di tipo embedded.
 
 
-In fase di revisione con il responsabile aziendale è emersa una limitazione dell'architettura implementata, può infatti sostenere un solo cliente e il relativo router 4G. Per sostenere più di un cliente sarebbe necessario avere più di una VPS e ripetere la procedura di configurazione in ognuna.
+In fase di revisione con il responsabile aziendale è emersa una limitazione dell'architettura implementata, può infatti sostenere un solo cliente e il relativo router 4G. Per sostenere più di un cliente sarebbe necessario avere più di una VPS e ripetere la procedura di configurazione in ognuna. 
 
-
-Se si vuole consentire l'uso di una sola VPS per più clienti è necessario implementare una multiistanza VPN, in cui ogni VPN è dedicata ad un solo cliente e relativo router. Possiamo vedere un prototipo della topologia reale e virtuale in fig.~\ref{fig:diag2-multiistanza_virtual} e fig.~\ref{fig:diag2-multiistanza_real}.
-
-In questo caso si deve porre particolare attenzione alla sicurezza, in quanto si deve garantire l'isolamento assoluto tra clienti differenti. La chiave per l'implentazione della multiistanza è di avere una \it{Certificate Autority} separata per ogni VPN, ciò comporta che i clienti possano autenticarsi solo alla VPN che gli è stata assegnata.
+Se si vuole consentire l'uso di una sola VPS per più clienti è necessario implementare una multiistanza VPN, in cui ogni VPN è dedicata ad un solo cliente e relativo router. Possiamo vedere un prototipo della topologia reale e virtuale in fig.~\ref{fig:diag2-multiistanza_virtual} e fig.~\ref{fig:diag2-multiistanza_real}. In questo caso si deve porre particolare attenzione alla sicurezza, in quanto si deve garantire l'isolamento assoluto tra clienti differenti. La chiave per l'implentazione della multiistanza è di avere una \it{Certificate Autority} separata per ogni VPN, ciò comporta che i clienti possano autenticarsi solo alla VPN che gli è stata assegnata.
 
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{immagini/diag2-multiistanza_real}
-    \caption{multi-istanza real}
+    \caption{Prototipo di topologia reale della multiistanza VPN}
     \label{fig:diag2-multiistanza_real}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.6\linewidth]{immagini/diag2-multiistanza_virtual}
-    \caption{multi-istanza virtual}
+    \caption{Prototipo di topologia virtuale della multiistanza VPN}
     \label{fig:diag2-multiistanza_virtual}
 \end{figure}
 

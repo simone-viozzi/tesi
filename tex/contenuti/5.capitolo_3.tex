@@ -9,7 +9,7 @@ In questo capitolo verrà installato e configurato \textit{OpenVPN server} sulla
 
 Per facilitare la configurazione e il testing, si suppone di partire da una topologia che contiene solo il server OpenVPN e un generico client. Come da specifiche, il Server deve avere a disposizione un'IP pubblico (sezione \ref{subsec:vps-ovhcloud}); e il client deve essere il più generico possibile, viene quindi supposto al di sotto di un NAT (sezione \ref{subsec:macchina-cliente}).
 
-Sapendo che l'IP pubblico del Server è \code{51.178.141.119}, si avrà una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
+Sapendo che l'IP pubblico del \it{Server} è \code{51.178.141.119}, si avrà una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
 
 \newsavebox{\myimage}
@@ -18,14 +18,14 @@ Sapendo che l'IP pubblico del Server è \code{51.178.141.119}, si avrà una conf
     \begin{subfigure}{0.49\textwidth}
         \centering
         \includegraphics[width=0.8\textwidth]{immagini/diag-simple_ips}
-        \caption{Configurazione di partenza per questo capitolo.\newline}
+        \caption{Topologia di partenza.}
         \label{fig:diag-simple_ips}
     \end{subfigure}
     \hfill%
     \begin{subfigure}{0.49\textwidth}
         \centering
         \includegraphics[width=0.8\textwidth]{immagini/diag-simple_ips_vpn}
-        \caption{Configurazione virtuale da raggiungere per questo capitolo.}
+        \caption{Topologia virtuale da raggiungere.}
         \label{fig:diag-simple_ips_vpn}
     \end{subfigure}%
     \caption{Configurazione di partenza e di obbiettivo per il capitolo \ref{ch:server}.}
@@ -617,7 +617,7 @@ $ ip addr
 [...]
 \end{bashcode}
 
-In questo caso il nome dell'interfaccia di rete è \textit{ens3}. E' quindi possibile procedere con la configurazione del NAT:
+In questo caso il nome dell'interfaccia di rete è \textit{ens3}. È quindi possibile procedere con la configurazione del NAT:
 
 \begin{bashcode}{Server}{}
 $ sudo vim /etc/ufw/before.rules
