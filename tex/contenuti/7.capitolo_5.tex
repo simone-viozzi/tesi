@@ -295,7 +295,7 @@ Come era previsto l'unico router presente nella topologia virtuale è il \it{Rou
 Con questi test possiamo concludere che la topologia sia stata implementata correttamente.
 
 \begin{comment}
-Vediamo quindi un ping dal \textit{Client} verso l'\textit{host-domotico}, con \textit{Server} e \textit{Router} in ascolto sull'interfaccia tun0:
+
 
 
 \begin{bashcode}{Client}{}
@@ -309,15 +309,6 @@ rtt min/avg/max/mdev = 0.643/0.643/0.643/0.000 ms
 \end{bashcode}
 
 
-
-Il \textit{Server} non ha visto traffico poiché ha l'opzione \code{client-to-client} abilitata, ciò comporta che il layer vpn effettua il routing senza passare per l'interfaccia di rete del router.
-
-
-
-Il \textit{Router} vede il pacchetto e lo instrada verso l'host corretto.
-
-Provando nella direzione inversa si ottiene lo stesso risultato
-
 \begin{bashcode}{Host-domotico}{}
 $ ping -c 1 10.8.0.2
 PING 10.8.0.2 (10.8.0.2) 56(84) bytes of data.
@@ -328,8 +319,6 @@ PING 10.8.0.2 (10.8.0.2) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.428/0.428/0.428/0.000 ms
 \end{bashcode}
 
-e il \textit{Router} vede:
-
 \begin{bashcode}{Router}{}
 $ tcpdump -i tun0
 listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
@@ -337,7 +326,6 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 11:56:10.470230 IP 10.8.0.2 > 192.168.130.2: ICMP echo reply, id 14, seq 1, length 64
 \end{bashcode}
 
-Possiamo inoltre usare \code{tracepath} per vedere gli hop:
 
 \begin{bashcode}{Client}{}
 $ tracepath 192.168.130.2
