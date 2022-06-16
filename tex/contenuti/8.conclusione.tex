@@ -26,6 +26,8 @@ In fase di revisione con il responsabile aziendale è emersa una limitazione del
 Se si vuole consentire l'uso di una sola VPS per più clienti è necessario implementare una multiistanza VPN, in cui ogni VPN è dedicata ad un solo cliente e relativo router. Possiamo vedere un prototipo della topologia reale e virtuale in fig.~\ref{fig:diag2-multiistanza_virtual} e fig.~\ref{fig:diag2-multiistanza_real}. In questo caso si deve porre particolare attenzione alla sicurezza, in quanto si deve garantire l'isolamento assoluto tra clienti differenti. La chiave per l'implentazione della multiistanza è di avere una \it{Certificate Autority} separata per ogni VPN, ciò comporta che i clienti possano autenticarsi solo alla VPN che gli è stata assegnata.
 
 
+\todo[manca frase conclusiva]
+
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{immagini/diag2-multiistanza_real}
