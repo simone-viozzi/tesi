@@ -86,7 +86,7 @@ Dopo aver salvato, la pagina del firewall sarà:
 \subsection{Aggiunta dell'interfaccia \textit{tun0} alla zona firewall \textit{vpn} \ok}
 \label{subsec:aggiunta-interfaccia-tun0-zona-vpn}
 
-Per far effettivamente funzionare la zona firewall aggiunta nella sezione precedente, si deve aggiungere l'interfaccia relativa alla VPN (\textit{tun0}) alla zona \textit{vpn}.
+Per attivare la zona firewall aggiunta nella sezione precedente, si deve aggiungere l'interfaccia relativa alla VPN (\textit{tun0}) alla zona \textit{vpn}.
 
 Dato che l'interfaccia \textit{tun0} non è presente in LuCI, la si deve creare usando le opzioni che già conosciamo. Durante la creazione, nella sezione \textit{Firewall Settings}, sarà possibile assegnare l'interfaccia a una zona firewall.
 
@@ -119,7 +119,7 @@ Quindi nella sezione \textit{interfaces}, si deve aggiungere una nuova interfacc
     \caption{Assegnazione interfaccia \textit{tun0} alla zona firewall \textit{vpn} tramite interfaccia LuCI}
 \end{figure}
 
-A questo punto i pacchetti provenienti dalla \it{lan} del \textit{Router} vengono inoltrati correttamente nella VPN, ma gli Host nella VPN non hanno una rotta verso la rete interna del router, perciò la comunicazione risulta ancora mono direzionale. È possibile verificarlo con un semplice test i cui:
+A questo punto i pacchetti provenienti dalla \textit{lan} del \textit{Router} vengono inoltrati correttamente nella VPN, ma gli Host nella VPN non hanno una rotta verso la rete interna del router, perciò la comunicazione risulta ancora mono direzionale. È possibile verificarlo con un semplice test i cui:
 
 \begin{itemize}[nosep]
     \item l'host-domotico effettua il ping verso il client;
@@ -194,7 +194,7 @@ Supponendo per esempio che il \textit{Client} voglia comunicare con un \textit{h
 \end{figure}
 
 \newpage
-Nell'analisi andremo a seguire il percorso del pacchetto nei punti di interesse rappresentati in fig.~\ref{fig:diag-test-real}, esaminando in modo dettagliato cosa succede ad ongi step:
+Nell'analisi andremo a seguire il percorso del pacchetto nei punti di interesse rappresentati in fig.~\ref{fig:diag-test-real}, esaminando in modo dettagliato cosa succede ad ogni step:
 
 \begin{enumerate}
     \item[1.] Il \textit{Client} (\code{10.8.0.2}) effettua il ping verso l'\textit{host-domotico} (\code{192.168.130.2}).
@@ -215,7 +215,7 @@ $ ping -c 1 192.168.130.2
 \begin{bashcode}{Server}{}
 $ tcpdump -i tun0
 \end{bashcode}
-    Possiamo però vedere il pacchetto transitare sull'interfaccia esterna del \it{Server} (\it{ens3}). In questo caso però vedremo il pacchetto esterno, possiamo riconoscerlo e distinguerlo dal normale traffico internet selezionando la porta di OpenVPN:
+    Possiamo però vedere il pacchetto transitare sull'interfaccia esterna del \textit{Server} (\textit{ens3}). In questo caso però vedremo il pacchetto esterno, possiamo riconoscerlo e distinguerlo dal normale traffico internet selezionando la porta di OpenVPN:
 \begin{bashcode}{Server}{}
 $ sudo tcpdump -i ens3 -n port 1194
 15:43:15.543169 IP 151.57.44.194.59478 > 51.178.141.119.1194: UDP, length 108
@@ -226,9 +226,9 @@ $ sudo tcpdump -i ens3 -n port 1194
     
     La comunicazione attraverso il NAT è possibile poiché OpenVPN implementa nel suo protocollo una serie di pacchetti \textit{keepalive} \cite{openvpn-keepalive} tra ogni Host e il Server. Ciò permette al NAT di sapere a quale host della sua rete privata deve inoltrare i pacchetti. 
     
-    Il pacchetto viene cifrato con il certificato del \it{Router} e inoltrato usando come IP di sorgente \code{51.178.141.119} e destinazione l'IP pubblico del NAT.
+    Il pacchetto viene cifrato con il certificato del \textit{Router} e inoltrato usando come IP di sorgente \code{51.178.141.119} e destinazione l'IP pubblico del NAT.
     \newpage
-    Possiamo vedere il pacchetto in uscita dal \it{server} mettendoci in ascolto sull'interfaccia \it{ens3}:
+    Possiamo vedere il pacchetto in uscita dal \textit{server} mettendoci in ascolto sull'interfaccia \textit{ens3}:
 \begin{bashcode}{Server}{}
 $ sudo tcpdump -i ens3 -n port 1194
 15:43:15.543273 IP 51.178.141.119.1194 > 151.47.152.251.40637: UDP, length 108
@@ -248,7 +248,7 @@ $ tcpdump -i tun0
 10:44:07.228387 IP 10.8.0.2 > 192.168.130.2: ICMP echo request, id 12, seq 1, length 64
 \end{bashcode}
     
-    \item[6.] Il \textit{host-domotico} riceve il pacchetto e legge il contenuto, vedendo che si tratta di ICMP \textit{echo request} provvede a costruire una risposta ICMP \textit{echo reply} e la invia al \textit{Client}. Ciò viene fatto invertendo sorgente e destinazione del pacchetto \it{echo request}, cioè impostando sorgente: \code{192.168.130.2}; e destinazione: \code{10.8.0.2}.
+    \item[6.] Il \textit{host-domotico} riceve il pacchetto e legge il contenuto, vedendo che si tratta di ICMP \textit{echo request} provvede a costruire una risposta ICMP \textit{echo reply} e la invia al \textit{Client}. Ciò viene fatto invertendo sorgente e destinazione del pacchetto \textit{echo request}, cioè impostando sorgente: \code{192.168.130.2}; e destinazione: \code{10.8.0.2}.
 
 \end{enumerate}
 
@@ -289,7 +289,7 @@ $ tracepath 192.168.130.2
     Resume: pmtu 1500 hops 2 back 2
 \end{bashcode}
 
-Come era previsto l'unico router presente nella topologia virtuale è il \it{Router 4G} (\code{10.8.0.254}).
+Come era previsto l'unico router presente nella topologia virtuale è il \textit{Router 4G} (\code{10.8.0.254}).
 
 
 Con questi test possiamo concludere che la topologia sia stata implementata correttamente.

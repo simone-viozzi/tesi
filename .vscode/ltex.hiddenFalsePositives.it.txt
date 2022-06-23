@@ -30,3 +30,8 @@
 {"rule":"ST_01_005","sentence":"^\\QSe la configurazione e' stata effettuata correttamente di avra' un output simile al precedente, in caso contrario si dovranno valutare gli errori dati da ufw.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QL'opzione che permette di impostare un IP statico e' ifconfig-push.\\E$"}
 {"rule":"GR_04_002","sentence":"^\\QNell'header Ethernet II sono contenuti l'indirizzo MAC di sorgente e destinazione, ciò permette di individuare qual è l'interfaccia fisica a cui è destinato il pacchetto.\\E$"}
+{"rule":"ST_01_005","sentence":"^\\QCiò ha permesso, a me e hai miei colleghi, di lavorare a stretto contatto con un'azienda del territorio, tenendo conto dei loro requisiti e limiti di budget.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QTale percorso mi ha permesso di approfondire molti aspetti sul funzionamento di Internet e come è stato possibile scalare la rete in modo così veloce e semplice.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QNel mio percorso universitario ho avuto l'opportunità di frequentare il corso di Networking tenuto presso il Dipartimento di Ingegneria dell’Informazione dall’Ing. Adelmo De Santis, e successivamente conseguire la certificazione HUAWEI HCIA Routing and Switching.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QSono sempre stato curioso sul funzionamento di Internet, una delle rivoluzioni più importanti fatte dall'uomo, eppure multi lo usano con superficialità e pochi ne conoscono il meccanismo interno.\\E$"}
+{"rule":"GR_04_002","sentence":"^\\QPer garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati, il modello TCP/IP è costituito da 4 strati.\\E$"}

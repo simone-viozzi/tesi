@@ -32,7 +32,8 @@ Un sistema di comunicazione Internet consiste in un interconnessione tra reti di
 L'obbiettivo di Internet è quello di collegare hosts attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati.
 \end{comment}
 
-Il suo obbiettivo è quello di collegare utenti attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è sta suddivisa in alcuni strati, il modello TCP/IP è costituito da 4 strati. 
+Il suo obbiettivo è quello di collegare utenti attraverso una rete geografica, indipendentemente dalla distanza o da quali mezzi fisici vengano usati per trasferire i dati. Deve quindi essere in grado di gestire una grande varietà di applicazioni, tipi di rete e mezzi di trasmissione. Per garantire la flessibilità necessaria e non aggiungere troppa complessità, l'architettura di Internet è descrivibile usando dei modelli layered, come quello TCP/IP, costituito da 4 strati.
+
 
 \begin{figure}[H]
     \centering
@@ -171,7 +172,15 @@ Vediamo una breve descrizione dei layer e delle loro funzioni:
 
 Ogni protocollo di ogni layer aggiunge un header e un trailer, incapsulando il prodotto del layer precedente nel suo campo data, possiamo vederne una rappresentazione grafica in fig. \ref{fig:modello-a-strati}.
 
+
+\begin{comment}
+old version!
+
 Possiamo inoltre esaminare l'incapsulamento in azione catturando un pacchetto con il programma \textit{Wireshark}, ad esempio in questo caso si tratta di un pacchetto proveniente da una pagina web \textit{https}:
+\end{comment}
+
+Catturando un pacchetto con il programma \textit{Wireshark}, possiamo esaminare il funzionamento del processo di incapsulamento, riferito, in questo caso, al protocollo \textit{https}:
+
 
 \begin{bashcode}{Wireshark}{tls-wireshark}
 Frame 43408: 93 bytes on wire (744 bits), 93 bytes captured (744 bits) on interface wlp5s0, id 0
@@ -227,7 +236,7 @@ The two most compelling problems facing the IP Internet are IP address depletion
 \end{comment}
 
 % ok
-Per mitigare il problema della saturazione degli indirizzi IPv4 \cite{ipv4_exhaustion}, è stato introdotto un dispositivo di rete che consente di riusare spazi di indirizzi privati e ridurre il numero di Ipv4 pubblici necessari. 
+Per mitigare il problema della saturazione degli indirizzi IPv4 \cite{ipv4_exhaustion}, è stato introdotta una tecnica che consente di riusare spazi di indirizzi privati e ridurre il numero di Ipv4 pubblici necessari. 
 
 \begin{comment}
 Network address translation (NAT) is a method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic routing device. One Internet-routable IP address of a NAT gateway can be used for an entire private network.
@@ -342,7 +351,7 @@ OpenVPN has several ways to authenticate peers with each other. OpenVPN offers p
 \end{comment}
 
 % ok
-L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \textit{Public key infrastructure} \cite{pki} per autenticare che i certificati forniti dai client siano effettivamente autentici. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette allo specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento \cite{revoke-cert}, facendo così perdere l'accesso all'utente che lo stava usando. 
+L'autenticazione può essere eseguita usando una pre-shared key, un sistema basato sull'utilizzo dei certificati, una semplice password o una combinazione dei precedenti. Il metodo più sicuro è quello basato sui certificati, che sfrutta una \textit{Public key infrastructure} \cite{pki} per garantire l'autenticità dei certificati utente. Con questo metodo si crea un certificato per ogni utente che, se opportunamente firmato, permette allo specifico utente di autenticarsi al server VPN. Questo metodo ha inoltre il vantaggio che un certificato può essere revocato in ogni momento \cite{revoke-cert}, facendo così perdere l'accesso all'utente che lo stava usando. 
 
 % ok
 Maggiori informazioni possono essere trovate sulla \href{https://community.openvpn.net/openvpn/wiki/How_does_PKI_work}{wiki di OpenVPN}.
@@ -368,7 +377,7 @@ OpenVPN offers two types of interfaces for networking via the Universal TUN/TAP 
 \end{comment}
 
 
-La configurazione del server permette di impostare opzioni che modificano la configurazione di rete del server o dei client, ciò permette ad esempio di aggiungere una rotta alla tabella di routing dei client nel momento in cui si connettono alla VPN.
+La configurazione del server permette di impostare opzioni che modificano la configurazione di rete del server o dei client, ciò consente ad esempio di aggiungere una rotta alla tabella di routing dei client nel momento in cui si connettono alla VPN.
 
 
 Per depositare il traffico nella network stack dei client, OpenVPN usa i \href{https://docs.kernel.org/networking/tuntap.html}{driver universali \\TUN/TAP}. Può quindi creare sia un tunnel IP di livello 3 (TUN), sia Ethernet livello 2 (TAP).
@@ -470,7 +479,7 @@ Meanwhile LuCI evolved from an MVC-Webframework to a collection of several libra
 \end{comment}
 
 % ok
-LuCI è l'interfaccia web ufficiale di \textit{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia web per sistemi embedded che sia gratuita, completa ed estensibile. L'installazione e configurazione di LuCI è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
+LuCI è l'interfaccia web ufficiale di \textit{OpenWrt}, è un progetto open-source nato dalla necessità di un'interfaccia grafica per sistemi embedded che sia gratuita, completa ed estensibile. L'installazione e configurazione di LuCI è molto semplice, si può infatti seguire la \href{https://openwrt.org/docs/guide-user/luci/luci.essentials}{guida ufficiale}.
 
 
 \begin{figure}[H]

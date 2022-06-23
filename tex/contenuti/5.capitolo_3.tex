@@ -9,7 +9,7 @@ In questo capitolo verrà installato e configurato \textit{OpenVPN server} sulla
 
 Per facilitare la configurazione e il testing, si suppone di partire da una topologia che contiene solo il server OpenVPN e un generico client. Come da specifiche, il Server deve avere a disposizione un'IP pubblico (sezione \ref{subsec:vps-ovhcloud}); e il client deve essere il più generico possibile, viene quindi supposto al di sotto di un NAT (sezione \ref{subsec:macchina-cliente}).
 
-Sapendo che l'IP pubblico del \it{Server} è \code{51.178.141.119}, si avrà una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
+Sapendo che l'IP pubblico del \textit{Server} è \code{51.178.141.119}, si avrà una configurazione iniziale come in figura \ref{fig:diag-simple_ips}.
 
 
 \newsavebox{\myimage}
@@ -38,7 +38,7 @@ Per instaurare una comunicazione bidirezionale tra il server e il client, si dov
 
 Per la gestione dell'autenticazione dei client alla VPN è necessario creare una \textit{Public key infrastructure} (PKI), come descritto nella sezione \ref{subsec:auth}. Inoltre, per una maggiore sicurezza è indicato separare la \textit{Certificate Authority} dal \textit{Server OpenVPN} \cite{openvpn-as-ca}, supponiamo quindi di usare un secondo server chiamato \textit{Server CA}. 
 
-Il \textit{Server CA} verrà usato in fase di configurazione del \it{Server} e di creazione dei certificati per i client, dopodiché non sarà più necessario.
+Il \textit{Server CA} verrà usato in fase di configurazione del \textit{Server OpenVPN} e di creazione dei certificati per i client, dopodiché non sarà più necessario.
 
 \begin{figure}[H]
     \centering
@@ -67,7 +67,7 @@ ln è un comando dei sistemi operativi Unix e Unix-like, e più in generale dei 
 Dopo l'installazione verrà creata una struttura di cartelle pronta a ospitare la PKI nel percorso \code{/usr/share/easy-rsa/}, ma è sconsigliato usarla per motivi di sicurezza. 
 
 \newpage
-Quindi si deve spostare/collegare questo percorso in una cartella di un utente non privilegiato, in questo caso \code{ubuntu}. Per semplicità il collegamento verrà creato nella \it{home}:
+Quindi si deve spostare/collegare questo percorso in una cartella di un utente non privilegiato, in questo caso \code{ubuntu}. Per semplicità il collegamento verrà creato nella \textit{home}:
 
 \begin{bashcode}{Server CA}{init-easyrsa}
 $ mkdir ~/openvpn-ca
@@ -238,7 +238,7 @@ set_var EASYRSA_REQ_COUNTRY  "IT"
 set_var EASYRSA_REQ_PROVINCE "MC"
 set_var EASYRSA_REQ_CITY     "Recanati"
 set_var EASYRSA_REQ_ORG      "Esse-ti"
-set_var EASYRSA_REQ_EMAIL    "s.gasparrini@esse-ti.it"
+set_var EASYRSA_REQ_EMAIL    "****@esse-ti.it"
 set_var EASYRSA_REQ_OU       "Esse-ti"
 set_var EASYRSA_REQ_CN       "openvpn-ca"
 
@@ -246,9 +246,9 @@ set_var EASYRSA_ALGO         "ec"
 set_var EASYRSA_DIGEST       "sha512"
 \end{bashcode}
 
-Le variabili nel primo blocco determinano i dati che poi verranno registrati nei certificati. Le ultime 2 sono opzioni di sicurezza. In particolare si setta il tipo di algoritmo di cifratura per usare la crittografia a chiave ellittica (\href{https://en.wikipedia.org/wiki/Elliptic-curve_cryptography}{Elliptic-Curve Cryptography}); L'ultima opzione setta l'algoritmo di hashing da usare nella firma dei certificati.
+Le variabili nel primo blocco determinano i dati che poi verranno registrati nei certificati. Le ultime 2 sono opzioni di sicurezza. In particolare si configura il tipo di algoritmo di cifratura per usare la crittografia a chiave ellittica (\href{https://en.wikipedia.org/wiki/Elliptic-curve_cryptography}{Elliptic-Curve Cryptography}); L'ultima opzione setta l'algoritmo di hashing da usare nella firma dei certificati.
 
-A questo punti si deve lanciare il comando \code{build-ca} per costruire la CA (passaggio 2 fig.\ref{fig:diag-firma_certificato_ca}):
+A questo punto si deve lanciare il comando \code{build-ca} per costruire la CA (passaggio 2 fig.\ref{fig:diag-firma_certificato_ca}):
 
 \begin{bashcode}{Server CA}{}
 $ ./easyrsa build-ca
@@ -428,7 +428,7 @@ $ mkdir -p ~/client-configs/keys
 $ chmod -R 700 ~/client-configs
 \end{bashcode}
 
-A questo punto si possono creare i certificati per i client. Ad esempio si può creare un certificato per il \it{Client}, è importante che il \textit{Common Name} dato in fase di creazione sia unico ed è consigliabile usare un nome che permetta di collegare il certificato con il cliente che ha richiesto il servizio. Ciò permette di conoscere quale certificato revocare \cite{revoke-cert} in caso sia necessario.
+A questo punto si possono creare i certificati per i client. Ad esempio si può creare un certificato per il \textit{Client}, è importante che il \textit{Common Name} dato in fase di creazione sia unico ed è consigliabile usare un nome che permetta di collegare il certificato con il cliente che ha richiesto il servizio. Ciò permette di conoscere quale certificato revocare \cite{revoke-cert} in caso sia necessario.
 
 In questo caso è stato usato il \textit{Common Name} \code{client1} (step 1 fig.\ref{fig:diag-firma_certificato_client}):
 
@@ -568,7 +568,7 @@ $ sudo vim server.conf
 \section{Configurazioni sulla network stack del Server \ok}
 \label{sec:network_stack}
 
-OpenVPN per funzionare necessita che il server abbia l'\textit{ip forwarding} abilitato. Ciò è necessario per permettere al \it{server OpnenVPN} di inoltrare il traffico proveniente dalla VPN nella sua network stack, e viceversa.
+OpenVPN per funzionare necessita che il server abbia l'\textit{ip forwarding} abilitato. Ciò è necessario per permettere al \textit{server OpnenVPN} di inoltrare il traffico proveniente dalla VPN nella sua network stack, e viceversa.
 
 \begin{comment}
 Now your OpenVPN server will be able to forward incoming traffic from one ethernet device to another. This setting makes sure the server can direct traffic from clients that connect on the virtual VPN interface out over its other physical ethernet devices. This configuration will route all web traffic from your client via your server’s IP address, and your client’s public IP address will effectively be hidden.
@@ -719,13 +719,13 @@ Il comando \code{systemctl enable} abilita il servizio per essere avviato all'av
 
 Con il comando \code{systemctl status} si può verificare lo stato del servizio, si vede che il servizio è \textit{active (running)}. 
 
-In caso il servizio fallisse ad avviarsi si avrà un breve \it{log} con \code{systemctl status}, oppure si possono leggere i \it{log} completi usando \code{journalctl -u openvpn-server@server.service}.
+In caso il servizio fallisse ad avviarsi si avrà un breve \textit{log} con \code{systemctl status}, oppure si possono leggere i \textit{log} completi usando \code{journalctl -u openvpn-server@server.service}.
 
 
 \section{Test della configurazione \ok}
 \label{sec:test_config_server}
 
-Ora che la configurazione per questo capitolo è conclusa è necessario testare che tutto funzioni correttamente.
+Ora che la configurazione per questo capitolo è conclusa è necessario verificare che tutto funzioni correttamente.
 
 Per farlo ci spostiamo su una macchina \textit{Client}, con sistema operativo Linux ad esempio. Usando la configurazione creata in code:\ref{code:config-client1} è possibile connettere il \textit{Client} alla VPN:
 
