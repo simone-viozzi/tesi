@@ -11,6 +11,17 @@
     "editor.wrappingIndent": "same",
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 90,
+    "[markdown]": {
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 90,
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    },
     "editor.fontSize": 15,
     "window.zoomLevel": 0,
     "cSpell.language": "en,it",
