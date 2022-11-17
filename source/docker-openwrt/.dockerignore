@@ -1,6 +1,0 @@
-openwrt.conf
-.env
-*.img.gz
-*.img
-etc/config/*
-!etc/config/*.tpl
